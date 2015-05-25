@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="アセンブリー・ソース・ファイル">
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\tools\TLCS900-TOSHIBA\Zup-F16-ex</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
+
+</language>
+<language name="C++ ソース・ファイル">
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_osek\include</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\include</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\tools\TLCS900-TOSHIBA\Zup-F16-ex</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
+
+</language>
+<language name="C ソース・ファイル">
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_osek\include</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\include</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\tools\TLCS900-TOSHIBA\Zup-F16-ex</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
+
+</language>
+<language name="オブジェクト・ファイル">
+
+</language>
+</section>
+</cdtprojectproperties>
