@@ -109,6 +109,20 @@ TASK(MainTask) {
 }
 
 TASK(TracerTask) {
+
+	/*
+	static int count;
+
+	if(count == 100 ) {
+		ecrobot_set_light_sensor_inactive(NXT_PORT_S3);
+	}
+	else if(count == 200) {
+		ecrobot_set_light_sensor_active(NXT_PORT_S3);
+		count=0;
+	}
+	count++;
+*/
+
     // 4ms周期で、ライントレーサにトレース走行を依頼する
     gLineTracer->run();
 
