@@ -18,6 +18,7 @@ TARGET_SOURCES = balancer_param.c
 
 # CPPソースファイル
 TARGET_CPP_SOURCES = \
+	util/Bluetooth.cpp \
 	app/LineTracer.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \

@@ -56,6 +56,7 @@ void BalancingWalker::run() {
     // 左右モータに回転を指示する
     mLeftWheel.setPWM(mBalancer->getPwmLeft());
     mRightWheel.setPWM(mBalancer->getPwmRight());
+
 }
 
 /**

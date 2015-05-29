@@ -38,13 +38,22 @@ CPU ATMEL_AT91SAM7S256
     STACKSIZE = 512;
   };
 
+  TASK BluetoothTask
+  {
+    AUTOSTART = FALSE;
+    PRIORITY = 3;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    STACKSIZE = 512;
+  };
+
   COUNTER SysTimerCnt {
     MINCYCLE = 1;
     MAXALLOWEDVALUE = 10000;
-    TICKSPERBASE = 1; /* 1tick 1msec */ 
+    TICKSPERBASE = 1; /* 1tick 1msec */
   };
 
-  ALARM CyclicAlarm {
+  ALARM CyclicAlarm1 {
     COUNTER = SysTimerCnt;
     ACTION  = ACTIVATETASK
     {
@@ -52,4 +61,14 @@ CPU ATMEL_AT91SAM7S256
     };
     AUTOSTART = FALSE;
   };
+
+  ALARM CyclicAlarm2 {
+    COUNTER = SysTimerCnt;
+    ACTION  = ACTIVATETASK
+    {
+      TASK = BluetoothTask;
+    };
+    AUTOSTART = FALSE;
+  };
+
 };
