@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdtprojectproperties>
 <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
-<language name="繧｢繧ｻ繝ｳ繝悶Μ繝ｼ繝ｻ繧ｽ繝ｼ繧ｹ繝ｻ繝輔ぃ繧､繝ｫ">
+<language name="アセンブリー・ソース・ファイル">
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\tools\TLCS900-TOSHIBA\Zup-F16-ex</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
 
 </language>
-<language name="C++ 繧ｽ繝ｼ繧ｹ繝ｻ繝輔ぃ繧､繝ｫ">
+<language name="C++ ソース・ファイル">
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_osek\include</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\include</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\tools\TLCS900-TOSHIBA\Zup-F16-ex</includepath>
@@ -17,7 +17,7 @@
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
 
 </language>
-<language name="C 繧ｽ繝ｼ繧ｹ繝ｻ繝輔ぃ繧､繝ｫ">
+<language name="C ソース・ファイル">
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_osek\include</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\include</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\toppers_jsp\tools\TLCS900-TOSHIBA\Zup-F16-ex</includepath>
@@ -26,15 +26,15 @@
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
 
 </language>
-<language name="繧ｪ繝悶ず繧ｧ繧ｯ繝医�ｻ繝輔ぃ繧､繝ｫ">
+<language name="オブジェクト・ファイル">
 
 </language>
 </section>
 <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
-<language name="繧｢繧ｻ繝ｳ繝悶Μ繝ｼ繝ｻ繧ｽ繝ｼ繧ｹ繝ｻ繝輔ぃ繧､繝ｫ">
+<language name="アセンブリー・ソース・ファイル">
 
 </language>
-<language name="C++ 繧ｽ繝ｼ繧ｹ繝ｻ繝輔ぃ繧､繝ｫ">
+<language name="C++ ソース・ファイル">
 <macro>
 <name>S16</name><value>short int</value>
 </macro>
@@ -43,7 +43,7 @@
 </macro>
 
 </language>
-<language name="C 繧ｽ繝ｼ繧ｹ繝ｻ繝輔ぃ繧､繝ｫ">
+<language name="C ソース・ファイル">
 <macro>
 <name>S16</name><value>short int</value>
 </macro>
@@ -52,7 +52,7 @@
 </macro>
 
 </language>
-<language name="繧ｪ繝悶ず繧ｧ繧ｯ繝医�ｻ繝輔ぃ繧､繝ｫ">
+<language name="オブジェクト・ファイル">
 
 </language>
 </section>

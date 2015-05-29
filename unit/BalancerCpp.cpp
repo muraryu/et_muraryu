@@ -61,8 +61,8 @@ void Balancer::update(int angle, int rwEnc, int lwEnc, int battery) {
 
 /**
  * PWM値を設定する
- * @param forward 前進値
- * @param turn    旋回値
+ * @param forward 前進/後進命令。100(前進最大値)～-100(後進最大値)
+ * @param turn    旋回命令。100(右旋回最大値)～-100(左旋回最大値)
  */
 void Balancer::setCommand(int forward, int turn) {
     mForward = forward;
