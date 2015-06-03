@@ -25,7 +25,7 @@ Bluetooth::~Bluetooth() {
 }
 
 /**
- * バランサを初期化する
+ * 文字列を送信する
  * @param message 送信文字列 null含め最大256バイト はみ出した分は無視
  */
 void Bluetooth::sendMessage(char* message) {
@@ -33,10 +33,22 @@ void Bluetooth::sendMessage(char* message) {
 	U32 size;
 	for(size=0; size<256; size++) {
 		if(message[size] == '\0') {
+			size++;
 			break;
 		}
 	}
-	size++;
+
+	ecrobot_send_bt(message, 0, size);
+
+}
+
+/**
+ * サイズを指定して文字列を送信する
+ * 大量に送信する際に推奨
+ * @param message 	送信文字列 null含め最大256バイト サイズ以降は無視
+ * @param size		サイズ
+ */
+void Bluetooth::sendMessage(char* message, U32 size) {
 
 	ecrobot_send_bt(message, 0, size);
 
@@ -53,6 +65,7 @@ int Bluetooth::connect() {
 
 	if(ecrobot_get_bt_status()==BT_STREAM ){
 		//ecrobot_set_light_sensor_inactive(NXT_PORT_S3);
+		ecrobot_send_bt(">", 0, 1);
 		ret = 1;
 	}
 	else {

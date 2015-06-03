@@ -6,6 +6,7 @@
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\lejos_nxj\src\nxtvm\platform\nxt</includepath>
 
 </language>
 <language name="C++ ソース・ファイル">
@@ -15,6 +16,7 @@
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\lejos_nxj\src\nxtvm\platform\nxt</includepath>
 
 </language>
 <language name="C ソース・ファイル">
@@ -24,6 +26,7 @@
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\c++\device</includepath>
 <includepath>C:\ADD\cygwin\nxtOSEK\ecrobot\nxtway_gs_balancer</includepath>
+<includepath>C:\ADD\cygwin\nxtOSEK\lejos_nxj\src\nxtvm\platform\nxt</includepath>
 
 </language>
 <language name="オブジェクト・ファイル">
@@ -49,6 +52,9 @@
 </macro>
 <macro>
 <name>S32</name><value>float</value>
+</macro>
+<macro>
+<name>S8</name><value>signed char</value>
 </macro>
 
 </language>
