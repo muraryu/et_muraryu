@@ -17,29 +17,25 @@
 
 class BalancingWalker {
 public:
-    static const int LOW;
-    static const int NORMAL;
-    static const int HIGH;
-
-    BalancingWalker(const ecrobot::GyroSensor& gyroSensor,
-                    ecrobot::Motor& leftWheel,
-                    ecrobot::Motor& rightWheel,
-                    const ecrobot::Nxt& nxt,
+    BalancingWalker(const ecrobot::GyroSensor* gyroSensor,
+                    ecrobot::Motor* leftWheel,
+                    ecrobot::Motor* rightWheel,
+                    const ecrobot::Nxt* nxt,
                     Balancer* balancer);
     virtual ~BalancingWalker();
 
     void init();
-    void run();
-    void setCommand(int forward, int turn);
+    void run(S32 forward, S32 turn);
 
 private:
-    const ecrobot::GyroSensor& mGyroSensor;
-    ecrobot::Motor& mLeftWheel;
-    ecrobot::Motor& mRightWheel;
-    const ecrobot::Nxt& mNxt;
+    const ecrobot::GyroSensor* mGyroSensor;
+    ecrobot::Motor* mLeftWheel;
+    ecrobot::Motor* mRightWheel;
+    const ecrobot::Nxt* mNxt;
     Balancer* mBalancer;
-    int mForward;
-    int mTurn;
+    S32 mForward;
+    S32 mTurn;
+
 };
 
 #endif  // NXT_UNIT_BALANCINGWALKER_H_
