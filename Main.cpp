@@ -41,7 +41,7 @@ DeclareAlarm(CyclicAlarm1); // 倒立制御用アラーム 4msでexpire 設定�
 DeclareAlarm(CyclicAlarm2); // bluetooth接続アラーム
 DeclareTask(MainTask);		// 最初に実行されるタスク
 DeclareTask(TracerTask);	// 倒立制御用タスク 4ms周期で起動
-DeclareTask(BluetoothTask);	// bluetooth接続タスク
+DeclareTask(BluetoothTask);	// bluetoothタスク
 
 /**
  * NXTシステム生成
@@ -113,7 +113,7 @@ TASK(MainTask) {
         ShutdownOS(ercd);
     }
 
-    // Bluetooth接続タスク開始
+    // Bluetoothタスク開始
     ercd = SetRelAlarm(CyclicAlarm2, 1, 30);
     if (ercd != E_OK) {
         ShutdownOS(ercd);
@@ -134,7 +134,7 @@ TASK(TracerTask) {
 }
 
 /**
- * bluetooth接続タスク 100ms毎に起動
+ * bluetoothタスク 100ms毎に起動
  */
 TASK(BluetoothTask) {
 
