@@ -15,7 +15,8 @@ public:
     virtual ~Bluetooth();
 
     static void sendMessage(char* message);
-    static int connect();
+    static U32 receiveMessage(char* message, U32 len);
+    static bool connect();
 
 };
 

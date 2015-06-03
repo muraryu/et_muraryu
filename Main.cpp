@@ -33,6 +33,7 @@ extern "C" {
 #include "kernel.h"
 #include "kernel_id.h"
 #include "ecrobot_interface.h"
+#include "balancer_param.c"
 
 // カーネルオブジェクト宣言
 DeclareCounter(SysTimerCnt);
@@ -49,11 +50,7 @@ static void user_system_create() {
     // オブジェクトの作成
     gLineMonitor = new LineMonitor(gLightSensor);
     gBalancer    = new Balancer();
-    gBalancingWalker = new BalancingWalker(gGyroSensor,
-                                           gLeftWheel,
-                                           gRightWheel,
-                                           gNxt,
-                                           gBalancer);
+    gBalancingWalker = new BalancingWalker(&gGyroSensor, &gLeftWheel, &gRightWheel, &gNxt, gBalancer);
     gLineTracer = new LineTracer(gLineMonitor, gBalancingWalker);
 }
 
@@ -76,16 +73,6 @@ void ecrobot_device_initialize() {
     // ⇒ 光センサ赤色LEDをONにする
     ecrobot_set_light_sensor_active(NXT_PORT_S3);
 
-    /*
-	// ⇒Bluetooth通信開始処理を行う
-	// デバイス名を設定します// デバイス名は重複しないようにET + チームIDとします
-	if(ecrobot_get_bt_status()==BT_NO_INIT){
-		ecrobot_set_bt_device_name("ET38");
-	}
-	// bluetooth通信のスレーブデバイスとして初期化します
-	// 引数はパスキーです
-	ecrobot_init_bt_slave("1234");
-*/
 }
 
 // デバイス終了用フック関数
@@ -127,7 +114,7 @@ TASK(MainTask) {
     }
 
     // Bluetooth接続タスク開始
-    ercd = SetRelAlarm(CyclicAlarm2, 1, 100);
+    ercd = SetRelAlarm(CyclicAlarm2, 1, 30);
     if (ercd != E_OK) {
         ShutdownOS(ercd);
     }
@@ -140,10 +127,8 @@ TASK(MainTask) {
  */
 TASK(TracerTask) {
 
-	Bluetooth::sendMessage("111111\n");
-
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-    //gLineTracer->run();
+    gLineTracer->run();
 
     TerminateTask();
 }
@@ -153,11 +138,45 @@ TASK(TracerTask) {
  */
 TASK(BluetoothTask) {
 
-	Bluetooth::connect();
-	Bluetooth::sendMessage("22222\n");
+	static char buf[128];
+	static bool cflag = false;
 
-    // 4ms周期で、ライントレーサにトレース走行を依頼する
-    //gLineTracer->run();
+	buf[0] = '\0';
+
+	if(cflag == false) {
+		cflag = Bluetooth::connect();
+	}
+	else {
+		if(Bluetooth::receiveMessage(buf, 128) != 0) {
+			buf[1] = '\n';
+			buf[2] = buf[0];
+			buf[3] = '\n';
+			buf[4] = '>';
+			buf[5] = '\0';
+
+			Bluetooth::sendMessage(buf);
+
+			if(buf[0] == 'q') {
+				K_F[0] += 0.1F;
+			} else if(buf[0] == 'a') {
+				K_F[0] -= 0.1F;
+			} else if(buf[0] == 'w') {
+				K_F[1] += 0.1F;
+			} else if(buf[0] == 's') {
+				K_F[1] -= 0.1F;
+			} else if(buf[0] == 'e') {
+				K_F[2] += 0.1F;
+			} else if(buf[0] == 'd') {
+				K_F[2] -= 0.1F;
+			} else if(buf[0] == 'r') {
+				K_F[3] += 0.1F;
+			} else if(buf[0] == 'f') {
+				K_F[3] -= 0.1F;
+			}
+
+		}
+	}
+
     TerminateTask();
 }
 

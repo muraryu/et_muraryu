@@ -8,8 +8,8 @@
 
 extern "C" {
 #include "ecrobot_interface.h"
-
 }
+
 #include "Bluetooth.h"
 
 /**
@@ -25,7 +25,7 @@ Bluetooth::~Bluetooth() {
 }
 
 /**
- * バランサを初期化する
+ * 文字列を送信する
  * @param message 送信文字列 null含め最大256バイト はみ出した分は無視
  */
 void Bluetooth::sendMessage(char* message) {
@@ -43,22 +43,38 @@ void Bluetooth::sendMessage(char* message) {
 }
 
 /**
+ * 文字列を受信する
+ * @param message	受信バッファ
+ * @param len		受信バッファサイズ
+ */
+U32 Bluetooth::receiveMessage(char* message, U32 len) {
+
+	int size = ecrobot_read_bt(message, 0, len);
+
+	message[size] = '\0';
+
+	return size;
+
+}
+
+/**
  * 接続処理
  * 接続が成功してデータ送受信できる状態になると0以外を返す。
  * 戻り値が0以外になるまでこの関数を繰り返し呼び出す。
  */
-int Bluetooth::connect() {
+bool Bluetooth::connect() {
 
-	int ret = 0;
+	bool ret = false;
 
 	if(ecrobot_get_bt_status()==BT_STREAM ){
 		//ecrobot_set_light_sensor_inactive(NXT_PORT_S3);
-		ret = 1;
+		sendMessage("\nbluetooth connected\n>");
+		ret = true;
 	}
 	else {
 		ecrobot_init_bt_slave("1234"); // ここの引数がペアリング時の値と同じ必要があるかは不明
 		//ecrobot_set_light_sensor_active(NXT_PORT_S3);
-		ret = 0;
+		ret = false;
 	}
 
 	return ret;
