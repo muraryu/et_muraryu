@@ -5,18 +5,19 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_UTIL_STOPSTATE_H_
-#define NXT_UTIL_STOPSTATE_H_
+#ifndef NXT_CONTROL_STATE_STOPSTATE_H_
+#define NXT_CONTROL_STATE_STOPSTATE_H_
 
-#include "control_state/ControlState.h";
+#include "control_state/ControlState.h"
 
 class StopState : public ControlState {
-
 public:
-	StopState::StopState();
+	StopState();
 	virtual ~StopState();
 
-	virtual ControlState* execute();
+	// override
+	virtual void execute();
+	virtual ControlState* next();
 };
 
-#endif  // NXT_UTIL_STOPSTATE_H_
+#endif  // NXT_CONTROL_STATE_STOPSTATE_H_

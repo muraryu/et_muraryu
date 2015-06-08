@@ -1,37 +1,35 @@
 /******************************************************************************
- *  StopState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/03
+ *  LineTraceState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/05
  *  制御パターンに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "StopState.h"
+#include "LineTraceState.h"
 
 /**
  * コンストラクタ
  */
-StopState::StopState() {
+LineTraceState::LineTraceState() {
 }
 
 /**
  * デストラクタ
  */
-StopState::~StopState() {
+LineTraceState::~LineTraceState() {
 }
 
 /**
  * 制御パターンに応じた制御を実行
  */
-void StopState::execute() {
-
-	// 制御
+void execute() {
 
 }
 
-/**
- * 制御パターン遷移条件
- */
-ControlState* StopState::next() {
-	return (ControlState*)this;
+ /**
+  * 制御パターン遷移条件
+  */
+ControlState* next() {
+	return this;
 }
