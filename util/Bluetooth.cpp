@@ -24,7 +24,7 @@ Bluetooth::~Bluetooth() {
 }
 
 /**
- * 文字列を送信する
+ * Null文字までの文字列を送信する
  * @param message 送信文字列 null含め最大256バイト はみ出した分は無視
  */
 void Bluetooth::sendMessage(char* message) {
@@ -43,6 +43,18 @@ void Bluetooth::sendMessage(char* message) {
 
 /**
  * サイズを指定して文字列を送信する
+ * 大量に送信する際に推奨
+ * @param message 	送信文字列 null含め最大256バイト サイズ以降は無視
+ * @param size		サイズ
+ */
+void Bluetooth::sendMessage(char* message, U32 size) {
+
+	ecrobot_send_bt(message, 0, size);
+
+}
+
+/**
+ * サイズを指定して文字列を受信する
  * @param message	受信バッファ
  * @param len		受信バッファサイズ
  */
