@@ -8,12 +8,12 @@
 #ifndef NXT_UTIL_DRIVER_H_
 #define NXT_UTIL_DRIVER_H_
 
-#include "control_state/ControlState.h";
+#include "control_state/ControlState.h"
 
 class Driver {
 
 public:
-	Driver::Driver(ControlState* controlState);
+	Driver(ControlState* controlState);
 	virtual ~Driver();
 
 	void execute();

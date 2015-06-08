@@ -31,5 +31,5 @@ void execute() {
   * 制御パターン遷移条件
   */
 ControlState* next() {
-
+	return this;
 }

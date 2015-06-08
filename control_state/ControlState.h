@@ -5,18 +5,19 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_UTIL_CONTROLSTATE_H_
-#define NXT_UTIL_CONTROLSTATE_H_
+#ifndef NXT_CONTROL_STATE_CONTROLSTATE_H_
+#define NXT_CONTROL_STATE_CONTROLSTATE_H_
 
 class ControlState {
 
 public:
-	ControlState();
-	virtual ~ControlState();
+	ControlState(){};
+	virtual ~ControlState(){};
 
-	virtual void execute() = 0;
-	virtual ControlState* next() = 0;
+	// 以下の関数を必ずオーバーライドする（RAMサイズの関係で？純粋仮想関数が使えない）
+	virtual void execute(){};
+	virtual ControlState* next(){return this;};
 
 };
 
-#endif  // NXT_UTIL_CONTROLSTATE_H_
+#endif  // NXT_CONTROL_STATE_CONTROLSTATE_H_

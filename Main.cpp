@@ -8,6 +8,8 @@
 
 #include "Main.h"
 #include "util/Bluetooth.h"
+#include "app/Driver.h"
+#include "control_state/StopState.h"
 
 // using宣言
 using ecrobot::LightSensor;
@@ -24,11 +26,12 @@ Motor       gRightWheel(PORT_B);
 Nxt         gNxt;
 
 // オブジェクトの定義
-static LineMonitor     *gLineMonitor;
-static Balancer        *gBalancer;
-static BalancingWalker *gBalancingWalker;
-static LineTracer      *gLineTracer;
-
+static LineMonitor		*gLineMonitor;
+static Balancer			*gBalancer;
+static BalancingWalker	*gBalancingWalker;
+static LineTracer		*gLineTracer;
+static Driver			*driver;
+static StopState		*stopState;
 extern "C" {
 #include "kernel.h"
 #include "kernel_id.h"
@@ -37,11 +40,13 @@ extern "C" {
 
 // カーネルオブジェクト宣言
 DeclareCounter(SysTimerCnt);
-DeclareAlarm(CyclicAlarm1); // 倒立制御用アラーム 4msでexpire 設定はSetRelAlarm()の引数で行う
-DeclareAlarm(CyclicAlarm2); // bluetooth接続アラーム
-DeclareTask(MainTask);		// 最初に実行されるタスク
-DeclareTask(TracerTask);	// 倒立制御用タスク 4ms周期で起動
-DeclareTask(BluetoothTask);	// bluetoothタスク
+DeclareAlarm(CyclicAlarm1); 	// 倒立制御用アラーム 4msでexpire 設定はSetRelAlarm()の引数で行う
+DeclareAlarm(CyclicAlarm2); 	// bluetooth接続アラーム
+DeclareAlarm(CyclicAlarm3); 	// 制御パターンアラーム
+DeclareTask(MainTask);			// 最初に実行されるタスク
+DeclareTask(TracerTask);		// 倒立制御用タスク 4ms周期で起動
+DeclareTask(BluetoothTask);		// bluetoothタスク
+DeclareTask(ControlPattern);	// 制御パターンタスク
 
 /**
  * NXTシステム生成
@@ -52,6 +57,7 @@ static void user_system_create() {
     gBalancer    = new Balancer();
     gBalancingWalker = new BalancingWalker(&gGyroSensor, &gLeftWheel, &gRightWheel, &gNxt, gBalancer);
     gLineTracer = new LineTracer(gLineMonitor, gBalancingWalker);
+    driver = new Driver(new StopState);
 }
 
 /**
@@ -114,11 +120,17 @@ TASK(MainTask) {
     }
 
     // Bluetoothタスク開始
-    ercd = SetRelAlarm(CyclicAlarm2, 1, 30);
+    ercd = SetRelAlarm(CyclicAlarm2, 1, 100);
     if (ercd != E_OK) {
         ShutdownOS(ercd);
     }
-
+/*
+    // 制御パターンタスク開始
+    ercd = SetRelAlarm(CyclicAlarm3, 1, 4);
+    if (ercd != E_OK) {
+        ShutdownOS(ercd);
+    }
+*/
     TerminateTask();
 }
 
@@ -176,6 +188,17 @@ TASK(BluetoothTask) {
 
 		}
 	}
+
+    TerminateTask();
+}
+
+/**
+ * 制御パターンタスク 4ms周期で起動
+ * 制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
+ */
+TASK(ControlPattern) {
+
+    driver->execute();
 
     TerminateTask();
 }

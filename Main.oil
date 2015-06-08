@@ -47,6 +47,15 @@ CPU ATMEL_AT91SAM7S256
     STACKSIZE = 512;
   };
 
+  TASK ControlPattern
+  {
+    AUTOSTART = FALSE;
+    PRIORITY = 15;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    STACKSIZE = 512;
+  };
+
   COUNTER SysTimerCnt {
     MINCYCLE = 1;
     MAXALLOWEDVALUE = 10000;
@@ -67,6 +76,15 @@ CPU ATMEL_AT91SAM7S256
     ACTION  = ACTIVATETASK
     {
       TASK = BluetoothTask;
+    };
+    AUTOSTART = FALSE;
+  };
+
+  ALARM CyclicAlarm3 {
+    COUNTER = SysTimerCnt;
+    ACTION  = ACTIVATETASK
+    {
+      TASK = ControlPattern;
     };
     AUTOSTART = FALSE;
   };

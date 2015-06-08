@@ -33,8 +33,11 @@ Driver::~Driver() {
  */
 void Driver::execute() {
 
-	// 制御を実行し、次の制御パターンを受け取る
-	this->controlState = this->controlState->execute();
+	// 制御パターンに応じた制御を実行
+	this->controlState->execute();
+
+	// 次の制御パターンを受け取る
+	this->controlState = this->controlState->next();
 
 	// 制御パターンが遷移したとき、遷移前のインスタンスを破棄
 	if(this->prevControlState != this->controlState) {
