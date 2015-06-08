@@ -8,6 +8,8 @@
 
 #include "BalancingWalker.h"
 
+DeclareResource(resource1);
+
 /**
  * コンストラクタ
  * @param gyroSensor ジャイロセンサ
@@ -26,8 +28,8 @@ BalancingWalker::BalancingWalker(const ecrobot::GyroSensor* gyroSensor,
 	this->mRightWheel 	= rightWheel;
 	this->mNxt 			= nxt;
 	this->mBalancer 	= balancer;
-	this->mForward 		= 0;
-	this->mTurn 		= 0;
+	this->forward 		= 0;
+	this->turn 			= 0;
 }
 
 /**
@@ -38,15 +40,13 @@ BalancingWalker::~BalancingWalker() {
 
 /**
  * バランス走行する。
- * @param forward 前進値
- * @param turn    旋回値
  */
-void BalancingWalker::run(S32 forward, S32 turn) {
+void BalancingWalker::run() {
     S16 angle = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
     S32 rightWheelEnc = mRightWheel->getCount();   // 右モータ回転角度
     S32 leftWheelEnc  = mLeftWheel->getCount();    // 左モータ回転角度
 
-    mBalancer->setCommand(mForward, mTurn);
+    mBalancer->setCommand(this->forward, this->turn);
 
     mBalancer->update(angle, rightWheelEnc, leftWheelEnc, mNxt->getBattMv());
 
@@ -69,4 +69,16 @@ void BalancingWalker::init() {
 
     // 倒立振子制御初期化
     mBalancer->init(offset);
+}
+
+/**
+ * 前進、旋回の指令値をセットする
+ * @param forward 前進値
+ * @param turn    旋回値
+ */
+void BalancingWalker::setForwardTurn(S32 forward, S32 turn) {
+    GetResource(resource1);
+	this->forward = forward;
+	this->turn = turn;
+    ReleaseResource(resource1);
 }

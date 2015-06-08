@@ -43,7 +43,7 @@ void LineTracer::run() {
     int direction = calcDirection(isOnLine);
 
     // 倒立走行を行う
-    mBalancingWalker->run(0,0);
+    mBalancingWalker->run();
 
 }
 

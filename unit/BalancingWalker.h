@@ -25,7 +25,8 @@ public:
     virtual ~BalancingWalker();
 
     void init();
-    void run(S32 forward, S32 turn);
+    void run();
+    void BalancingWalker::setForwardTurn(S32 forward, S32 turn);
 
 private:
     const ecrobot::GyroSensor* mGyroSensor;
@@ -33,8 +34,8 @@ private:
     ecrobot::Motor* mRightWheel;
     const ecrobot::Nxt* mNxt;
     Balancer* mBalancer;
-    S32 mForward;
-    S32 mTurn;
+    S32 forward;
+    S32 turn;
 
 };
 

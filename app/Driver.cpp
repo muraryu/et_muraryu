@@ -28,8 +28,6 @@ Driver::~Driver() {
 
 /**
  * 制御パターンに応じた制御を行う
- * @param r 目標値
- * @param u 制御量
  */
 void Driver::execute() {
 
@@ -46,6 +44,9 @@ void Driver::execute() {
 	}
 }
 
+/**
+ * 制御パターンをセットする
+ */
 void Driver::setControlState(ControlState* controlState) {
 	this->controlState = controlState;
 }

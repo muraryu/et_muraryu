@@ -31,7 +31,7 @@ static Balancer			*gBalancer;
 static BalancingWalker	*gBalancingWalker;
 static LineTracer		*gLineTracer;
 static Driver			*driver;
-static StopState		*stopState;
+
 extern "C" {
 #include "kernel.h"
 #include "kernel_id.h"
@@ -47,6 +47,7 @@ DeclareTask(MainTask);			// 最初に実行されるタスク
 DeclareTask(TracerTask);		// 倒立制御用タスク 4ms周期で起動
 DeclareTask(BluetoothTask);		// bluetoothタスク
 DeclareTask(ControlPattern);	// 制御パターンタスク
+DeclareResource(resource1);
 
 /**
  * NXTシステム生成
@@ -124,13 +125,13 @@ TASK(MainTask) {
     if (ercd != E_OK) {
         ShutdownOS(ercd);
     }
-/*
+
     // 制御パターンタスク開始
     ercd = SetRelAlarm(CyclicAlarm3, 1, 4);
     if (ercd != E_OK) {
         ShutdownOS(ercd);
     }
-*/
+
     TerminateTask();
 }
 
