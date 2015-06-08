@@ -11,7 +11,7 @@
 class PID {
 
 public:
-	PID::PID(U16 p, U16 i, U16 d, S32 initU);
+	PID(U16 p, U16 i, U16 d, S32 initU);
 	virtual ~PID();
 
 	S32 calc(S32 r, S32 u);

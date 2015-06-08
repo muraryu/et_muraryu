@@ -21,13 +21,17 @@ StopState::~StopState() {
 }
 
 /**
- * 仮想関数のオーバーライド
+ * 制御パターンに応じた制御を実行
  */
-ControlState* StopState::execute() {
+void StopState::execute() {
 
 	// 制御
 
+}
 
-	// 制御パターン遷移条件
-	return this;
+/**
+ * 制御パターン遷移条件
+ */
+ControlState* StopState::next() {
+
 }

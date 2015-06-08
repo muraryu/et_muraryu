@@ -11,10 +11,12 @@
 class ControlState {
 
 public:
-	ControlState::ControlState();
+	ControlState();
 	virtual ~ControlState();
 
-	virtual ControlState* execute() = 0;
+	virtual void execute() = 0;
+	virtual ControlState* next() = 0;
+
 };
 
 #endif  // NXT_UTIL_CONTROLSTATE_H_
