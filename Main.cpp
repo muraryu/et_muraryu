@@ -144,11 +144,7 @@ TASK(MainTask) {
 TASK(TracerTask) {
 
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-    //gLineTracer->run();
-
-	if(test->exTestCheck()) {
-		Bluetooth::sendMessage("diff found.\n");
-	}
+    gLineTracer->run();
 
     TerminateTask();
 }
@@ -208,11 +204,6 @@ TASK(ControlPattern) {
 
     driver->execute();
 
-    if(test->exTestGetB1() == false) {
-    	test->exTestWrite(true, true);
-    }else{
-    	test->exTestWrite(false,false);
-    }
     TerminateTask();
 }
 

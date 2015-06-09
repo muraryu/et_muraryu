@@ -9,6 +9,7 @@
 #define NXT_CONTROL_STATE_STOPSTATE_H_
 
 #include "control_state/ControlState.h"
+#include "app/Tail.h"
 
 class StopState : public ControlState {
 public:
@@ -18,6 +19,10 @@ public:
 	// override
 	virtual void execute();
 	virtual ControlState* next();
+
+private:
+	Tail* tail;
+
 };
 
 #endif  // NXT_CONTROL_STATE_STOPSTATE_H_

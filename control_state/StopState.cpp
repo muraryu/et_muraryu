@@ -14,6 +14,7 @@
  * コンストラクタ
  */
 StopState::StopState() {
+	this->tail = Tail::getInstance();
 }
 
 /**
@@ -27,7 +28,17 @@ StopState::~StopState() {
  */
 void StopState::execute() {
 
-	// 制御
+	/* 足の制御 */
+	// 旋回値を設定
+
+
+	// 前進値を設定
+
+
+	/* しっぽの制御 */
+	// 角度目標値を設定
+	tail->setAngle(0);
+
 
 }
 

@@ -23,6 +23,7 @@ TARGET_CPP_SOURCES = \
 	util/Test.cpp \
 	app/LineTracer.cpp \
 	app/Driver.cpp \
+	app/Tail.cpp \
 	control_state/StopState.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
