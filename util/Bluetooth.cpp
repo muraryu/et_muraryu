@@ -1,9 +1,8 @@
 /******************************************************************************
- *  BalancerCpp.cpp (for LEGO Mindstorms NXT)
+ *  Bluetooth.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/02/07
- *  Implementation of the Class Balancer
- *  Author: Kenya Yabe
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
+ *  Implementation of the Class Bluetooth
+ *  Author: muraryu
  *****************************************************************************/
 
 extern "C" {
@@ -47,7 +46,7 @@ void Bluetooth::sendMessage(char* message) {
  * @param message 	送信文字列 null含め最大256バイト サイズ以降は無視
  * @param size		サイズ
  */
-void Bluetooth::sendMessage(char* message, U32 size) {
+void Bluetooth::sendMessage(char* message, int size) {
 
 	ecrobot_send_bt(message, 0, size);
 
@@ -58,7 +57,7 @@ void Bluetooth::sendMessage(char* message, U32 size) {
  * @param message	受信バッファ
  * @param len		受信バッファサイズ
  */
-U32 Bluetooth::receiveMessage(char* message, U32 len) {
+int Bluetooth::receiveMessage(char* message, int len) {
 
 	int size = ecrobot_read_bt(message, 0, len);
 

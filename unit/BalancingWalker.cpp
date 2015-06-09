@@ -46,7 +46,9 @@ void BalancingWalker::run() {
     S32 rightWheelEnc = mRightWheel->getCount();   // 右モータ回転角度
     S32 leftWheelEnc  = mLeftWheel->getCount();    // 左モータ回転角度
 
+    GetResource(resource1);
     mBalancer->setCommand(this->forward, this->turn);
+    ReleaseResource(resource1);
 
     mBalancer->update(angle, rightWheelEnc, leftWheelEnc, mNxt->getBattMv());
 

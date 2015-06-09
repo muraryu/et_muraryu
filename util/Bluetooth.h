@@ -1,9 +1,8 @@
 /******************************************************************************
  *  Bluetooth.h (for LEGO Mindstorms NXT)
  *  Created on: 2015/05/29
- *  Definition of the Class Balancer
+ *  Definition of the Class Bluetooth
  *  Author: muraryu
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
 #ifndef NXT_UTIL_BLUETOOTH_H_
@@ -15,8 +14,8 @@ public:
     virtual ~Bluetooth();
 
     static void sendMessage(char* message);
-    static void sendMessage(char* message, U32 len);
-    static U32 receiveMessage(char* message, U32 len);
+    static void sendMessage(char* message, int len);
+    static int receiveMessage(char* message, int len);
     static bool connect();
 
 };

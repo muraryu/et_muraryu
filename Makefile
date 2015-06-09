@@ -20,6 +20,7 @@ TARGET_SOURCES = balancer_param.c
 TARGET_CPP_SOURCES = \
 	util/Bluetooth.cpp \
 	util/PID.cpp \
+	util/Test.cpp \
 	app/LineTracer.cpp \
 	app/Driver.cpp \
 	control_state/StopState.cpp \

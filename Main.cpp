@@ -10,6 +10,7 @@
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
 #include "control_state/StopState.h"
+#include "util/Test.h"
 
 // using宣言
 using ecrobot::LightSensor;
@@ -31,6 +32,7 @@ static Balancer			*gBalancer;
 static BalancingWalker	*gBalancingWalker;
 static LineTracer		*gLineTracer;
 static Driver			*driver;
+static Test				*test;
 
 extern "C" {
 #include "kernel.h"
@@ -59,6 +61,7 @@ static void user_system_create() {
     gBalancingWalker = new BalancingWalker(&gGyroSensor, &gLeftWheel, &gRightWheel, &gNxt, gBalancer);
     gLineTracer = new LineTracer(gLineMonitor, gBalancingWalker);
     driver = new Driver(new StopState);
+    test = new Test();
 }
 
 /**
@@ -141,7 +144,11 @@ TASK(MainTask) {
 TASK(TracerTask) {
 
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-    gLineTracer->run();
+    //gLineTracer->run();
+
+	if(test->exTestCheck()) {
+		Bluetooth::sendMessage("diff found.\n");
+	}
 
     TerminateTask();
 }
@@ -201,6 +208,11 @@ TASK(ControlPattern) {
 
     driver->execute();
 
+    if(test->exTestGetB1() == false) {
+    	test->exTestWrite(true, true);
+    }else{
+    	test->exTestWrite(false,false);
+    }
     TerminateTask();
 }
 

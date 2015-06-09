@@ -17,6 +17,16 @@ CPU ATMEL_AT91SAM7S256
 
   APPMODE appmode1{};
 
+  RESOURCE resource1
+  {
+    RESOURCEPROPERTY = STANDARD;
+  };
+
+  EVENT event1
+  {
+    MASK = AUTO;
+  };
+
   TASK MainTask
   {
     AUTOSTART = TRUE
@@ -26,7 +36,7 @@ CPU ATMEL_AT91SAM7S256
     PRIORITY = 1;
     ACTIVATION = 1;
     SCHEDULE = FULL;
-    STACKSIZE = 512;
+    STACKSIZE = 1512;
   };
 
   TASK TracerTask
@@ -35,8 +45,9 @@ CPU ATMEL_AT91SAM7S256
     PRIORITY = 16;
     ACTIVATION = 1;
     RESOURCE = resource1;
+    EVENT = event1; /* これがないとなぜか排他時に落ちる。要調査。 */
     SCHEDULE = FULL;
-    STACKSIZE = 512;
+    STACKSIZE = 1512;
   };
 
   TASK BluetoothTask
@@ -55,7 +66,7 @@ CPU ATMEL_AT91SAM7S256
     ACTIVATION = 1;
     RESOURCE = resource1;
     SCHEDULE = FULL;
-    STACKSIZE = 512;
+    STACKSIZE = 1512;
   };
 
   COUNTER SysTimerCnt {
@@ -89,11 +100,6 @@ CPU ATMEL_AT91SAM7S256
       TASK = ControlPattern;
     };
     AUTOSTART = FALSE;
-  };
-
-  RESOURCE resource1
-  {
-    RESOURCEPROPERTY = STANDARD;
   };
 
 };
