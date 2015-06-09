@@ -8,14 +8,19 @@
 #ifndef NXT_APP_TAIL_H_
 #define NXT_APP_TAIL_H_
 
+#include "util/PID.h"
+
 class Tail {
 public:
 	static Tail* getInstance();
-	void setAngle(int angle);	// セッター
+	void control();
+	void setCommandAngle(int angle);	// セッター
+	int getAngle();
 
 private:
 	Tail();
-	int angle;					// しっぽ目標角度
+	int commandAngle;			// しっぽ目標角度
+	PID* pid;					// PIDコントローラ
 
 };
 

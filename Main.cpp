@@ -7,6 +7,7 @@
  *****************************************************************************/
 
 #include "Main.h"
+
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
 #include "control_state/StopState.h"
@@ -27,10 +28,9 @@ Motor       gRightWheel(PORT_B);
 Nxt         gNxt;
 
 // オブジェクトの定義
-static LineMonitor		*gLineMonitor;
 static Balancer			*gBalancer;
 static BalancingWalker	*gBalancingWalker;
-static LineTracer		*gLineTracer;
+static Tail				*tail;
 static Driver			*driver;
 static Test				*test;
 
@@ -56,10 +56,9 @@ DeclareResource(resource1);
  */
 static void user_system_create() {
     // オブジェクトの作成
-    gLineMonitor = new LineMonitor(gLightSensor);
     gBalancer    = new Balancer();
-    gBalancingWalker = new BalancingWalker(&gGyroSensor, &gLeftWheel, &gRightWheel, &gNxt, gBalancer);
-    gLineTracer = new LineTracer(gLineMonitor, gBalancingWalker);
+    gBalancingWalker = BalancingWalker::getInstance();
+    gBalancingWalker->init(&gGyroSensor, &gLeftWheel, &gRightWheel, &gNxt, gBalancer);
     driver = new Driver(new StopState);
     test = new Test();
 }
@@ -68,10 +67,8 @@ static void user_system_create() {
  * NXTシステム破棄
  */
 static void user_system_destroy() {
-    delete gLineTracer;
     delete gBalancingWalker;
     delete gBalancer;
-    delete gLineMonitor;
 }
 
 // デバイス初期化用フック関数
@@ -92,6 +89,8 @@ void ecrobot_device_terminate() {
     // ここで実装することができます。
     // 周期ハンドラ停止
     CancelAlarm(CyclicAlarm1);
+    CancelAlarm(CyclicAlarm2);
+    CancelAlarm(CyclicAlarm3);
 
     user_system_destroy();
 
@@ -144,7 +143,8 @@ TASK(MainTask) {
 TASK(TracerTask) {
 
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-    gLineTracer->run();
+	gBalancingWalker->control();
+	//tail->control();
 
     TerminateTask();
 }

@@ -22,6 +22,7 @@ public:
 
 private:
 	Tail* tail;
+	BalancingWalker* balancingWalker;
 
 };
 

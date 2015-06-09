@@ -1,35 +1,21 @@
 /******************************************************************************
  *  BalancingWalker.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/02/07
- *  Implementation of the Class BalancingWalker
- *  Author: Kenya Yabe
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
+ *  Created on: 2015/06/09
+ *  前進値と旋回値をもとにバランス走行を行う
+ *  シングルトン
+ *  Author: muraryu
  *****************************************************************************/
 
 #include "BalancingWalker.h"
 
 DeclareResource(resource1);
 
+static BalancingWalker* instance = BalancingWalker::getInstance();
+
 /**
  * コンストラクタ
- * @param gyroSensor ジャイロセンサ
- * @param leftWheel  左モータ
- * @param rightWheel 右モータ
- * @param nxt        NXTデバイス
- * @param balancer   バランサ
  */
-BalancingWalker::BalancingWalker(const ecrobot::GyroSensor* gyroSensor,
-                                 ecrobot::Motor* leftWheel,
-                                 ecrobot::Motor* rightWheel,
-                                 const ecrobot::Nxt* nxt,
-                                 Balancer* balancer) {
-	this->mGyroSensor 	= gyroSensor;
-	this->mLeftWheel 	= leftWheel;
-	this->mRightWheel 	= rightWheel;
-	this->mNxt 			= nxt;
-	this->mBalancer 	= balancer;
-	this->forward 		= 0;
-	this->turn 			= 0;
+BalancingWalker::BalancingWalker() {
 }
 
 /**
@@ -38,10 +24,15 @@ BalancingWalker::BalancingWalker(const ecrobot::GyroSensor* gyroSensor,
 BalancingWalker::~BalancingWalker() {
 }
 
+BalancingWalker* BalancingWalker::getInstance() {
+	static BalancingWalker balancingWalker;
+	return &balancingWalker;
+}
+
 /**
  * バランス走行する。
  */
-void BalancingWalker::run() {
+void BalancingWalker::control() {
     S16 angle = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
     S32 rightWheelEnc = mRightWheel->getCount();   // 右モータ回転角度
     S32 leftWheelEnc  = mLeftWheel->getCount();    // 左モータ回転角度
@@ -59,10 +50,30 @@ void BalancingWalker::run() {
 }
 
 /**
- * バランス走行に必要なものをリセットする
- * コンストラクタでやれば？
+ * メンバの初期化＋バランス走行に必要なものをリセットする
+ * @param gyroSensor ジャイロセンサ
+ * @param leftWheel  左モータ
+ * @param rightWheel 右モータ
+ * @param nxt        NXTデバイス
+ * @param balancer   バランサ
  */
-void BalancingWalker::init() {
+void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
+        ecrobot::Motor* leftWheel,
+        ecrobot::Motor* rightWheel,
+        const ecrobot::Nxt* nxt,
+        Balancer* balancer) {
+
+	// メンバ初期化
+	this->mGyroSensor 	= gyroSensor;
+	this->mLeftWheel 	= leftWheel;
+	this->mRightWheel 	= rightWheel;
+	this->mNxt 			= nxt;
+	this->mBalancer 	= balancer;
+	this->forward 		= 0;
+	this->turn 			= 0;
+
+	// バランス走行に必要なものをリセットする
+	// ジャイロセンサオフセット初期化
     int offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
 
     // モータエンコーダをリセットする
@@ -78,7 +89,7 @@ void BalancingWalker::init() {
  * @param forward 前進値
  * @param turn    旋回値
  */
-void BalancingWalker::setForwardTurn(S32 forward, S32 turn) {
+void BalancingWalker::setForwardTurn(int forward, int turn) {
     GetResource(resource1);
 	this->forward = forward;
 	this->turn = turn;

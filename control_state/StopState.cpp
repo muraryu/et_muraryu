@@ -14,7 +14,10 @@
  * コンストラクタ
  */
 StopState::StopState() {
+	// メンバ初期化
+	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->tail = Tail::getInstance();
+	this->balancingWalker = BalancingWalker::getInstance();
 }
 
 /**
@@ -28,16 +31,18 @@ StopState::~StopState() {
  */
 void StopState::execute() {
 
+	int forward = 0;
+	int turn = 0;
+	int angle = 0;
+
 	/* 足の制御 */
 	// 旋回値を設定
-
-
 	// 前進値を設定
-
+	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	tail->setAngle(0);
+	this->tail->setCommandAngle(angle);
 
 
 }

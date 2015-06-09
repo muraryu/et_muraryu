@@ -1,9 +1,8 @@
 /******************************************************************************
  *  BalancingWalker.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/02/07
+ *  Created on: 2015/06/09
  *  Definition of the Class BalancingWalker
- *  Author: Kenya Yabe
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
+ *  Author: muraryu
  *****************************************************************************/
 
 #ifndef NXT_UNIT_BALANCINGWALKER_H_
@@ -17,18 +16,18 @@
 
 class BalancingWalker {
 public:
-    BalancingWalker(const ecrobot::GyroSensor* gyroSensor,
-                    ecrobot::Motor* leftWheel,
-                    ecrobot::Motor* rightWheel,
-                    const ecrobot::Nxt* nxt,
-                    Balancer* balancer);
     virtual ~BalancingWalker();
-
-    void init();
-    void run();
-    void BalancingWalker::setForwardTurn(S32 forward, S32 turn);
+    static BalancingWalker* getInstance();
+    void init(const ecrobot::GyroSensor* gyroSensor,
+            ecrobot::Motor* leftWheel,
+            ecrobot::Motor* rightWheel,
+            const ecrobot::Nxt* nxt,
+            Balancer* balancer);
+    void control();
+    void BalancingWalker::setForwardTurn(int forward, int turn);
 
 private:
+    BalancingWalker();
     const ecrobot::GyroSensor* mGyroSensor;
     ecrobot::Motor* mLeftWheel;
     ecrobot::Motor* mRightWheel;
