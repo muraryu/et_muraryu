@@ -16,9 +16,8 @@ extern "C" {
  * @param p		パラメータP
  * @param i		パラメータI
  * @param d		パラメータD
- * @param initE
  */
-PID::PID(U16 p, U16 i, U16 d) {
+PID::PID(double p, double i, double d) {
 	this->p = p;
 	this->i = i;
 	this->d = d;
@@ -37,11 +36,11 @@ PID::~PID() {
  * @param r 目標値
  * @param y 制御量
  */
-S32 PID::calc(S32 r, S32 y) {
+double PID::calc(double r, double y) {
 
-	S32 u;		// 操作量
-	S32 e;		// 偏差
-	S32 diff;	// 微分係数
+	double u;		// 操作量
+	double e;		// 偏差
+	double diff;	// 微分係数
 
 	// 偏差計算
 	e = r - y;
@@ -54,20 +53,20 @@ S32 PID::calc(S32 r, S32 y) {
 	this->prevE = e;
 
 	// PID出力計算
-	y = this->p * e + this->i * this->sumError + this->d * diff;
+	u = this->p * e + this->i * this->sumError + this->d * diff;
 
-	return y;
+	return u;
 
 }
 
-void PID::setP(U32 p) {
+void PID::setP(double p) {
 	this->p = p;
 }
 
-void PID::setI(U32 i) {
+void PID::setI(double i) {
 	this->i = i;
 }
 
-void PID::setD(U32 d) {
+void PID::setD(double d) {
 	this->d = d;
 }

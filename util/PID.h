@@ -11,20 +11,20 @@
 class PID {
 
 public:
-	PID(U16 p, U16 i, U16 d);
+	PID(double p, double i, double d);
 	virtual ~PID();
 
-	S32 calc(S32 r, S32 y);
-	void setP(U32 p);
-	void setI(U32 i);
-	void setD(U32 d);
+	double calc(double r, double y);
+	void setP(double p);
+	void setI(double i);
+	void setD(double d);
 
 private:
-	U16 p;			// 比例パラメータ
-	U16 i;			// 積分パラメータ
-	U16 d;			// 微分パラメータ
-	S32 sumError;	// 誤差積分
-	S32 prevE;		// 前回入力値
+	double p;			// 比例パラメータ
+	double i;			// 積分パラメータ
+	double d;			// 微分パラメータ
+	double sumError;	// 誤差積分
+	double prevE;		// 前回入力値
 
 };
 

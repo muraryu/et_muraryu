@@ -7,12 +7,14 @@
 
 #include "Tail.h"
 
-static Tail* instance = Tail::getInstance();
+bool Tail::insFlag = false;
+Tail* Tail::instance;
 
 /**
  * コンストラクタ
  */
-Tail::Tail() {
+Tail::Tail()
+{
 	// メンバ初期化
 	this->pid = new PID(1,1,1);
 	this->commandAngle = 0;
@@ -22,8 +24,11 @@ Tail::Tail() {
  * インスタンス取得
  */
 Tail* Tail::getInstance() {
-	static Tail tail;
-	return &tail;
+	if(insFlag == false){
+		Tail::instance = new Tail();
+		insFlag = true;
+	}
+	return Tail::instance;
 }
 
 /**
@@ -31,7 +36,7 @@ Tail* Tail::getInstance() {
  */
 void Tail::control() {
 
-	int pwm = this->pid->calc(this->commandAngle, this->getAngle());
+	double pwm = this->pid->calc(this->commandAngle, this->getAngle());
 
 }
 

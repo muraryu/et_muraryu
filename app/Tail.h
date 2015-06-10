@@ -9,6 +9,7 @@
 #define NXT_APP_TAIL_H_
 
 #include "util/PID.h"
+#include "app/Tail.h"
 
 class Tail {
 public:
@@ -19,8 +20,13 @@ public:
 
 private:
 	Tail();
+	~Tail();
+
+	static bool insFlag;
+	static Tail* instance;
 	int commandAngle;			// しっぽ目標角度
 	PID* pid;					// PIDコントローラ
+
 
 };
 

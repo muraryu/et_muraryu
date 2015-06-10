@@ -28,6 +28,10 @@ public:
 
 private:
     BalancingWalker();
+
+	static bool insFlag;
+	static BalancingWalker* instance;
+
     const ecrobot::GyroSensor* mGyroSensor;
     ecrobot::Motor* mLeftWheel;
     ecrobot::Motor* mRightWheel;

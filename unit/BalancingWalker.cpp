@@ -10,7 +10,8 @@
 
 DeclareResource(resource1);
 
-static BalancingWalker* instance = BalancingWalker::getInstance();
+bool BalancingWalker::insFlag = false;
+BalancingWalker* BalancingWalker::instance;
 
 /**
  * コンストラクタ
@@ -25,8 +26,11 @@ BalancingWalker::~BalancingWalker() {
 }
 
 BalancingWalker* BalancingWalker::getInstance() {
-	static BalancingWalker balancingWalker;
-	return &balancingWalker;
+	if(insFlag == false){
+		BalancingWalker::instance = new BalancingWalker();
+		insFlag = true;
+	}
+	return BalancingWalker::instance;
 }
 
 /**

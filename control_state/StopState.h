@@ -10,6 +10,7 @@
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
+#include "unit/balancingWalker.h"
 
 class StopState : public ControlState {
 public:
