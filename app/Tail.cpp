@@ -16,7 +16,7 @@ Tail* Tail::instance;
 Tail::Tail()
 {
 	// メンバ初期化
-	this->pid = new PID(1,1,1);
+	this->pid = new PID(0,0.0001,0);
 	this->commandAngle = 0;
 }
 
@@ -34,15 +34,29 @@ Tail* Tail::getInstance() {
 /**
  *
  */
-void Tail::control() {
+void Tail::init(ecrobot::Motor* gTail) {
 
-	double pwm = this->pid->calc(this->commandAngle, this->getAngle());
+	// モーター速度と角度を0に初期化
+	gTail->reset();
+
+	// メンバ初期化
+	//this->gTail = gTail;
 
 }
 
 /**
- * セッター
- * @param angle	パラメータD
+ * 目標角度に制御
+ */
+void Tail::control() {
+
+	double pwm = this->pid->calc(this->commandAngle, this->getAngle(), -100, 100);
+	gTail->setPWM((signed char)pwm);
+
+}
+
+/**
+ * 目標角度を設定する
+ * @param angle 目標角度
  */
 void Tail::setCommandAngle(int angle) {
 	this->commandAngle = angle;

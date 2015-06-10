@@ -44,7 +44,7 @@ void Bluetooth::sendMessage(char* message) {
  * サイズを指定して文字列を送信する
  * 大量に送信する際に推奨
  * @param message 	送信文字列 null含め最大256バイト サイズ以降は無視
- * @param size		サイズ
+ * @param size		nullを含めたサイズ
  */
 void Bluetooth::sendMessage(char* message, int size) {
 

@@ -11,6 +11,7 @@
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
 #include "control_state/StopState.h"
+#include "control_state/TailStandState.h"
 #include "util/Test.h"
 
 // using宣言
@@ -25,6 +26,7 @@ LightSensor gLightSensor(PORT_3);
 GyroSensor  gGyroSensor(PORT_1);
 Motor       gLeftWheel(PORT_C);
 Motor       gRightWheel(PORT_B);
+Motor       gTail(PORT_A);
 Nxt         gNxt;
 
 // オブジェクトの定義
@@ -55,11 +57,18 @@ DeclareResource(resource1);
  * NXTシステム生成
  */
 static void user_system_create() {
+
     // オブジェクトの作成
     gBalancer    = new Balancer();
+
     gBalancingWalker = BalancingWalker::getInstance();
     gBalancingWalker->init(&gGyroSensor, &gLeftWheel, &gRightWheel, &gNxt, gBalancer);
-    driver = new Driver(new StopState);
+
+    tail = Tail::getInstance();
+    tail->init(&gTail);
+
+    driver = new Driver(new TailStandState);
+
     test = new Test();
 }
 
@@ -143,8 +152,8 @@ TASK(MainTask) {
 TASK(TracerTask) {
 
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-	gBalancingWalker->control();
-	//tail->control();
+	//gBalancingWalker->control();
+	tail->control();
 
     TerminateTask();
 }

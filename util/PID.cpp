@@ -33,10 +33,12 @@ PID::~PID() {
 
 /**
  * 目標値と制御量からPID計算を行い、操作量を返す
- * @param r 目標値
- * @param y 制御量
+ * @param r 	目標値
+ * @param y 	制御量
+ * @param min 	制御量最小値
+ * @param max 	制御量最大値
  */
-double PID::calc(double r, double y) {
+double PID::calc(double r, double y, double min, double max) {
 
 	double u;		// 操作量
 	double e;		// 偏差
@@ -54,6 +56,14 @@ double PID::calc(double r, double y) {
 
 	// PID出力計算
 	u = this->p * e + this->i * this->sumError + this->d * diff;
+
+	// 出力をmin~maxの範囲内に丸める
+	if(u < min) {
+		u = min;
+	}
+	else if(u < max) {
+		u = max;
+	}
 
 	return u;
 

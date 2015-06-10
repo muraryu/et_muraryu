@@ -8,12 +8,15 @@
 #ifndef NXT_APP_TAIL_H_
 #define NXT_APP_TAIL_H_
 
+#include "Motor.h"
+
 #include "util/PID.h"
 #include "app/Tail.h"
 
 class Tail {
 public:
 	static Tail* getInstance();
+	static void init(ecrobot::Motor* gTail);
 	void control();
 	void setCommandAngle(int angle);	// セッター
 	int getAngle();
@@ -24,6 +27,7 @@ private:
 
 	static bool insFlag;
 	static Tail* instance;
+	ecrobot::Motor* gTail;		// しっぽモーター
 	int commandAngle;			// しっぽ目標角度
 	PID* pid;					// PIDコントローラ
 

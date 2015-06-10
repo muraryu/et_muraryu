@@ -14,7 +14,7 @@ public:
 	PID(double p, double i, double d);
 	virtual ~PID();
 
-	double calc(double r, double y);
+	double calc(double r, double y, double min, double max);
 	void setP(double p);
 	void setI(double i);
 	void setD(double d);
