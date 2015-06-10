@@ -2,6 +2,7 @@
  *  Tail.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/09
  *  しっぽ
+ *  シングルトン
  *  Author: muraryu
  *****************************************************************************/
 
@@ -40,7 +41,7 @@ void Tail::init(ecrobot::Motor* gTail) {
 	gTail->reset();
 
 	// メンバ初期化
-	//this->gTail = gTail;
+	this->gTail = gTail;
 
 }
 

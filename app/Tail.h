@@ -27,9 +27,9 @@ private:
 
 	static bool insFlag;
 	static Tail* instance;
-	ecrobot::Motor* gTail;		// しっぽモーター
-	int commandAngle;			// しっぽ目標角度
-	PID* pid;					// PIDコントローラ
+	static ecrobot::Motor* gTail;	// しっぽモーター
+	int commandAngle;				// しっぽ目標角度
+	PID* pid;						// PIDコントローラ
 
 
 };
