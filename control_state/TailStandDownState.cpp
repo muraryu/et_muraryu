@@ -1,12 +1,12 @@
 /******************************************************************************
- *  TailStandState.cpp (for LEGO Mindstorms NXT)
+ *  TailStandDownState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
  *  制御パターンに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "TailStandState.h"
+#include "TailStandDownState.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/TailWalkState.h"
@@ -14,9 +14,9 @@
 /**
  * コンストラクタ
  */
-TailStandState::TailStandState() {
+TailStandDownState::TailStandDownState() {
 
-	Bluetooth::sendMessage("State changed : TailStandState\n", 32);
+	Bluetooth::sendMessage("State changed : TailStandDownState\n", 36);
 
 	// メンバ初期化
 	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
@@ -27,13 +27,13 @@ TailStandState::TailStandState() {
 /**
  * デストラクタ
  */
-TailStandState::~TailStandState() {
+TailStandDownState::~TailStandDownState() {
 }
 
 /**
  * 制御パターンに応じた制御を実行
  */
-void TailStandState::execute() {
+void TailStandDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
@@ -41,7 +41,6 @@ void TailStandState::execute() {
 	static int count = 0;
 	static int satValue = 0;
 	static bool flag = false;
-	static bool flag2 = false;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -67,7 +66,6 @@ void TailStandState::execute() {
 		angle -= 0.06;
 		if(angle < 74) {
 			angle = 74;
-			flag2 = true;
 		}
 	}
 
@@ -80,7 +78,7 @@ void TailStandState::execute() {
  * @return	ControlState*
  * @note	遷移しないときはthisを返す
  */
-ControlState* TailStandState::next() {
+ControlState* TailStandDownState::next() {
 
 	static float satTime = 0.0;
 	static int satValue = 0;
@@ -91,6 +89,7 @@ ControlState* TailStandState::next() {
 		satTime += 0.004;
 	}
 	else {
+		satTime = 0;
 		satValue = angle;
 	}
 

@@ -8,6 +8,7 @@
 
 #include "TailWalkState.h"
 
+#include "control_state/TailStandUpState.h"
 #include "util/Bluetooth.h"
 
 /**
@@ -19,7 +20,6 @@ TailWalkState::TailWalkState() {
 
 	// メンバ初期化
 	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
-	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 }
 
@@ -34,17 +34,12 @@ TailWalkState::~TailWalkState() {
  */
 void TailWalkState::execute() {
 
-	int forward = 0;
+	int forward = 30;
 	int turn = 0;
-	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	balancingWalker->setForwardTurn(forward, turn);
-
-	/* しっぽの制御 */
-	// 角度目標値を設定
-	this->tail->setCommandAngle(angle);
 
 }
 
@@ -54,6 +49,9 @@ void TailWalkState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* TailWalkState::next() {
-
+	static int startPos = this->balancingWalker->getRunningDistance();
+	if() {
+		return new TailStandUpState();
+	}
 	return this;
 }
