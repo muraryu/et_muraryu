@@ -89,3 +89,10 @@ bool Bluetooth::connect() {
 
 	return ret;
 }
+
+/**
+ * ecrobot_bt_data_logger
+ */
+void Bluetooth::dataLogger(signed char data1, signed char data2) {
+	ecrobot_bt_data_logger(data1, data2);
+}

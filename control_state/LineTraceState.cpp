@@ -27,9 +27,11 @@ void execute() {
 
 }
 
- /**
-  * 制御パターン遷移条件
-  */
+/**
+ * 制御パターン遷移条件
+ * @return	ControlState*
+ * @note	遷移しないときはthisを返す
+ */
 ControlState* next() {
 	return this;
 }

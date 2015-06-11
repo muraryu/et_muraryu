@@ -11,6 +11,8 @@ extern "C" {
 }
 #include "Driver.h"
 
+#include "util/Bluetooth.h"
+
 /**
  * コンストラクタ
  * Driverパラメータ、偏差積分値、初回入力値を初期化

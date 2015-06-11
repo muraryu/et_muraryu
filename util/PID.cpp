@@ -10,6 +10,8 @@ extern "C" {
 }
 #include "PID.h"
 
+#include "util/Bluetooth.h"
+
 /**
  * コンストラクタ
  * PIDパラメータ、偏差積分値、初回入力値を初期化
@@ -60,10 +62,13 @@ double PID::calc(double r, double y, double min, double max) {
 	// 出力をmin~maxの範囲内に丸める
 	if(u < min) {
 		u = min;
+		Bluetooth::sendMessage("min\n", 5);
 	}
-	else if(u < max) {
+	else if(max < u) {
 		u = max;
+		Bluetooth::sendMessage("max\n", 5);
 	}
+	//Bluetooth::dataLogger((signed char)r,(signed char)y);
 
 	return u;
 

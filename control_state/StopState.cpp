@@ -52,6 +52,8 @@ void StopState::execute() {
 
 /**
  * 制御パターン遷移条件
+ * @return	ControlState*
+ * @note	遷移しないときはthisを返す
  */
 ControlState* StopState::next() {
 

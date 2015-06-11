@@ -16,21 +16,21 @@
 class Tail {
 public:
 	static Tail* getInstance();
-	static void init(ecrobot::Motor* gTail);
+	void init(ecrobot::Motor* gTail);
 	void control();
 	void setCommandAngle(int angle);	// セッター
-	int getAngle();
+	S32 getAngle();
+	double saturationTime();
 
 private:
 	Tail();
 	~Tail();
 
-	static bool insFlag;
-	static Tail* instance;
-	static ecrobot::Motor* gTail;	// しっぽモーター
+	static bool insFlag;			// シングルトンインスタンス生成フラグ(生成前=false, 生成後=true)
+	static Tail* instance;			// シングルトンインスタンス
+	ecrobot::Motor* gTail;			// しっぽモーター
 	int commandAngle;				// しっぽ目標角度
 	PID* pid;						// PIDコントローラ
-
 
 };
 

@@ -8,6 +8,8 @@
 
 #include "Tail.h"
 
+#include "util/Bluetooth.h"
+
 bool Tail::insFlag = false;
 Tail* Tail::instance;
 
@@ -17,7 +19,8 @@ Tail* Tail::instance;
 Tail::Tail()
 {
 	// メンバ初期化
-	this->pid = new PID(0,0.0001,0);
+	//this->pid = new PID(0,0.0001,0);
+	this->pid = new PID(2.8,0.0005,30);
 	this->commandAngle = 0;
 }
 
@@ -52,7 +55,7 @@ void Tail::control() {
 
 	double pwm = this->pid->calc(this->commandAngle, this->getAngle(), -100, 100);
 	gTail->setPWM((signed char)pwm);
-
+	Bluetooth::dataLogger((S8)(this->getAngle()),(signed char)commandAngle);
 }
 
 /**
@@ -61,4 +64,19 @@ void Tail::control() {
  */
 void Tail::setCommandAngle(int angle) {
 	this->commandAngle = angle;
+}
+
+/**
+ * しっぽ角度取得
+ * @return
+ */
+S32 Tail::getAngle() {
+	return this->gTail->getCount();
+}
+
+/**
+ * 静定してからの時間(sec)を返す
+ */
+double Tail::saturationTime() {
+	return 0; // TODO
 }

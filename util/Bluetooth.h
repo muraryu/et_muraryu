@@ -17,7 +17,7 @@ public:
     static void sendMessage(char* message, int len);
     static int receiveMessage(char* message, int len);
     static bool connect();
-
+    static void Bluetooth::dataLogger(signed char data1, signed char data2);
 };
 
 #endif  // NXT_UTIL_BLUETOOTH_H_
