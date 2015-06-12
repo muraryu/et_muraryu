@@ -45,7 +45,7 @@ void TailStandUpState::execute() {
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	this->tail->setCommandAngle(angle);
+	this->tail->setCommandAngle((int)angle);
 
 }
 
@@ -58,7 +58,7 @@ ControlState* TailStandUpState::next() {
 
 	static float satTime = 0.0;
 	static int satValue = 0;
-	int angle = this->tail->getAngle();
+	double angle = this->tail->getAngle();
 
 	// しっぽ停止時間計算 TODO 時刻クラス作る
 	if(satValue == angle) {

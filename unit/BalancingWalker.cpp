@@ -99,3 +99,11 @@ void BalancingWalker::setForwardTurn(int forward, int turn) {
 	this->turn = turn;
     ReleaseResource(resource1);
 }
+
+/**
+ * 総走行距離
+ */
+int BalancingWalker::getRunningDistance() {
+	/* stub */
+	return 0;
+}

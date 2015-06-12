@@ -11,6 +11,7 @@
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
+#include "util/Time.h"
 
 class TailWalkState : public ControlState {
 public:
@@ -23,6 +24,8 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
+	Time* time;
+	double startTime;
 
 };
 

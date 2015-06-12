@@ -24,7 +24,8 @@ public:
             const ecrobot::Nxt* nxt,
             Balancer* balancer);
     void control();
-    void BalancingWalker::setForwardTurn(int forward, int turn);
+    void setForwardTurn(int forward, int turn);
+    int getRunningDistance();
 
 private:
     BalancingWalker();

@@ -21,12 +21,14 @@ TARGET_CPP_SOURCES = \
 	util/Bluetooth.cpp \
 	util/PID.cpp \
 	util/Test.cpp \
+	util/Time.cpp \
 	app/LineTracer.cpp \
 	app/Driver.cpp \
 	app/Tail.cpp \
 	control_state/StopState.cpp \
-	control_state/TailStandState.cpp \
+	control_state/TailStandUpState.cpp \
 	control_state/TailWalkState.cpp \
+	control_state/TailStandDownState.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	unit/LineMonitor.cpp \
