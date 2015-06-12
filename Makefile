@@ -25,8 +25,9 @@ TARGET_CPP_SOURCES = \
 	app/Driver.cpp \
 	app/Tail.cpp \
 	control_state/StopState.cpp \
-	control_state/TailStandState.cpp \
+	control_state/TailStandDownState.cpp \
 	control_state/TailWalkState.cpp \
+	control_state/TailStandUpState.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	unit/LineMonitor.cpp \

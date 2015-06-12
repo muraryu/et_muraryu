@@ -11,7 +11,7 @@
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
 #include "control_state/StopState.h"
-#include "control_state/TailStandState.h"
+#include "control_state/TailStandDownState.h"
 #include "util/Test.h"
 
 // using宣言
@@ -67,7 +67,7 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new TailStandState);
+    driver = new Driver(new TailStandDownState);
 
     test = new Test();
 }
