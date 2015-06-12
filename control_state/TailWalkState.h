@@ -14,6 +14,8 @@
 #include "util/Time.h"
 
 class TailWalkState : public ControlState {
+	typedef ControlState base;
+
 public:
 	TailWalkState();
 	virtual ~TailWalkState();
@@ -25,6 +27,12 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	Time* time;
+
+	// execute(), next()
+
+	// execute()
+
+	// next()
 	double startTime;
 
 };

@@ -11,13 +11,15 @@
 #include "ControlState.h"
 
 class LineTraceState: public ControlState {
+	typedef ControlState base;
+
 public:
 	LineTraceState();
 	virtual ~LineTraceState();
 
 	// override
-	virtual void execute() = 0;
-	virtual ControlState* next() = 0;
+	virtual void execute();
+	virtual ControlState* next();
 };
 
 #endif /* NXT_CONTROL_STATE_LINETRACESTATE_H_ */

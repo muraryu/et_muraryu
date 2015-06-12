@@ -1,7 +1,7 @@
 /******************************************************************************
  *  TailStandDownState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
- *  制御パターンに応じた制御を行う
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
@@ -19,16 +19,23 @@ TailStandDownState::TailStandDownState() {
 	Bluetooth::sendMessage("State changed : TailStandDownState\n", 36);
 
 	// メンバ初期化
-	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->time = Time::getInstance();
 
-	this->commandAngle = 100;
-	this->startTime1 = this->time->getTime();
-	this->startTime1 = this->time->getTime();
+	// execute(), next()
 
-	// 倒立制御OFF
+	// execute()
+	this->commandAngle1 = 100;
+	this->flag1 = false;
+	this->startTime1 = this->time->getTime();
+	this->satValue1 = 0;
+
+	// next()
+	this->startTime2 = this->time->getTime();
+	this->satValue2 = 0;
+
+	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
 }
 
@@ -39,15 +46,12 @@ TailStandDownState::~TailStandDownState() {
 }
 
 /**
- * 制御パターンに応じた制御を実行
+ * 制御ステートに応じた制御を実行
  */
 void TailStandDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	static int count = 0;
-	static int satValue = 0;
-	static bool flag = false;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -55,53 +59,54 @@ void TailStandDownState::execute() {
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	if(flag == false) {
-		if(satValue == this->tail->getAngle()) {
-			if(count < 500) {
-				count++;
-			}
-			else {
-				flag = true;
-			}
+	if(this->flag1 == false) {
+		// しっぽを下ろして2秒間安定したか
+		if(this->satValue1 == this->tail->getAngle() && 2.0 < this->time->getTime() - this->startTime1) {
+			this->flag1 = true;
 		}
 		else {
-			satValue = this->tail->getAngle();
-			count = 0;
+			this->satValue1 = this->tail->getAngle();
+			this->startTime1 = this->time->getTime();
 		}
 	}
 	else {
-		this->commandAngle -= 0.06;
-		if(this->commandAngle < 74) {
-			this->commandAngle = 74;
+		// 74degまで15deg/secの速さでしっぽを上げて機体を傾ける
+		this->commandAngle1 -= 0.06;
+		if(this->commandAngle1 < 74) {
+			this->commandAngle1 = 74;
 		}
 	}
 
-	this->tail->setCommandAngle((int)(this->commandAngle));
+	this->tail->setCommandAngle((int)(this->commandAngle1));
 
 }
 
 /**
- * 制御パターン遷移条件
- * @return	ControlState*
+ * 制御ステート遷移条件
+ * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
 ControlState* TailStandDownState::next() {
+	ControlState* baseControlState = base::next();
+	if(baseControlState != this) {
+		return baseControlState;
+	}
+	/*
+	 * ここまでコード編集禁止
+	 * 以下に遷移条件を記述する
+	 */
 
-	static float satTime = 0.0;
-	static int satValue = 0;
+
 	int angle = this->tail->getAngle();
 
-	// しっぽ停止時間計算 TODO 時刻クラス作る
-	if(satValue == angle) {
-		satTime += 0.004;
-	}
-	else {
-		satTime = 0;
-		satValue = angle;
+	// しっぽ停止時間計算
+	if(this->satValue2 != angle) {
+		this->startTime2 = this->time->getTime();
+		this->satValue2 = angle;
 	}
 
 	// しっぽが3秒間停止したら遷移
-	if(3.0 < satTime) {
+	if(3.0 < this->time->getTime() - this->startTime2) {
 		return new TailWalkState();
 	}
 

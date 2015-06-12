@@ -1,7 +1,7 @@
 /******************************************************************************
  *  TailWalkState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
- *  制御パターンに応じた制御を行う
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
@@ -19,11 +19,17 @@ TailWalkState::TailWalkState() {
 	Bluetooth::sendMessage("State changed : TailWalkState\n", 32);
 
 	// メンバ初期化
-	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->time = Time::getInstance();
 
+	// execute(), next()
+
+	// execute()
+
+	// next()
 	this->startTime = this->time->getTime();
+
+	// 初期処理
 }
 
 /**
@@ -33,7 +39,7 @@ TailWalkState::~TailWalkState() {
 }
 
 /**
- * 制御パターンに応じた制御を実行
+ * 制御ステートに応じた制御を実行
  */
 void TailWalkState::execute() {
 
@@ -47,11 +53,20 @@ void TailWalkState::execute() {
 }
 
 /**
- * 制御パターン遷移条件
- * @return	ControlState*
+ * 制御ステート遷移条件
+ * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
 ControlState* TailWalkState::next() {
+	ControlState* baseControlState = base::next();
+	if(baseControlState != this) {
+		return baseControlState;
+	}
+	/*
+	 * ここまでコード編集禁止
+	 * 以下に遷移条件を記述する
+	 */
+
 
 	// 経過時刻で遷移
 	if(5.0 < this->time->getTime() - this->startTime) {

@@ -14,6 +14,8 @@
 #include "util/Time.h"
 
 class StopState : public ControlState {
+	typedef ControlState base;
+
 public:
 	StopState();
 	virtual ~StopState();
@@ -27,7 +29,12 @@ private:
 	Time* time;
 	BalancingWalker* balancingWalker;
 
+	// execute(), next()
 	double startTime;
+
+	// execute()
+
+	// next()
 
 };
 

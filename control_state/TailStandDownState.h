@@ -13,6 +13,8 @@
 #include "unit/balancingWalker.h"
 
 class TailStandDownState : public ControlState {
+	typedef ControlState base;
+
 public:
 	TailStandDownState();
 	virtual ~TailStandDownState();
@@ -26,9 +28,17 @@ private:
 	BalancingWalker* balancingWalker;
 	Time* time;
 
-	double commandAngle;
+	// execute(), next()
+
+	// execute()
+	double commandAngle1;
+	bool flag1;
 	double startTime1;
+	int satValue1;
+
+	// next()
 	double startTime2;
+	int satValue2;
 
 };
 

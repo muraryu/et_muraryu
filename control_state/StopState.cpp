@@ -1,7 +1,7 @@
 /******************************************************************************
  *  StopState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
- *  制御パターンに応じた制御を行う
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
@@ -19,13 +19,19 @@ StopState::StopState() {
 	Bluetooth::sendMessage("State changed : StopState\n", 27);
 
 	// メンバ初期化
-	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->tail = Tail::getInstance();
 	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 
-	this->balancingWalker->setStandControlMode(true);
+	// execute(), next()
 	this->startTime = this->time->getTime();
+
+	// execute()
+
+	// next()
+
+	// 初期処理
+	this->balancingWalker->setStandControlMode(true);
 }
 
 /**
@@ -35,7 +41,7 @@ StopState::~StopState() {
 }
 
 /**
- * 制御パターンに応じた制御を実行
+ * 制御ステートに応じた制御を実行
  */
 void StopState::execute() {
 
@@ -59,11 +65,20 @@ void StopState::execute() {
 }
 
 /**
- * 制御パターン遷移条件
- * @return	ControlState*
+ * 制御ステート遷移条件
+ * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
 ControlState* StopState::next() {
+	ControlState* baseControlState = base::next();
+	if(baseControlState != this) {
+		return baseControlState;
+	}
+	/*
+	 * ここまでコード編集禁止
+	 * 以下に遷移条件を記述する
+	 */
+
 
 	// 経過時間で遷移
 	if(10.5 < this->time->getTime() - this->startTime) {
