@@ -9,7 +9,7 @@
 #include "TailStandUpState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/TailWalkState.h"
+#include "control_state/StopState.h"
 
 /**
  * コンストラクタ
@@ -45,7 +45,7 @@ void TailStandUpState::execute() {
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	this->tail->setCommandAngle(angle);
+	this->tail->setCommandAngle((int)angle);
 
 }
 
@@ -56,23 +56,10 @@ void TailStandUpState::execute() {
  */
 ControlState* TailStandUpState::next() {
 
-	static float satTime = 0.0;
-	static int satValue = 0;
-	int angle = this->tail->getAngle();
-
-	// しっぽ停止時間計算 TODO 時刻クラス作る
-	if(satValue == angle) {
-		satTime += 0.004;
+	// 前に倒れかけたら遷移
+	if(100 < this->tail->getAngle()) {
+		this->balancingWalker->init();
+		return new StopState();
 	}
-	else {
-		satTime = 0;
-		satValue = angle;
-	}
-
-	// しっぽが3秒間停止したら遷移
-	if(3.0 < satTime) {
-		return new TailWalkState();
-	}
-
 	return this;
 }

@@ -21,6 +21,9 @@ TailWalkState::TailWalkState() {
 	// メンバ初期化
 	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->time = Time::getInstance();
+
+	this->startTime = this->time->getTime();
 }
 
 /**
@@ -49,9 +52,11 @@ void TailWalkState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* TailWalkState::next() {
-	static int startPos = this->balancingWalker->getRunningDistance();
-	if() {
+
+	// 経過時刻で遷移
+	if(5.0 < this->time->getTime() - this->startTime) {
 		return new TailStandUpState();
 	}
 	return this;
+
 }

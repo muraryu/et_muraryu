@@ -9,6 +9,7 @@
 #include "StopState.h"
 
 #include "util/Bluetooth.h"
+#include "control_state/TailStandDownState.h"
 
 /**
  * コンストラクタ
@@ -20,7 +21,11 @@ StopState::StopState() {
 	// メンバ初期化
 	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->tail = Tail::getInstance();
+	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+
+	this->balancingWalker->setStandControlMode(true);
+	this->startTime = this->time->getTime();
 }
 
 /**
@@ -41,6 +46,9 @@ void StopState::execute() {
 	/* 足の制御 */
 	// 旋回値を設定
 	// 前進値を設定
+	if(10.0 < this->time->getTime() - this->startTime) {
+		forward = -50;
+	}
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
@@ -57,5 +65,9 @@ void StopState::execute() {
  */
 ControlState* StopState::next() {
 
+	// 経過時間で遷移
+	if(10.5 < this->time->getTime() - this->startTime) {
+		return new TailStandDownState();
+	}
 	return this;
 }

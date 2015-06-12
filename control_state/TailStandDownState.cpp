@@ -22,6 +22,14 @@ TailStandDownState::TailStandDownState() {
 	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->time = Time::getInstance();
+
+	this->commandAngle = 100;
+	this->startTime1 = this->time->getTime();
+	this->startTime1 = this->time->getTime();
+
+	// 倒立制御OFF
+	this->balancingWalker->setStandControlMode(false);
 }
 
 /**
@@ -37,7 +45,6 @@ void TailStandDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	static double angle = 100;
 	static int count = 0;
 	static int satValue = 0;
 	static bool flag = false;
@@ -63,13 +70,13 @@ void TailStandDownState::execute() {
 		}
 	}
 	else {
-		angle -= 0.06;
-		if(angle < 74) {
-			angle = 74;
+		this->commandAngle -= 0.06;
+		if(this->commandAngle < 74) {
+			this->commandAngle = 74;
 		}
 	}
 
-	this->tail->setCommandAngle((int)angle);
+	this->tail->setCommandAngle((int)(this->commandAngle));
 
 }
 

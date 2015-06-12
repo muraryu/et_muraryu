@@ -13,6 +13,7 @@
 #include "control_state/StopState.h"
 #include "control_state/TailStandDownState.h"
 #include "util/Test.h"
+#include "util/Time.h"
 
 // using宣言
 using ecrobot::LightSensor;
@@ -34,6 +35,7 @@ static Balancer			*gBalancer;
 static BalancingWalker	*gBalancingWalker;
 static Tail				*tail;
 static Driver			*driver;
+static Time				*time;
 static Test				*test;
 
 extern "C" {
@@ -67,7 +69,9 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new TailStandDownState);
+    driver = new Driver(new StopState());
+
+    time = Time::getInstance();
 
     test = new Test();
 }
@@ -148,12 +152,16 @@ TASK(MainTask) {
 
 /**
  * 倒立制御用タスク 4ms周期で起動
+ * 時間管理もついでにやる
  */
 TASK(TracerTask) {
 
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-	//gBalancingWalker->control();
+	gBalancingWalker->control();
 	tail->control();
+
+	// 時刻を進める
+	time->forward();
 
     TerminateTask();
 }
