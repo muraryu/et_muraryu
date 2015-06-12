@@ -19,7 +19,6 @@ Tail* Tail::instance;
 Tail::Tail()
 {
 	// メンバ初期化
-	//this->pid = new PID(0,0.0001,0);
 	this->pid = new PID(2.8,0.0005,30);
 	this->commandAngle = 0;
 }
@@ -36,7 +35,7 @@ Tail* Tail::getInstance() {
 }
 
 /**
- *
+ * インスタンス初期化
  */
 void Tail::init(ecrobot::Motor* gTail) {
 

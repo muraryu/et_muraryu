@@ -24,6 +24,11 @@ public:
 private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
+	Time* time;
+
+	double commandAngle;
+	double startTime1;
+	double startTime2;
 
 };
 
