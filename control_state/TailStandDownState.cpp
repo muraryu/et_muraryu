@@ -22,6 +22,8 @@ TailStandDownState::TailStandDownState() {
 	// シングルトンではなく、Driverから受け取るか、仲介クラスからとるのもあり
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+
+	this->balancingWalker->setStandControlMode(false);
 }
 
 /**

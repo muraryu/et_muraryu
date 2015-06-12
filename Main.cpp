@@ -69,7 +69,7 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new TailStandDownState);
+    driver = new Driver(new StopState());
 
     time = Time::getInstance();
 
@@ -157,7 +157,7 @@ TASK(MainTask) {
 TASK(TracerTask) {
 
     // 4ms周期で、ライントレーサにトレース走行を依頼する
-	//gBalancingWalker->control();
+	gBalancingWalker->control();
 	tail->control();
 
 	// 時刻を進める

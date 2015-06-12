@@ -23,9 +23,11 @@ public:
             ecrobot::Motor* rightWheel,
             const ecrobot::Nxt* nxt,
             Balancer* balancer);
+    void init();
     void control();
     void setForwardTurn(int forward, int turn);
     int getRunningDistance();
+    void setStandControlMode(bool b);
 
 private:
     BalancingWalker();
@@ -40,6 +42,7 @@ private:
     Balancer* mBalancer;
     S32 forward;
     S32 turn;
+    bool standControlMode;
 
 };
 

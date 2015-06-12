@@ -42,15 +42,22 @@ void BalancingWalker::control() {
     S32 leftWheelEnc  = mLeftWheel->getCount();    // 左モータ回転角度
 
     GetResource(resource1);
-    mBalancer->setCommand(this->forward, this->turn);
+    S32 forward = this->forward;
+	S32 turn = this->turn;
     ReleaseResource(resource1);
 
-    mBalancer->update(angle, rightWheelEnc, leftWheelEnc, mNxt->getBattMv());
+    if(this->standControlMode == true) {
+        mBalancer->setCommand(forward, turn);
+    	mBalancer->update(angle, rightWheelEnc, leftWheelEnc, mNxt->getBattMv());
 
-    // 左右モータに回転を指示する
-    mLeftWheel->setPWM(mBalancer->getPwmLeft());
-    mRightWheel->setPWM(mBalancer->getPwmRight());
-
+    	// 左右モータに回転を指示する
+    	mLeftWheel->setPWM(mBalancer->getPwmLeft());
+    	mRightWheel->setPWM(mBalancer->getPwmRight());
+    }
+    else {
+    	mLeftWheel->setPWM(forward); // TODO しっぽで旋回
+    	mRightWheel->setPWM(forward);
+    }
 }
 
 /**
@@ -75,6 +82,7 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
 	this->mBalancer 	= balancer;
 	this->forward 		= 0;
 	this->turn 			= 0;
+	this->standControlMode = false;
 
 	// バランス走行に必要なものをリセットする
 	// ジャイロセンサオフセット初期化
@@ -84,6 +92,13 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
     mLeftWheel->reset();
     mRightWheel->reset();
 
+    // 倒立振子制御初期化
+    mBalancer->init(offset);
+}
+
+void BalancingWalker::init() {
+	// ジャイロセンサオフセット初期化
+    int offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
     // 倒立振子制御初期化
     mBalancer->init(offset);
 }
@@ -106,4 +121,12 @@ void BalancingWalker::setForwardTurn(int forward, int turn) {
 int BalancingWalker::getRunningDistance() {
 	/* stub */
 	return 0;
+}
+
+/**
+ * 倒立制御オンオフ設定
+ * @param b	オン:true, オフ:false
+ */
+void BalancingWalker::setStandControlMode(bool b) {
+	this->standControlMode = b;
 }
