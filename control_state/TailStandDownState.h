@@ -11,6 +11,7 @@
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
+#include "util/Time.h"
 
 class TailStandDownState : public ControlState {
 	typedef ControlState base;
