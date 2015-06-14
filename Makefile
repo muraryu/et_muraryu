@@ -25,10 +25,12 @@ TARGET_CPP_SOURCES = \
 	app/LineTracer.cpp \
 	app/Driver.cpp \
 	app/Tail.cpp \
+	control_state/LineTraceState.cpp \
 	control_state/StopState.cpp \
 	control_state/TailStandUpState.cpp \
 	control_state/TailWalkState.cpp \
 	control_state/TailStandDownState.cpp \
+	control_state/ReadyState.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	unit/LineMonitor.cpp \

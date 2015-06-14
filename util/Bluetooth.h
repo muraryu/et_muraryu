@@ -18,6 +18,7 @@ public:
     static int receiveMessage(char* message, int len);
     static bool connect();
     static void dataLogger(signed char data1, signed char data2);
+    static bool readyFlag;
 };
 
 #endif  // NXT_UTIL_BLUETOOTH_H_

@@ -11,7 +11,6 @@
 #include "Motor.h"
 
 #include "util/PID.h"
-#include "app/Tail.h"
 
 class Tail {
 public:

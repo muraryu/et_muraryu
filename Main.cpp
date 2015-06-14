@@ -29,6 +29,7 @@ Motor       gLeftWheel(PORT_C);
 Motor       gRightWheel(PORT_B);
 Motor       gTail(PORT_A);
 Nxt         gNxt;
+bool Bluetooth::readyFlag;
 
 // オブジェクトの定義
 static Balancer			*gBalancer;
@@ -74,6 +75,8 @@ static void user_system_create() {
     time = Time::getInstance();
 
     test = new Test();
+
+    Bluetooth::readyFlag = false;
 }
 
 /**
@@ -205,6 +208,8 @@ TASK(BluetoothTask) {
 				K_F[3] += 0.1F;
 			} else if(buf[0] == 'f') {
 				K_F[3] -= 0.1F;
+			} else if(buf[0] == '1') {
+				Bluetooth::readyFlag = true;
 			}
 
 		}

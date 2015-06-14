@@ -9,6 +9,8 @@
 #define NXT_CONTROL_STATE_LINETRACESTATE_H_
 
 #include "ControlState.h"
+#include "app/Tail.h"
+#include "unit/BalancingWalker.h"
 
 class LineTraceState: public ControlState {
 	typedef ControlState base;
@@ -20,6 +22,16 @@ public:
 	// override
 	virtual void execute();
 	virtual ControlState* next();
+
+private:
+	Tail* tail;
+	BalancingWalker* balancingWalker;
+
+	// execute(), next()
+
+	// execute()
+
+	// next()
 };
 
 #endif /* NXT_CONTROL_STATE_LINETRACESTATE_H_ */

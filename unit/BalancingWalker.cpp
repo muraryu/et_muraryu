@@ -41,11 +41,13 @@ void BalancingWalker::control() {
     S32 rightWheelEnc = mRightWheel->getCount();   // 右モータ回転角度
     S32 leftWheelEnc  = mLeftWheel->getCount();    // 左モータ回転角度
 
+    // 前進値と旋回値を取得
     GetResource(resource1);
     S32 forward = this->forward;
 	S32 turn = this->turn;
     ReleaseResource(resource1);
 
+    // 倒立制御オンの場合はバランサーによりPWMを設定
     if(this->standControlMode == true) {
         mBalancer->setCommand(forward, turn);
     	mBalancer->update(angle, rightWheelEnc, leftWheelEnc, mNxt->getBattMv());
@@ -105,6 +107,7 @@ void BalancingWalker::init() {
 
 /**
  * 前進、旋回の指令値をセットする
+ * 同時に、ライントレースモードを解除する
  * @param forward 前進値
  * @param turn    旋回値
  */
@@ -130,3 +133,4 @@ int BalancingWalker::getRunningDistance() {
 void BalancingWalker::setStandControlMode(bool b) {
 	this->standControlMode = b;
 }
+
