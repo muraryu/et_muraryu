@@ -38,8 +38,8 @@ BalancingWalker* BalancingWalker::getInstance() {
  */
 void BalancingWalker::control() {
     S16 angle = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
-    S32 rightWheelEnc = mRightWheel->getCount();   // 右モータ回転角度
-    S32 leftWheelEnc  = mLeftWheel->getCount();    // 左モータ回転角度
+    S32 rightWheelEnc = mRightWheel->getCount();// - this->rightWheelEncOffset;   // 右モータ回転角度
+    S32 leftWheelEnc  = mLeftWheel->getCount();// - this->rightWheelEncOffset;    // 左モータ回転角度
 
     // 前進値と旋回値を取得
     GetResource(resource1);
@@ -85,24 +85,32 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
 	this->forward 		= 0;
 	this->turn 			= 0;
 	this->standControlMode = false;
+	this->rightWheelEncOffset = 0;
+	this->leftWheelEncOffset = 0;
+
 
 	// バランス走行に必要なものをリセットする
 	// ジャイロセンサオフセット初期化
-    int offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
+    this->offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
 
     // モータエンコーダをリセットする
     mLeftWheel->reset();
     mRightWheel->reset();
 
     // 倒立振子制御初期化
-    mBalancer->init(offset);
+    mBalancer->init(this->offset);
 }
 
 void BalancingWalker::init() {
 	// ジャイロセンサオフセット初期化
-    int offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
+    //int offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
+
+	// モータエンコーダをリセットする
+    mLeftWheel->reset();
+    mRightWheel->reset();
+
     // 倒立振子制御初期化
-    mBalancer->init(offset);
+    mBalancer->init(this->offset);
 }
 
 /**
@@ -131,6 +139,17 @@ int BalancingWalker::getRunningDistance() {
  * @param b	オン:true, オフ:false
  */
 void BalancingWalker::setStandControlMode(bool b) {
+
+	// モードが変化するときのみ処理
+	if(this->standControlMode == true && b == false) {
+		this->rightWheelEnc = mRightWheel->getCount();
+		this->leftWheelEnc = mLeftWheel->getCount();
+	}
+	else if(this->standControlMode == false && b == true) {
+		this->rightWheelEncOffset = mRightWheel->getCount() - this->rightWheelEnc;
+		this->leftWheelEncOffset = mLeftWheel->getCount() - this->leftWheelEnc;
+	}
+
 	this->standControlMode = b;
 }
 

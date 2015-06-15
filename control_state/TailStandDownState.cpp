@@ -61,12 +61,15 @@ void TailStandDownState::execute() {
 	// 角度目標値を設定
 	if(this->flag1 == false) {
 		// しっぽを下ろして2秒間安定したか
-		if(this->satValue1 == this->tail->getAngle() && 2.0 < this->time->getTime() - this->startTime1) {
-			this->flag1 = true;
+		if(this->satValue1 == this->tail->getAngle()) {
+			if(2.0 < this->time->getTime() - this->startTime1) {
+				this->flag1 = true;
+			}
 		}
 		else {
 			this->satValue1 = this->tail->getAngle();
 			this->startTime1 = this->time->getTime();
+			//Bluetooth::sendMessage("t2\n",4);
 		}
 	}
 	else {
@@ -105,8 +108,8 @@ ControlState* TailStandDownState::next() {
 		this->satValue2 = angle;
 	}
 
-	// しっぽが3秒間停止したら遷移
-	if(3.0 < this->time->getTime() - this->startTime2) {
+	// しっぽ角度が78°以下でが5秒間停止したら遷移
+	if(this->tail->getAngle() < 78 && 1.0 < this->time->getTime() - this->startTime2) {
 		return new TailWalkState();
 	}
 

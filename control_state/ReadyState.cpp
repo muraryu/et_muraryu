@@ -1,22 +1,24 @@
 /******************************************************************************
- *  TailStandUpState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/12
- *  制御ステートに応じた制御を行う
+ *  ReadyState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/15
+ *  Bluetooth発信合図を待機
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "TailStandUpState.h"
+#include "ReadyState.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/StopState.h"
 
+bool Bluetooth::readyFlag;
+
 /**
  * コンストラクタ
  */
-TailStandUpState::TailStandUpState() {
+ReadyState::ReadyState() {
 
-	Bluetooth::sendMessage("State changed : TailStandUpState\n", 34);
+	Bluetooth::sendMessage("State changed : ReadyState\n", 28);
 
 	// メンバ初期化
 	this->tail = Tail::getInstance();
@@ -29,30 +31,33 @@ TailStandUpState::TailStandUpState() {
 	// next()
 
 	// 初期処理
+	this->balancingWalker->setStandControlMode(false);
 }
 
 /**
  * デストラクタ
  */
-TailStandUpState::~TailStandUpState() {
+ReadyState::~ReadyState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void TailStandUpState::execute() {
+void ReadyState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	double angle = 110;
+	int angle = 100;
 
 	/* 足の制御 */
-	// 前進値、旋回値を設定
+	// 旋回値を設定
+	// 前進値を設定
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	this->tail->setCommandAngle((int)angle);
+	this->tail->setCommandAngle(angle);
+
 
 }
 
@@ -61,7 +66,7 @@ void TailStandUpState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* TailStandUpState::next() {
+ControlState* ReadyState::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -71,11 +76,9 @@ ControlState* TailStandUpState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-
-	// 前に倒れかけたら遷移
-	if(110 < this->tail->getAngle()) {
-		this->balancingWalker->init();
+	if(Bluetooth::readyFlag == true) {
 		return new StopState();
 	}
+
 	return this;
 }

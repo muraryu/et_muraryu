@@ -69,7 +69,7 @@ ControlState* TailWalkState::next() {
 
 
 	// 経過時刻で遷移
-	if(5.0 < this->time->getTime() - this->startTime) {
+	if(3.0 < this->time->getTime() - this->startTime) {
 		return new TailStandUpState();
 	}
 	return this;

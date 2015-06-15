@@ -10,8 +10,7 @@
 
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
-#include "control_state/StopState.h"
-#include "control_state/TailStandDownState.h"
+#include "control_state/ReadyState.h"
 #include "util/Test.h"
 #include "util/Time.h"
 
@@ -70,7 +69,7 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new StopState());
+    driver = new Driver(new ReadyState());
 
     time = Time::getInstance();
 

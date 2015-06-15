@@ -43,6 +43,11 @@ private:
     S32 forward;
     S32 turn;
     bool standControlMode;
+    int offset;
+    S32 rightWheelEncOffset;
+    S32 leftWheelEncOffset;
+    S32 rightWheelEnc;
+    S32 leftWheelEnc;
 
 };
 

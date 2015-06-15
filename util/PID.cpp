@@ -62,11 +62,11 @@ double PID::calc(double r, double y, double min, double max) {
 	// 出力をmin~maxの範囲内に丸める
 	if(u < min) {
 		u = min;
-		Bluetooth::sendMessage("min\n", 5);
+		//Bluetooth::sendMessage("min\n", 5);
 	}
 	else if(max < u) {
 		u = max;
-		Bluetooth::sendMessage("max\n", 5);
+		//Bluetooth::sendMessage("max\n", 5);
 	}
 	//Bluetooth::dataLogger((signed char)r,(signed char)y);
 

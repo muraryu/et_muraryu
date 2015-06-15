@@ -9,6 +9,7 @@
 #include "LineTraceState.h"
 
 #include "util/Bluetooth.h"
+#include "control_state/StopState.h"
 
 /**
  * コンストラクタ
@@ -77,5 +78,5 @@ ControlState* LineTraceState::next() {
 
 
 
-	return this;
+	return new StopState();
 }

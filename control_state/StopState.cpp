@@ -52,7 +52,7 @@ void StopState::execute() {
 	/* 足の制御 */
 	// 旋回値を設定
 	// 前進値を設定
-	if(10.0 < this->time->getTime() - this->startTime) {
+	if(5.0 < this->time->getTime() - this->startTime) {
 		forward = -50;
 	}
 	balancingWalker->setForwardTurn(forward, turn);
@@ -81,7 +81,7 @@ ControlState* StopState::next() {
 
 
 	// 経過時間で遷移
-	if(10.5 < this->time->getTime() - this->startTime) {
+	if(5.5 < this->time->getTime() - this->startTime) {
 		return new TailStandDownState();
 	}
 	return this;
