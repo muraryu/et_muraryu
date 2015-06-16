@@ -48,7 +48,7 @@ void ReadyState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 100;
+	int angle = 105;
 
 	/* 足の制御 */
 	// 旋回値を設定

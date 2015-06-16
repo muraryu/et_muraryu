@@ -27,7 +27,7 @@ LineTraceState::LineTraceState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(200,0,0);
+	this->pid = new PID(240,0,0);
 
 	// next()
 
@@ -48,7 +48,7 @@ LineTraceState::~LineTraceState() {
  */
 void LineTraceState::execute() {
 
-	int forward = 20;
+	int forward = 40;
 	int turn = 0;
 	int angle = 0;
 
@@ -78,7 +78,7 @@ void LineTraceState::execute() {
 
 	/* 足の制御 */
 	// 旋回値を設定
-	turn = -this->pid->calc(0.25,(double)this->lineMonitor->getBrightness(),-100,100);
+	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);
 	//turn = -this->pid->calc(0.49,(double)this->lineMonitor->getBrightness()/1000,-100,100);
 	/*
 	if (turn < 10) {
