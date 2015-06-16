@@ -22,6 +22,7 @@ TARGET_CPP_SOURCES = \
 	util/PID.cpp \
 	util/Test.cpp \
 	util/Time.cpp \
+	util/Str.cpp \
 	app/Driver.cpp \
 	app/Tail.cpp \
 	app/LineMonitor.cpp \

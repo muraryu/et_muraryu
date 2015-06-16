@@ -15,6 +15,7 @@
 #include "control_state/ReadyState.h"
 #include "util/Test.h"
 #include "util/Time.h"
+#include "util/Str.h"
 
 // using宣言
 using ecrobot::LightSensor;
@@ -228,8 +229,8 @@ TASK(BluetoothTask) {
  * 制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
  */
 TASK(ControlPattern) {
-
-    driver->execute();
+	Bluetooth::sendMessage(Str::valueOf((int)Time::getInstance()->getTime()));
+    //driver->execute();
 
     TerminateTask();
 }

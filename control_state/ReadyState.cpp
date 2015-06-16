@@ -9,8 +9,8 @@
 #include "ReadyState.h"
 
 #include "util/Bluetooth.h"
-//#include "control_state/StopState.h"
-#include "control_state/LineTraceState.h"
+#include "control_state/StopState.h"
+//#include "control_state/LineTraceState.h"
 
 bool Bluetooth::readyFlag;
 
@@ -78,8 +78,8 @@ ControlState* ReadyState::next() {
 	 */
 
 	if(Bluetooth::readyFlag == true) {
-		//return new StopState();
-		return new LineTraceState();
+		return new StopState();
+		//return new LineTraceState();
 	}
 
 	return this;
