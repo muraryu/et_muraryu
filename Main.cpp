@@ -8,6 +8,8 @@
 
 #include "Main.h"
 
+#include "app/LineMonitor.h"
+#include "unit/BalancingWalker.h"
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
 #include "control_state/ReadyState.h"
@@ -31,6 +33,7 @@ Nxt         gNxt;
 bool Bluetooth::readyFlag;
 
 // オブジェクトの定義
+static LineMonitor		*lineMonitor;
 static Balancer			*gBalancer;
 static BalancingWalker	*gBalancingWalker;
 static Tail				*tail;
@@ -61,6 +64,9 @@ DeclareResource(resource1);
 static void user_system_create() {
 
     // オブジェクトの作成
+	lineMonitor = LineMonitor::getInstance();
+	lineMonitor->init(&gLightSensor);
+
     gBalancer    = new Balancer();
 
     gBalancingWalker = BalancingWalker::getInstance();
@@ -91,9 +97,6 @@ static void user_system_destroy() {
 void ecrobot_device_initialize() {
     // センサ、モータなどの各デバイスの初期化関数を
     // ここで実装することができます
-
-    // ⇒ 光センサ赤色LEDをONにする
-    ecrobot_set_light_sensor_active(NXT_PORT_S3);
 
 }
 
@@ -164,6 +167,9 @@ TASK(TracerTask) {
 
 	// 時刻を進める
 	time->forward();
+
+	// まいまい式 光センサ値更新
+	lineMonitor->maimai();
 
     TerminateTask();
 }

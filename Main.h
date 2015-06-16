@@ -9,6 +9,4 @@
 #ifndef NXT_MAIN_H_
 #define NXT_MAIN_H_
 
-#include "LineTracer.h"
-
 #endif  // NXT_MAIN_H_

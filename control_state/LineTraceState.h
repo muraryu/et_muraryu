@@ -11,6 +11,8 @@
 #include "ControlState.h"
 #include "app/Tail.h"
 #include "unit/BalancingWalker.h"
+#include "util/PID.h"
+#include "app/LineMonitor.h"
 
 class LineTraceState: public ControlState {
 	typedef ControlState base;
@@ -26,6 +28,8 @@ public:
 private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
+	LineMonitor* lineMonitor;
+	PID* pid;
 
 	// execute(), next()
 

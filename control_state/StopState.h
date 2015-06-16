@@ -12,6 +12,7 @@
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
 #include "util/Time.h"
+#include "util/PID.h"
 
 class StopState : public ControlState {
 	typedef ControlState base;
@@ -33,8 +34,12 @@ private:
 	double startTime;
 
 	// execute()
+	int referenceEncValue;
 
 	// next()
+
+	// その他
+	PID* pid;
 
 };
 

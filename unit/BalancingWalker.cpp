@@ -153,3 +153,7 @@ void BalancingWalker::setStandControlMode(bool b) {
 	this->standControlMode = b;
 }
 
+int BalancingWalker::getEnc() {
+	return mRightWheel->getCount();
+}
+

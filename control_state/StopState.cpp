@@ -27,8 +27,12 @@ StopState::StopState() {
 	this->startTime = this->time->getTime();
 
 	// execute()
+	this->referenceEncValue = this->balancingWalker->getEnc();
 
 	// next()
+
+	// その他
+	this->pid = new PID(0.2,0,0);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
@@ -54,6 +58,9 @@ void StopState::execute() {
 	// 前進値を設定
 	if(5.0 < this->time->getTime() - this->startTime) {
 		forward = -50;
+	}
+	else {
+		forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
 	}
 	balancingWalker->setForwardTurn(forward, turn);
 

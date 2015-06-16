@@ -28,6 +28,8 @@ public:
     void setForwardTurn(int forward, int turn);
     int getRunningDistance();
     void setStandControlMode(bool b);
+    int getEnc();
+
 
 private:
     BalancingWalker();

@@ -24,6 +24,12 @@ Tail::Tail()
 }
 
 /**
+ * デストラクタ
+ */
+Tail::~Tail() {
+}
+
+/**
  * インスタンス取得
  */
 Tail* Tail::getInstance() {
