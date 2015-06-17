@@ -230,7 +230,7 @@ TASK(BluetoothTask) {
  * 制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
  */
 TASK(ControlPattern) {
-	Bluetooth::sendMessage((int)Time::getInstance()->getTime());
+
     //driver->execute();
 
     TerminateTask();
