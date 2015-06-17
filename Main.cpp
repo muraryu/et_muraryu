@@ -159,6 +159,7 @@ TASK(MainTask) {
 /**
  * 倒立制御用タスク 4ms周期で起動
  * 時間管理もついでにやる
+ * まいまい式もついでにやる
  */
 TASK(TracerTask) {
 
@@ -229,7 +230,7 @@ TASK(BluetoothTask) {
  * 制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
  */
 TASK(ControlPattern) {
-	Bluetooth::sendMessage(Str::valueOf((int)Time::getInstance()->getTime()));
+	Bluetooth::sendMessage((int)Time::getInstance()->getTime());
     //driver->execute();
 
     TerminateTask();

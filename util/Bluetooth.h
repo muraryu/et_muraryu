@@ -15,6 +15,7 @@ public:
 
     static void sendMessage(char* message);
     static void sendMessage(char* message, int len);
+    static void sendMessage(int value);
     static int receiveMessage(char* message, int len);
     static bool connect();
     static void dataLogger(signed char data1, signed char data2);

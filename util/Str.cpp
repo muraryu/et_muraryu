@@ -7,6 +7,10 @@
 
 #include "Str.h"
 
+/**
+ * int型の値を文字列にして返す
+ * 文字列のメモリは受け取り側で解放してください。
+ */
 char* Str::valueOf(int value) {
 
 	char* str;

@@ -9,6 +9,7 @@ extern "C" {
 #include "ecrobot_interface.h"
 }
 #include "Bluetooth.h"
+#include "util/Str.h"
 
 /**
  * コンストラクタ
@@ -24,6 +25,8 @@ Bluetooth::~Bluetooth() {
 
 /**
  * Null文字までの文字列を送信する
+ * 処理速度向上のため、文字数が分かっている場合は、
+ * sendMessage(char* message, int length)を使用してください。
  * @param message 送信文字列 null含め最大256バイト はみ出した分は無視
  */
 void Bluetooth::sendMessage(char* message) {
@@ -50,6 +53,15 @@ void Bluetooth::sendMessage(char* message, int size) {
 
 	ecrobot_send_bt(message, 0, size);
 
+}
+
+/**
+ * int型の数値を送信する
+ */
+void Bluetooth::sendMessage(int value) {
+	char* str = Str::valueOf(value);
+	Bluetooth::sendMessage(str);
+	delete[] str;
 }
 
 /**
