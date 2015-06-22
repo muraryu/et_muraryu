@@ -51,12 +51,13 @@ void ReadyState::execute() {
 	int angle = 105;
 
 	/* 足の制御 */
-	// 旋回値を設定
-	// 前進値を設定
+	// 前進値、旋回値を設定
+	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
+	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
 

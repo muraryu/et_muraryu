@@ -77,7 +77,7 @@ void LineTraceState::execute() {
 	}*/
 
 	/* 足の制御 */
-	// 旋回値を設定
+	// 前進値、旋回値を設定
 	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);
 	//turn = -this->pid->calc(0.49,(double)this->lineMonitor->getBrightness()/1000,-100,100);
 	/*
@@ -103,12 +103,12 @@ void LineTraceState::execute() {
 		Bluetooth::sendMessage("100\n", 5);
 	}
 	*/
-
-	// 前進値を設定
+	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
+	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
 }

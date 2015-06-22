@@ -54,18 +54,19 @@ void StopState::execute() {
 	int angle = 0;
 
 	/* 足の制御 */
-	// 旋回値を設定
-	// 前進値を設定
+	// 前進値、旋回値を設定
 	if(5.0 < this->time->getTime() - this->startTime) {
 		forward = -50;
 	}
 	else {
 		forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
 	}
+	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
+	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
 

@@ -55,6 +55,7 @@ void TailStandDownState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
@@ -79,7 +80,7 @@ void TailStandDownState::execute() {
 			this->commandAngle1 = 74;
 		}
 	}
-
+	// しっぽの制御実行
 	this->tail->setCommandAngle((int)(this->commandAngle1));
 
 }
