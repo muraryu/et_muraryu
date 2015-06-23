@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Bluetooth.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/02/07
- *  Implementation of the Class Bluetooth
+ *  Created on: 2015/06/23
+ *  Bluetooth関連の処理
  *  Author: muraryu
  *****************************************************************************/
 

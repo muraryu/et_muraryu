@@ -80,7 +80,7 @@ static void user_system_create() {
 
     time = Time::getInstance();
 
-    test = new Test();
+    //test = new Test();
 
     Bluetooth::readyFlag = false;
 }
