@@ -231,7 +231,7 @@ TASK(BluetoothTask) {
  */
 TASK(ControlPattern) {
 
-    //driver->execute();
+    driver->execute();
 
     TerminateTask();
 }

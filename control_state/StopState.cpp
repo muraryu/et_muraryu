@@ -42,6 +42,7 @@ StopState::StopState() {
  * デストラクタ
  */
 StopState::~StopState() {
+	delete this->pid;
 }
 
 /**

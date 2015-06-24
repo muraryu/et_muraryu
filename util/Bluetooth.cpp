@@ -104,6 +104,8 @@ bool Bluetooth::connect() {
 
 /**
  * ecrobot_bt_data_logger
+ * これを使うときは他のデータを送らないようにしないとcsvがバグる
+ * このクラスのecrobot_send_bt()使ってるところをコメントアウトする等すればＯＫ
  */
 void Bluetooth::dataLogger(signed char data1, signed char data2) {
 	ecrobot_bt_data_logger(data1, data2);

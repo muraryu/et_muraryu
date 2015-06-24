@@ -1,24 +1,25 @@
 /******************************************************************************
- *  FigureUpState.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/23
- *  Definition of the Class FigureUpState
+ *  FigureDownState.h (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/24
+ *  Definition of the Class FigureDownState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_FIGUREUPSTATE_H_
-#define NXT_CONTROL_STATE_FIGUREUPSTATE_H_
+#ifndef NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_
+#define NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_
 
 #include "control_state/ControlState.h"
+#include "app/Tail.h"
 #include "unit/balancingWalker.h"
 #include "util/Time.h"
 #include "util/PID.h"
 
-class FigureUpState : public ControlState {
+class FigureDownState : public ControlState {
 	typedef ControlState base;
 
 public:
-	FigureUpState();
-	virtual ~FigureUpState();
+	FigureDownState();
+	virtual ~FigureDownState();
 
 	// override
 	virtual void execute();
@@ -26,19 +27,17 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
-	Time* time;
 
 	// execute(), next()
-	int referenceEncValue;
 
 	// execute()
+	int referenceEncValue;
 
 	// next()
-	double satTime;
 
 	// その他
 	PID* pid;
 
 };
 
-#endif  // NXT_CONTROL_STATE_FIGUREUPSTATE_H_
+#endif  // NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_

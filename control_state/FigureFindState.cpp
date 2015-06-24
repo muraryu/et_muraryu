@@ -1,57 +1,59 @@
 /******************************************************************************
- *  ReadyState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/15
- *  Bluetooth発信合図を待機
+ *  FigureFindState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/05
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "ReadyState.h"
+#include "FigureFindState.h"
 
 #include "util/Bluetooth.h"
-//#include "control_state/StopState.h"
-#include "control_state/FigureFindState.h"
-
-bool Bluetooth::readyFlag;
+#include "control_state/FigureUpState.h"
 
 /**
  * コンストラクタ
  */
-ReadyState::ReadyState() {
+FigureFindState::FigureFindState() {
 
-	Bluetooth::sendMessage("State changed : ReadyState\n", 28);
+	Bluetooth::sendMessage("State changed : FigureFindState\n", 33);
 
-	// メンバ初期化
+	/* メンバ初期化 */
+	// シングルトン取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
 
 	// execute()
+	this->pid = new PID(240,0,0);
 
 	// next()
 
-	// 初期処理
-	this->balancingWalker->setStandControlMode(false);
+	/* 初期処理 */
+
 }
 
 /**
  * デストラクタ
  */
-ReadyState::~ReadyState() {
+FigureFindState::~FigureFindState() {
+	delete this->pid;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void ReadyState::execute() {
+void FigureFindState::execute() {
 
-	int forward = 0;
+	int forward = 40;
 	int turn = 0;
-	int angle = 105;
+	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -60,7 +62,6 @@ void ReadyState::execute() {
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
-
 }
 
 /**
@@ -68,7 +69,7 @@ void ReadyState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* ReadyState::next() {
+ControlState* FigureFindState::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -78,9 +79,12 @@ ControlState* ReadyState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	if(Bluetooth::readyFlag == true) {
-		//return new StopState();
-		return new FigureFindState();
+
+	// フィギュアＬ段差にぶつかったら遷移
+	// 両足モーター角速度deg/secが0になったら遷移する
+	// 失敗する場合はジャイロセンサも使う
+	if(false) { // TODO 角速度deg/sec取得できるようにbalancingWalkerにメソッド追加
+		return new FigureUpState();
 	}
 
 	return this;

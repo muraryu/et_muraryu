@@ -11,7 +11,7 @@
 #include "FigureUpState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/TailStandDownState.h"
+#include "control_state/FigureSpinState.h"
 
 /**
  * コンストラクタ
@@ -22,13 +22,15 @@ FigureUpState::FigureUpState() {
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->time = Time::getInstance();
 
 	// execute(), next()
+	this->referenceEncValue = this->balancingWalker->getEnc() + 720;	// 現在位置＋スピン位置まで
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getEnc();
 
 	// next()
+	this->satTime = this->time->getTime();
 
 	// その他
 	this->pid = new PID(0.2,0,0);
@@ -41,6 +43,7 @@ FigureUpState::FigureUpState() {
  * デストラクタ
  */
 FigureUpState::~FigureUpState() {
+	delete this->pid;
 }
 
 /**
@@ -54,21 +57,13 @@ void FigureUpState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(5.0 < this->time->getTime() - this->startTime) {
-		forward = -50;
-	}
-	else {
-		forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
-	}
+	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
-	this->tail->setCommandAngle(angle);
-
-
 }
 
 /**
@@ -87,9 +82,15 @@ ControlState* FigureUpState::next() {
 	 */
 
 
-	// 経過時間で遷移
-	if(5.5 < this->time->getTime() - this->startTime) {
-		return new TailStandDownState();
+	// 位置のブレ幅が停止目標位置付近の範囲に収まってから一定時間以上経過で遷移
+	int pos = this->balancingWalker->getEnc();
+	if(this->referenceEncValue - 90 < pos && pos < this->referenceEncValue + 90) {
+		if(3.0 < this->time->getTime() - this->satTime) {
+			return new FigureSpinState();
+		}
+	}
+	else {	// 停止目標範囲外に出ていたら保持していた時刻リセット
+		this->satTime = this->time->getTime();
 	}
 	return this;
 }

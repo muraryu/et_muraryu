@@ -32,6 +32,10 @@ TARGET_CPP_SOURCES = \
 	control_state/TailWalkState.cpp \
 	control_state/TailStandDownState.cpp \
 	control_state/ReadyState.cpp \
+	control_state/FigureFindState.cpp \
+	control_state/FigureUpState.cpp \
+	control_state/FigureSpinState.cpp \
+	control_state/FigureDownState.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	Main.cpp
