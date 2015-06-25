@@ -1,57 +1,64 @@
 /******************************************************************************
- *  ReadyState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/15
- *  Bluetooth発信合図を待機
+ *  Test1State.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/25
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  テスト用
  *  Author: muraryu
  *****************************************************************************/
 
-#include "ReadyState.h"
+#include "Test1State.h"
 
 #include "util/Bluetooth.h"
-//#include "control_state/StopState.h"
-#include "control_state/Test1State.h"
-
-bool Bluetooth::readyFlag;
+#include "control_state/StopState.h"
+#include "control_state/FigureFindState.h"
 
 /**
  * コンストラクタ
  */
-ReadyState::ReadyState() {
+Test1State::Test1State() {
 
-	Bluetooth::sendMessage("State changed : ReadyState\n", 28);
+	Bluetooth::sendMessage("State changed : Test1State\n", 28);
 
-	// メンバ初期化
+	/* メンバ初期化 */
+	// シングルトン取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
+	this->time = Time::getInstance();
 
 	// execute(), next()
 
 	// execute()
+	this->pid = new PID(240,0,0);
 
 	// next()
 
-	// 初期処理
-	this->balancingWalker->setStandControlMode(false);
+	/* 初期処理 */
+	this->balancingWalker->setStandControlMode(true);
+	this->startTime = this->time->getTime();
+
 }
 
 /**
  * デストラクタ
  */
-ReadyState::~ReadyState() {
+Test1State::~Test1State() {
+	delete this->pid;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void ReadyState::execute() {
+void Test1State::execute() {
 
-	int forward = 0;
+	int forward = 40;
 	int turn = 0;
-	int angle = 105;
+	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -60,7 +67,6 @@ void ReadyState::execute() {
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
-
 }
 
 /**
@@ -68,7 +74,7 @@ void ReadyState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* ReadyState::next() {
+ControlState* Test1State::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -78,10 +84,11 @@ ControlState* ReadyState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	if(Bluetooth::readyFlag == true) {
-		//return new StopState();
-		return new Test1State();
+	// チョイ走る
+	if(3.0 < this->time->getTime() - this->startTime ) {
+		return new FigureFindState();
 	}
+
 
 	return this;
 }

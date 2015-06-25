@@ -7,6 +7,8 @@
  *****************************************************************************/
 
 #include "BalancingWalker.h"
+#include "util/Bluetooth.h"
+#include "util/Str.h"
 
 DeclareResource(resource1);
 
@@ -87,7 +89,10 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
 	this->standControlMode = false;
 	this->rightWheelEncOffset = 0;
 	this->leftWheelEncOffset = 0;
-
+	this->angularVelocity = 0;
+	this->rightWheelEncBuf = new int[25];
+	for(int i=0; i<25; i++) this->rightWheelEncBuf[i] = 0;
+	this->rightWheelEncBufNext = 0;
 
 	// バランス走行に必要なものをリセットする
 	// ジャイロセンサオフセット初期化
@@ -153,7 +158,37 @@ void BalancingWalker::setStandControlMode(bool b) {
 	this->standControlMode = b;
 }
 
+/**
+ * 右モーター角度を返す
+ * @return モーター角度deg
+ */
 int BalancingWalker::getEnc() {
 	return mRightWheel->getCount();
 }
 
+/**
+ * 右モーター角速度を取得する
+ * @return モーター角速度deg/sec
+ */
+int BalancingWalker::getAngularVelocity() {
+
+	return this->angularVelocity;
+
+}
+
+/**
+ * 状態量を再計算
+ * 角速度
+ * TODO 状態量管理クラスを作成したほうがよさそう
+ */
+void BalancingWalker::updateStateVariable() {
+
+	// 角速度を更新（0.1sec間の角度degの差から角速度deg/secを計算）
+	this->rightWheelEncBuf[this->rightWheelEncBufNext] = mRightWheel->getCount();
+	this->angularVelocity = (this->rightWheelEncBuf[this->rightWheelEncBufNext] - this->rightWheelEncBuf[(this->rightWheelEncBufNext+1)%25]) * 10;
+	this->rightWheelEncBufNext++;
+	if(25 <= this->rightWheelEncBufNext) {
+		this->rightWheelEncBufNext = 0;
+	}
+
+}

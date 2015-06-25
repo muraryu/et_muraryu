@@ -29,7 +29,8 @@ public:
     int getRunningDistance();
     void setStandControlMode(bool b);
     int getEnc();
-
+    int getAngularVelocity();
+    void updateStateVariable();
 
 private:
     BalancingWalker();
@@ -50,6 +51,9 @@ private:
     S32 leftWheelEncOffset;
     S32 rightWheelEnc;
     S32 leftWheelEnc;
+    int angularVelocity;		// 角速度
+    int* rightWheelEncBuf;		// 角速度計算用循環バッファ
+    short rightWheelEncBufNext;	// 角速度計算用循環バッファ 次の書き込み位置
 
 };
 

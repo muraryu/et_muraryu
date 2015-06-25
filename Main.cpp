@@ -173,6 +173,9 @@ TASK(TracerTask) {
 	// まいまい式 光センサ値更新
 	lineMonitor->maimai();
 
+	// 足角速度更新
+	gBalancingWalker->updateStateVariable();
+
     TerminateTask();
 }
 

@@ -1,6 +1,6 @@
 /******************************************************************************
  *  FigureFindState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/05
+ *  Created on: 2015/06/24
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
@@ -9,6 +9,7 @@
 #include "FigureFindState.h"
 
 #include "util/Bluetooth.h"
+#include "util/Str.h"
 #include "control_state/FigureUpState.h"
 
 /**
@@ -47,13 +48,13 @@ FigureFindState::~FigureFindState() {
  */
 void FigureFindState::execute() {
 
-	int forward = 40;
+	int forward = 20;
 	int turn = 0;
 	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);
+	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -79,11 +80,10 @@ ControlState* FigureFindState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-
 	// フィギュアＬ段差にぶつかったら遷移
 	// 両足モーター角速度deg/secが0になったら遷移する
 	// 失敗する場合はジャイロセンサも使う
-	if(false) { // TODO 角速度deg/sec取得できるようにbalancingWalkerにメソッド追加
+	if(this->balancingWalker->getAngularVelocity() < -100) { // TODO 角速度deg/sec取得できるようにbalancingWalkerにメソッド追加
 		return new FigureUpState();
 	}
 

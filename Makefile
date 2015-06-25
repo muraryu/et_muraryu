@@ -36,6 +36,7 @@ TARGET_CPP_SOURCES = \
 	control_state/FigureUpState.cpp \
 	control_state/FigureSpinState.cpp \
 	control_state/FigureDownState.cpp \
+	control_state/Test1State.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	Main.cpp

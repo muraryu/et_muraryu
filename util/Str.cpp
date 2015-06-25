@@ -9,7 +9,7 @@
 
 /**
  * int型の値を文字列にして返す
- * 文字列のメモリは受け取り側で解放してください。
+ * 文字列のメモリは呼び出し元で解放すること
  */
 char* Str::valueOf(int value) {
 
@@ -31,14 +31,14 @@ char* Str::valueOf(int value) {
 	// 符号＆文字列メモリ確保
 	if (value < 0) {
 		length++;
-		str = new char[length + 1];
+		str = new char[length + 2];
 		str[0] = '-';
 		value*=-1;
 		index++;
 		minusFlag = true;
 	}
 	else {
-		str = new char[length + 1];
+		str = new char[length + 2];
 	}
 
 	dev = 1;
@@ -53,7 +53,8 @@ char* Str::valueOf(int value) {
 		dev*=10;
 	}
 
-	str[length] = '\0';
+	str[length] = '\n';
+	str[length+1] = '\0';
 
 	return str;
 
