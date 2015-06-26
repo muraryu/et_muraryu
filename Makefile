@@ -26,6 +26,8 @@ TARGET_CPP_SOURCES = \
 	app/Driver.cpp \
 	app/Tail.cpp \
 	app/LineMonitor.cpp \
+	control_state/CalibrationWhiteState.cpp \
+	control_state/CalibrationBlackState.cpp \
 	control_state/LineTraceState.cpp \
 	control_state/StopState.cpp \
 	control_state/TailStandUpState.cpp \
@@ -37,6 +39,7 @@ TARGET_CPP_SOURCES = \
 	control_state/FigureSpinState.cpp \
 	control_state/FigureDownState.cpp \
 	control_state/Test1State.cpp \
+	device/TouchSensor.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	Main.cpp

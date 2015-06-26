@@ -8,11 +8,12 @@
 
 #include "Main.h"
 
+#include "device/TouchSensor.h"
 #include "app/LineMonitor.h"
 #include "unit/BalancingWalker.h"
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
-#include "control_state/ReadyState.h"
+#include "control_state/CalibrationWhiteState.h"
 #include "util/Test.h"
 #include "util/Time.h"
 #include "util/Str.h"
@@ -22,6 +23,7 @@ using ecrobot::LightSensor;
 using ecrobot::GyroSensor;
 using ecrobot::Motor;
 using ecrobot::Nxt;
+using ecrobot::TouchSensor;
 
 // Device objects
 // オブジェクトを静的に確保する
@@ -31,6 +33,7 @@ Motor       gLeftWheel(PORT_C);
 Motor       gRightWheel(PORT_B);
 Motor       gTail(PORT_A);
 Nxt         gNxt;
+TouchSensor gTouchSensor(PORT_4);
 bool Bluetooth::readyFlag;
 
 // オブジェクトの定義
@@ -76,7 +79,7 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new ReadyState());
+    driver = new Driver(new CalibrationWhiteState());
 
     time = Time::getInstance();
 
