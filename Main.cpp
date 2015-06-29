@@ -13,8 +13,10 @@
 #include "unit/BalancingWalker.h"
 #include "util/Bluetooth.h"
 #include "app/Driver.h"
+#include "app/UIManager.h"
+#include "app/PostureEstimation.h"
 #include "control_state/CalibrationWhiteState.h"
-#include "util/Test.h"
+//#include "util/Test.h"
 #include "util/Time.h"
 #include "util/Str.h"
 
@@ -34,22 +36,22 @@ Motor       gRightWheel(PORT_B);
 Motor       gTail(PORT_A);
 Nxt         gNxt;
 TouchSensor gTouchSensor(PORT_4);
-bool Bluetooth::readyFlag;
 
 // オブジェクトの定義
-static LineMonitor		*lineMonitor;
-static Balancer			*gBalancer;
-static BalancingWalker	*gBalancingWalker;
-static Tail				*tail;
-static Driver			*driver;
-static Time				*time;
-static Test				*test;
+static LineMonitor			*lineMonitor;
+static Balancer				*gBalancer;
+static BalancingWalker		*gBalancingWalker;
+static Tail					*tail;
+static Driver				*driver;
+static Time					*time;
+static UIManager			*uiManager;
+static PostureEstimation	*postureEstimation;
+//static Test				*test;
 
 extern "C" {
 #include "kernel.h"
 #include "kernel_id.h"
 #include "ecrobot_interface.h"
-#include "balancer_param.c"
 
 // カーネルオブジェクト宣言
 DeclareCounter(SysTimerCnt);
@@ -83,9 +85,13 @@ static void user_system_create() {
 
     time = Time::getInstance();
 
-    //test = new Test();
+    uiManager = UIManager::getInstance();
+    uiManager->init(&gTouchSensor);
 
-    Bluetooth::readyFlag = false;
+    postureEstimation = PostureEstimation::getInstance();
+    postureEstimation->init(&gRightWheel, &gLeftWheel);
+
+    //test = new Test();
 }
 
 /**
@@ -179,6 +185,9 @@ TASK(TracerTask) {
 	// 足角速度更新
 	gBalancingWalker->updateStateVariable();
 
+	// 姿勢状態を推定して更新
+	postureEstimation->update();
+
     TerminateTask();
 }
 
@@ -187,46 +196,8 @@ TASK(TracerTask) {
  */
 TASK(BluetoothTask) {
 
-	static char buf[128];
-	static bool cflag = false;
-
-	buf[0] = '\0';
-
-	if(cflag == false) {
-		cflag = Bluetooth::connect();
-	}
-	else {
-		if(Bluetooth::receiveMessage(buf, 128) != 0) {
-			buf[1] = '\n';
-			buf[2] = buf[0];
-			buf[3] = '\n';
-			buf[4] = '>';
-			buf[5] = '\0';
-
-			Bluetooth::sendMessage(buf);
-
-			if(buf[0] == 'q') {
-				K_F[0] += 0.1F;
-			} else if(buf[0] == 'a') {
-				K_F[0] -= 0.1F;
-			} else if(buf[0] == 'w') {
-				K_F[1] += 0.1F;
-			} else if(buf[0] == 's') {
-				K_F[1] -= 0.1F;
-			} else if(buf[0] == 'e') {
-				K_F[2] += 0.1F;
-			} else if(buf[0] == 'd') {
-				K_F[2] -= 0.1F;
-			} else if(buf[0] == 'r') {
-				K_F[3] += 0.1F;
-			} else if(buf[0] == 'f') {
-				K_F[3] -= 0.1F;
-			} else if(buf[0] == '1') {
-				Bluetooth::readyFlag = true;
-			}
-
-		}
-	}
+	// UI監視
+	uiManager->update();
 
     TerminateTask();
 }

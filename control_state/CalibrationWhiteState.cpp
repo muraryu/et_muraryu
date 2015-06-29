@@ -11,8 +11,6 @@
 #include "util/Bluetooth.h"
 #include "control_state/CalibrationBlackState.h"
 
-bool Bluetooth::readyFlag;
-
 /**
  * コンストラクタ
  */
@@ -23,6 +21,8 @@ CalibrationWhiteState::CalibrationWhiteState() {
 	// メンバ初期化
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->uiManager = UIManager::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
 
@@ -32,6 +32,7 @@ CalibrationWhiteState::CalibrationWhiteState() {
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
+	this->uiManager->resetButtonPressed();
 }
 
 /**
@@ -77,8 +78,10 @@ ControlState* CalibrationWhiteState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	if(Bluetooth::readyFlag == true) {
-		//return new StopState();
+	// タッチボタンが押されたら遷移
+	if(this->uiManager->isButtonPressed() == true) {
+		// 現在の輝度を白の値とする
+		this->lineMonitor->calibrateWhite();
 		return new CalibrationBlackState();
 	}
 

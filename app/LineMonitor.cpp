@@ -22,6 +22,9 @@ LineMonitor::LineMonitor() {
 	this->brightness = 0;
 	this->brightnessBottom = 0;
 	this->maimaiCount = 0;
+	this->whiteValue = 0;
+	this->blackValue = 0;
+	this->borderValue = 0;
 }
 
 /**
@@ -67,7 +70,7 @@ double LineMonitor::getBrightness() {
 
 /**
  * まいまい式
- * LEDオンオフ切替とセンサ値更新を行う
+ * LEDオンオフ切替と輝度更新を行う
  */
 void LineMonitor::maimai() {
 
@@ -86,4 +89,29 @@ void LineMonitor::maimai() {
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,0);
 	}
 	this->maimaiCount++;
+}
+
+/**
+ * 白のキャリブレーションと白黒の境界値更新
+ */
+void LineMonitor::calibrateWhite() {
+	this->whiteValue = this->getBrightness();
+	this->borderValue = (this->whiteValue + this->blackValue) / 2;
+	Bluetooth::sendMessage(this->whiteValue*100);
+}
+
+/**
+ * 黒のキャリブレーションと白黒の境界値更新
+ */
+void LineMonitor::calibrateBlack() {
+	this->blackValue = this->getBrightness();
+	this->borderValue = (this->whiteValue + this->blackValue) / 2;
+	Bluetooth::sendMessage(this->blackValue*100);
+}
+
+/**
+ * 白黒の境界地を取得する
+ */
+double LineMonitor::getBorderValue() {
+	return this->borderValue;
 }

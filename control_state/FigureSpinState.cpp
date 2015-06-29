@@ -46,7 +46,7 @@ FigureSpinState::~FigureSpinState() {
 void FigureSpinState::execute() {
 
 	int forward = 0;
-	int turn = 0;
+	int turn = 50;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定

@@ -26,6 +26,7 @@ TARGET_CPP_SOURCES = \
 	app/Driver.cpp \
 	app/Tail.cpp \
 	app/LineMonitor.cpp \
+	app/UIManager.cpp \
 	control_state/CalibrationWhiteState.cpp \
 	control_state/CalibrationBlackState.cpp \
 	control_state/LineTraceState.cpp \

@@ -10,6 +10,8 @@
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
+#include "app/UIManager.h"
+#include "app/LineMonitor.h"
 #include "unit/balancingWalker.h"
 
 class CalibrationBlackState : public ControlState {
@@ -26,6 +28,8 @@ public:
 private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
+	UIManager* uiManager;
+	LineMonitor* lineMonitor;
 
 	// execute(), next()
 

@@ -17,7 +17,10 @@ public:
 	static LineMonitor* getInstance();
 	void init(ecrobot::LightSensor* lightSensor);
     double getBrightness();
-    void maimai();
+    void maimai();						// 周期的に呼び出して輝度を更新する
+    void calibrateWhite();				// 白のキャリブレーションと白黒の境界値更新
+    void calibrateBlack();				// 黒のキャリブレーションと白黒の境界値更新
+    double getBorderValue();			// 白黒の境界地を取得する
 
 private:
     LineMonitor();
@@ -27,9 +30,12 @@ private:
 	static LineMonitor* instance;		// シングルトンインスタンス
 
     ecrobot::LightSensor* lightSensor;	// 光センサ
-    double brightness;						// 光センサ値
-    double brightnessBottom;				// 光センサ値 まいまい式用 外光のみの反射光
+    double brightness;					// 光センサ値 maimai()が呼ばれるたびに更新される
+    double brightnessBottom;			// 光センサ値 まいまい式用 外光のみの反射光
     short maimaiCount;					// まいまい式用カウンタ
+    double whiteValue;					// 白のキャリブレーション値
+    double blackValue;					// 黒のキャリブレーション値
+    double borderValue;					// 白黒の境界値（トレース時の目標値）
 };
 
 #endif  // NXT_UNIT_LINEMONITOR_H_

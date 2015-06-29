@@ -28,7 +28,7 @@ FigureFindState::FigureFindState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(240,0,0);
+	this->pid = new PID(200,0,0);
 
 	// next()
 
@@ -54,7 +54,7 @@ void FigureFindState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
+	turn = -this->pid->calc(this->lineMonitor->getBorderValue(),(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

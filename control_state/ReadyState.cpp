@@ -12,8 +12,6 @@
 //#include "control_state/StopState.h"
 #include "control_state/Test1State.h"
 
-bool Bluetooth::readyFlag;
-
 /**
  * コンストラクタ
  */
@@ -24,6 +22,7 @@ ReadyState::ReadyState() {
 	// メンバ初期化
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->uiManager = UIManager::getInstance();
 
 	// execute(), next()
 
@@ -33,6 +32,7 @@ ReadyState::ReadyState() {
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
+	this->uiManager->resetReadyToStart();
 }
 
 /**
@@ -78,7 +78,8 @@ ControlState* ReadyState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	if(Bluetooth::readyFlag == true) {
+	// 走行開始合図が来たら遷移
+	if(this->uiManager->isReadyToStart() == true) {
 		//return new StopState();
 		return new Test1State();
 	}

@@ -30,7 +30,7 @@ Test1State::Test1State() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(240,0,0);
+	this->pid = new PID(200,0,0);
 
 	// next()
 
@@ -52,13 +52,13 @@ Test1State::~Test1State() {
  */
 void Test1State::execute() {
 
-	int forward = 40;
+	int forward = 20;
 	int turn = 0;
 	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = -this->pid->calc(0.22,(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
+	turn = -this->pid->calc(this->lineMonitor->getBorderValue(),(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

@@ -10,6 +10,7 @@
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
+#include "app/UIManager.h"
 #include "unit/balancingWalker.h"
 
 class ReadyState : public ControlState {
@@ -26,6 +27,7 @@ public:
 private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
+	UIManager* uiManager;
 
 	// execute(), next()
 

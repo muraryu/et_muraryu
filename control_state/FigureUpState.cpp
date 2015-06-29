@@ -25,7 +25,7 @@ FigureUpState::FigureUpState() {
 	this->time = Time::getInstance();
 
 	// execute(), next()
-	this->referenceEncValue = this->balancingWalker->getEnc() + 720;	// 現在位置＋スピン位置まで
+	this->referenceEncValue = this->balancingWalker->getEnc() + 630;	// 現在位置＋スピン位置まで
 
 	// execute()
 
@@ -33,7 +33,7 @@ FigureUpState::FigureUpState() {
 	this->satTime = this->time->getTime();
 
 	// その他
-	this->pid = new PID(0.2,0,0);
+	this->pid = new PID(0.1,0,0);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
