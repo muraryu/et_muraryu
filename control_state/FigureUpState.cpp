@@ -25,7 +25,7 @@ FigureUpState::FigureUpState() {
 	this->time = Time::getInstance();
 
 	// execute(), next()
-	this->referenceEncValue = this->balancingWalker->getEnc() + 630;	// 現在位置＋スピン位置まで
+	this->referenceEncValue = this->balancingWalker->getRightEnc() + 630;	// 現在位置＋スピン位置まで
 
 	// execute()
 
@@ -33,7 +33,7 @@ FigureUpState::FigureUpState() {
 	this->satTime = this->time->getTime();
 
 	// その他
-	this->pid = new PID(0.1,0,0);
+	this->pid = new PID(0.05,0,0);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
@@ -57,7 +57,7 @@ void FigureUpState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
+	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -83,7 +83,7 @@ ControlState* FigureUpState::next() {
 
 
 	// 位置のブレ幅が停止目標位置付近の範囲に収まってから一定時間以上経過で遷移
-	int pos = this->balancingWalker->getEnc();
+	int pos = this->balancingWalker->getRightEnc();
 	if(this->referenceEncValue - 90 < pos && pos < this->referenceEncValue + 90) {
 		if(3.0 < this->time->getTime() - this->satTime) {
 			return new FigureSpinState();

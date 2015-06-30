@@ -11,6 +11,8 @@
 #include "util/Bluetooth.h"
 #include "util/Str.h"
 #include "control_state/FigureUpState.h"
+#include "control_state/TailStandDownState.h"
+
 
 /**
  * コンストラクタ
@@ -83,8 +85,9 @@ ControlState* FigureFindState::next() {
 	// フィギュアＬ段差にぶつかったら遷移
 	// 両足モーター角速度deg/secが0になったら遷移する
 	// 失敗する場合はジャイロセンサも使う
-	if(this->balancingWalker->getAngularVelocity() < -100) { // TODO 角速度deg/sec取得できるようにbalancingWalkerにメソッド追加
-		return new FigureUpState();
+	if(this->balancingWalker->getRightAngularVelocity() < -100) { // TODO 角速度deg/sec取得できるようにbalancingWalkerにメソッド追加
+		return new TailStandDownState();
+		//return new FigureUpState();
 	}
 
 	return this;

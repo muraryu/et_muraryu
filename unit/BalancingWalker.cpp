@@ -86,13 +86,21 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
 	this->mBalancer 	= balancer;
 	this->forward 		= 0;
 	this->turn 			= 0;
+
 	this->standControlMode = false;
+
 	this->rightWheelEncOffset = 0;
 	this->leftWheelEncOffset = 0;
-	this->angularVelocity = 0;
-	this->rightWheelEncBuf = new int[25];
-	for(int i=0; i<25; i++) this->rightWheelEncBuf[i] = 0;
+
+	this->rightAngularVelocity = 0;
+	this->rightWheelEncBuf = new int[26];
+	for(int i=0; i<26; i++) this->rightWheelEncBuf[i] = 0;
 	this->rightWheelEncBufNext = 0;
+
+	this->leftAngularVelocity = 0;
+	this->leftWheelEncBuf = new int[26];
+	for(int i=0; i<26; i++) this->leftWheelEncBuf[i] = 0;
+	this->leftWheelEncBufNext = 0;
 
 	// バランス走行に必要なものをリセットする
 	// ジャイロセンサオフセット初期化
@@ -132,14 +140,6 @@ void BalancingWalker::setForwardTurn(int forward, int turn) {
 }
 
 /**
- * 総走行距離
- */
-int BalancingWalker::getRunningDistance() {
-	/* stub */
-	return 0;
-}
-
-/**
  * 倒立制御オンオフ設定
  * @param b	オン:true, オフ:false
  */
@@ -162,33 +162,55 @@ void BalancingWalker::setStandControlMode(bool b) {
  * 右モーター角度を返す
  * @return モーター角度deg
  */
-int BalancingWalker::getEnc() {
+int BalancingWalker::getRightEnc() {
 	return mRightWheel->getCount();
+}
+
+/**
+ * 左モーター角度を返す
+ * @return モーター角度deg
+ */
+int BalancingWalker::getLeftEnc() {
+	return mLeftWheel->getCount();
 }
 
 /**
  * 右モーター角速度を取得する
  * @return モーター角速度deg/sec
  */
-int BalancingWalker::getAngularVelocity() {
+int BalancingWalker::getRightAngularVelocity() {
+	return this->rightAngularVelocity;
+}
 
-	return this->angularVelocity;
-
+/**
+ * 左モーター角速度を取得する
+ * @return モーター角速度deg/sec
+ */
+int BalancingWalker::getLeftAngularVelocity() {
+	return this->leftAngularVelocity;
 }
 
 /**
  * 状態量を再計算
- * 角速度
- * TODO 状態量管理クラスを作成したほうがよさそう
+ * 車輪角速度
+ * TODO モータークラスに持たせるそのうち
  */
 void BalancingWalker::updateStateVariable() {
 
-	// 角速度を更新（0.1sec間の角度degの差から角速度deg/secを計算）
+	// 右車輪 角速度を更新（0.1sec間の角度degの差から角速度deg/secを計算）
 	this->rightWheelEncBuf[this->rightWheelEncBufNext] = mRightWheel->getCount();
-	this->angularVelocity = (this->rightWheelEncBuf[this->rightWheelEncBufNext] - this->rightWheelEncBuf[(this->rightWheelEncBufNext+1)%25]) * 10;
+	this->rightAngularVelocity = (this->rightWheelEncBuf[this->rightWheelEncBufNext] - this->rightWheelEncBuf[(this->rightWheelEncBufNext+1)%26]) * 10;
 	this->rightWheelEncBufNext++;
-	if(25 <= this->rightWheelEncBufNext) {
+	if(26 <= this->rightWheelEncBufNext) {
 		this->rightWheelEncBufNext = 0;
+	}
+
+	// 左車輪 角速度を更新（0.1sec間の角度degの差から角速度deg/secを計算）
+	this->leftWheelEncBuf[this->leftWheelEncBufNext] = mLeftWheel->getCount();
+	this->leftAngularVelocity = (this->leftWheelEncBuf[this->leftWheelEncBufNext] - this->leftWheelEncBuf[(this->leftWheelEncBufNext+1)%26]) * 10;
+	this->leftWheelEncBufNext++;
+	if(26 <= this->leftWheelEncBufNext) {
+		this->leftWheelEncBufNext = 0;
 	}
 
 }

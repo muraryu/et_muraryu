@@ -21,6 +21,7 @@ FigureSpinState::FigureSpinState() {
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->postureEstimation = PostureEstimation::getInstance();
 
 	// execute(), next()
 
@@ -29,9 +30,9 @@ FigureSpinState::FigureSpinState() {
 	// next()
 
 	// その他
-	this->pid = new PID(0.2,0,0);
 
 	// 初期処理
+	startDirection = this->postureEstimation->getDirection();
 }
 
 /**
@@ -75,8 +76,12 @@ ControlState* FigureSpinState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-
-	// 経過時間で遷移
+	// 360度回転で遷移
+	double diff = this->postureEstimation->getDirection() - this->startDirection;
+	Bluetooth::sendMessage(diff);
+	if(diff < -350 || 350 < diff) {
+		return new FigureDownState();
+	}
 
 	return this;
 }

@@ -9,10 +9,9 @@
 #define NXT_CONTROL_STATE_FIGURESPINSTATE_H_
 
 #include "control_state/ControlState.h"
-#include "app/Tail.h"
+
 #include "unit/balancingWalker.h"
-#include "util/Time.h"
-#include "util/PID.h"
+#include "app/PostureEstimation.h"
 
 class FigureSpinState : public ControlState {
 	typedef ControlState base;
@@ -27,15 +26,16 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
+	PostureEstimation* postureEstimation;
 
 	// execute(), next()
 
 	// execute()
 
 	// next()
+	double startDirection;
 
 	// その他
-	PID* pid;
 
 };
 

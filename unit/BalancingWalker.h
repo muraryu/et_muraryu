@@ -26,10 +26,11 @@ public:
     void init();
     void control();
     void setForwardTurn(int forward, int turn);
-    int getRunningDistance();
     void setStandControlMode(bool b);
-    int getEnc();
-    int getAngularVelocity();
+    int getRightEnc();
+    int getLeftEnc();
+    int getRightAngularVelocity();
+    int getLeftAngularVelocity();
     void updateStateVariable();
 
 private:
@@ -51,9 +52,12 @@ private:
     S32 leftWheelEncOffset;
     S32 rightWheelEnc;
     S32 leftWheelEnc;
-    int angularVelocity;		// 角速度
-    int* rightWheelEncBuf;		// 角速度計算用循環バッファ
-    short rightWheelEncBufNext;	// 角速度計算用循環バッファ 次の書き込み位置
+    int rightAngularVelocity;		// 右車輪 角速度
+    int* rightWheelEncBuf;			// 右車輪 角速度計算用循環バッファ
+    short rightWheelEncBufNext;		// 右車輪 角速度計算用循環バッファ 次の書き込み位置
+    int leftAngularVelocity;		// 左車輪 角速度
+    int* leftWheelEncBuf;			// 左車輪 角速度計算用循環バッファ
+    short leftWheelEncBufNext;		// 左車輪 角速度計算用循環バッファ 次の書き込み位置
 
 };
 

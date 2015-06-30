@@ -26,7 +26,7 @@ FigureDownState::FigureDownState() {
 	// execute(), next()
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getEnc();
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
@@ -53,7 +53,7 @@ void FigureDownState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
+	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

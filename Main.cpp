@@ -89,7 +89,7 @@ static void user_system_create() {
     uiManager->init(&gTouchSensor);
 
     postureEstimation = PostureEstimation::getInstance();
-    postureEstimation->init(&gRightWheel, &gLeftWheel);
+    postureEstimation->init(gBalancingWalker);
 
     //test = new Test();
 }

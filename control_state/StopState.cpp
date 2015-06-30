@@ -27,7 +27,7 @@ StopState::StopState() {
 	this->startTime = this->time->getTime();
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getEnc();
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
@@ -60,7 +60,7 @@ void StopState::execute() {
 		forward = -50;
 	}
 	else {
-		forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getEnc(), -100, 100);
+		forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

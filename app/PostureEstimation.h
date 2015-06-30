@@ -29,8 +29,8 @@ private:
 
 	BalancingWalker* balancingWalker;
 
-	double const wheelWidth = 0.18;		// 車輪幅[m] TODO 固定パラメータをどこにするか
-	double const interval = 0.004;		// 計算周期[sec] TODO 場所
+	double wheelWidth;		// 車輪幅[m] TODO 固定パラメータをどこにするか 定数にできない？！
+	double interval;		// 計算周期[sec] TODO 場所
 
 	/**
 	 * TODO 走行開始時の状態を原点右向きとする

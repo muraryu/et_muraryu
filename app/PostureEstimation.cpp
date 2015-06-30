@@ -18,6 +18,10 @@ PostureEstimation* PostureEstimation::instance;
  */
 PostureEstimation::PostureEstimation()
 {
+	//
+	this->wheelWidth = 0.165;
+	this->interval = 0.004;
+
 	// メンバ初期化
 	this->posX = 0;
 	this->posY = 0;
@@ -55,9 +59,8 @@ void PostureEstimation::init(BalancingWalker* balancingWalker) {
  * 姿勢状態を推定して更新
  */
 void PostureEstimation::update() {
-
-	// 方位[deg] TODO 回転速度を誰に聞くか
-	this->direction += (this->balancingWalker->getAngularVelocity() - this->balancingWalker->getAngularVelocity()) / this->wheelWidth * this->interval;
+	// 方位[deg] TODO 回転速度を誰に聞くか TODO 周速度あたりの計算おかしい 0.05
+	this->direction += (this->balancingWalker->getLeftAngularVelocity() - this->balancingWalker->getRightAngularVelocity()) / this->wheelWidth * this->interval * 0.03857;
 }
 
 /**
