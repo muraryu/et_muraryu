@@ -86,8 +86,8 @@ ControlState* FigureFindState::next() {
 	// 両足モーター角速度deg/secが0になったら遷移する
 	// 失敗する場合はジャイロセンサも使う
 	if(this->balancingWalker->getRightAngularVelocity() < -100) { // TODO 角速度deg/sec取得できるようにbalancingWalkerにメソッド追加
-		return new TailStandDownState();
-		//return new FigureUpState();
+		//return new TailStandDownState();
+		return new FigureUpState();
 	}
 
 	return this;

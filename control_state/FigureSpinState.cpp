@@ -79,7 +79,7 @@ ControlState* FigureSpinState::next() {
 	// 360度回転で遷移
 	double diff = this->postureEstimation->getDirection() - this->startDirection;
 	Bluetooth::sendMessage(diff);
-	if(diff < -350 || 350 < diff) {
+	if(diff < -360 || 360 < diff) {
 		return new FigureDownState();
 	}
 
