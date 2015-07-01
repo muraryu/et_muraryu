@@ -22,16 +22,14 @@ FigureDownState::FigureDownState() {
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getRightEnc();
+	this->pid = new PID(240,0,0);
 
 	// next()
-
-	// その他
-	this->pid = new PID(0.2,0,0);
 
 	// 初期処理
 }
@@ -47,14 +45,13 @@ FigureDownState::~FigureDownState() {
  */
 void FigureDownState::execute() {
 
-	int forward = 0;
+	int forward = 20;
 	int turn = 0;
 	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
-
+	turn = -this->pid->calc(this->lineMonitor->getBorderBrightness(),(double)this->lineMonitor->getBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

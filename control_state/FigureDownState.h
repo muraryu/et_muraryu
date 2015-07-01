@@ -9,9 +9,8 @@
 #define NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_
 
 #include "control_state/ControlState.h"
-#include "app/Tail.h"
 #include "unit/balancingWalker.h"
-#include "util/Time.h"
+#include "app/LineMonitor.h"
 #include "util/PID.h"
 
 class FigureDownState : public ControlState {
@@ -27,16 +26,14 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
+	PID* pid;
+	LineMonitor*lineMonitor;
 
 	// execute(), next()
 
 	// execute()
-	int referenceEncValue;
 
 	// next()
-
-	// その他
-	PID* pid;
 
 };
 

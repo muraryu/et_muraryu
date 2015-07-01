@@ -23,7 +23,6 @@ FigureFindState::FigureFindState() {
 
 	/* メンバ初期化 */
 	// シングルトン取得
-	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
@@ -56,14 +55,13 @@ void FigureFindState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = -this->pid->calc(this->lineMonitor->getBorderValue(),(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
+	turn = -this->pid->calc(this->lineMonitor->getBorderBrightness(),(double)this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
-	this->tail->setCommandAngle(angle);
 
 }
 

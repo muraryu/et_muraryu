@@ -34,7 +34,7 @@ private:
 	// execute()
 
 	// next()
-	double satTime;
+	int startRightEnc;
 
 	// その他
 	PID* pid;
