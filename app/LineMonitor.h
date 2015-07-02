@@ -17,10 +17,12 @@ public:
 	static LineMonitor* getInstance();
 	void init(ecrobot::LightSensor* lightSensor);
     double getBrightness();
-    void maimai();						// 周期的に呼び出して輝度を更新する
-    void calibrateWhite();				// 白のキャリブレーションと白黒の境界値更新
-    void calibrateBlack();				// 黒のキャリブレーションと白黒の境界値更新
-    double getBorderValue();			// 白黒の境界地を取得する
+    void maimai();							// 周期的に呼び出して輝度を更新する
+    void calibrateWhite();					// 白のキャリブレーションと白黒の境界値更新
+    void calibrateBlack();					// 黒のキャリブレーションと白黒の境界値更新
+    void calibrateFigureWhite();			// フィギュアLの白のキャリブレーションと白黒の境界値更新
+    double getBorderBrightness();			// 白黒の境界地を取得する
+    double getBorderFigureBrightness();		// フィギュアLの白黒の境界地を取得する
 
 private:
     LineMonitor();
@@ -33,9 +35,11 @@ private:
     double brightness;					// 光センサ値 maimai()が呼ばれるたびに更新される
     double brightnessBottom;			// 光センサ値 まいまい式用 外光のみの反射光
     short maimaiCount;					// まいまい式用カウンタ
-    double whiteValue;					// 白のキャリブレーション値
-    double blackValue;					// 黒のキャリブレーション値
-    double borderValue;					// 白黒の境界値（トレース時の目標値）
+    double whiteBrightness;				// 白のキャリブレーション値
+    double blackBrightness;				// 黒のキャリブレーション値
+    double whiteFigureBrightness;		// フィギュアLの白のキャリブレーション値
+    double borderBrightness;			// 白黒の境界値（トレース時の目標値）
+    double borderFigureBrightness;		// フィギュアLの白黒の境界値（トレース時の目標値）
 };
 
 #endif  // NXT_UNIT_LINEMONITOR_H_

@@ -58,7 +58,7 @@ void Tail::init(ecrobot::Motor* gTail) {
  */
 void Tail::control() {
 
-	double pwm = this->pid->calc(this->commandAngle, this->getAngle(), -100, 100);
+	double pwm = (int)this->pid->calc(this->commandAngle, this->getAngle(), -100, 100);
 	gTail->setPWM((signed char)pwm);
 }
 

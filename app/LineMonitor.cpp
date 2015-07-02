@@ -22,9 +22,11 @@ LineMonitor::LineMonitor() {
 	this->brightness = 0;
 	this->brightnessBottom = 0;
 	this->maimaiCount = 0;
-	this->whiteValue = 0;
-	this->blackValue = 0;
-	this->borderValue = 0;
+	this->whiteBrightness = 0;
+	this->blackBrightness = 0;
+	this->borderBrightness = 0;
+	this->whiteFigureBrightness = 0;
+	this->borderFigureBrightness = 0;
 }
 
 /**
@@ -95,23 +97,40 @@ void LineMonitor::maimai() {
  * 白のキャリブレーションと白黒の境界値更新
  */
 void LineMonitor::calibrateWhite() {
-	this->whiteValue = this->getBrightness();
-	this->borderValue = (this->whiteValue + this->blackValue) / 2;
-	Bluetooth::sendMessage(this->whiteValue*100);
+	this->whiteBrightness = this->getBrightness();
+	this->borderBrightness = (this->whiteBrightness + this->blackBrightness) / 2;
+	Bluetooth::sendMessage((int)(this->whiteBrightness*100));
 }
 
 /**
  * 黒のキャリブレーションと白黒の境界値更新
  */
 void LineMonitor::calibrateBlack() {
-	this->blackValue = this->getBrightness();
-	this->borderValue = (this->whiteValue + this->blackValue) / 2;
-	Bluetooth::sendMessage(this->blackValue*100);
+	this->blackBrightness = this->getBrightness();
+	this->borderBrightness = (this->whiteBrightness + this->blackBrightness) / 2;
+	this->borderFigureBrightness = (this->whiteFigureBrightness + this->blackBrightness) / 2;
+	Bluetooth::sendMessage((int)(this->blackBrightness*100));
+}
+
+/**
+ * フィギュアLの白のキャリブレーションと白黒の境界値更新
+ */
+void LineMonitor::calibrateFigureWhite() {
+	this->whiteFigureBrightness = this->getBrightness();
+	this->borderFigureBrightness = (this->whiteFigureBrightness + this->blackBrightness) / 2;
+	Bluetooth::sendMessage((int)(this->whiteFigureBrightness*100));
 }
 
 /**
  * 白黒の境界地を取得する
  */
-double LineMonitor::getBorderValue() {
-	return this->borderValue;
+double LineMonitor::getBorderBrightness() {
+	return this->borderBrightness;
+}
+
+/**
+ * フィギュアLの白黒の境界地を取得する
+ */
+double LineMonitor::getBorderFigureBrightness() {
+	return this->borderFigureBrightness;
 }

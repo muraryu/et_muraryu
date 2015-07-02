@@ -60,7 +60,7 @@ void StopState::execute() {
 		forward = -50;
 	}
 	else {
-		forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
+		forward = (int)this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

@@ -9,7 +9,7 @@
 #include "CalibrationBlackState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/ReadyState.h"
+#include "control_state/CalibrationFigureWhiteState.h"
 
 /**
  * コンストラクタ
@@ -19,8 +19,6 @@ CalibrationBlackState::CalibrationBlackState() {
 	Bluetooth::sendMessage("State changed : CalibrationBlackState\n", 39);
 
 	// メンバ初期化
-	this->tail = Tail::getInstance();
-	this->balancingWalker = BalancingWalker::getInstance();
 	this->uiManager = UIManager::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
@@ -31,7 +29,6 @@ CalibrationBlackState::CalibrationBlackState() {
 	// next()
 
 	// 初期処理
-	this->balancingWalker->setStandControlMode(false);
 	this->uiManager->resetButtonPressed();
 }
 
@@ -46,20 +43,13 @@ CalibrationBlackState::~CalibrationBlackState() {
  */
 void CalibrationBlackState::execute() {
 
-	int forward = 0;
-	int turn = 0;
-	int angle = 105;
-
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
-	this->tail->setCommandAngle(angle);
-
 
 }
 
@@ -82,7 +72,7 @@ ControlState* CalibrationBlackState::next() {
 	if(this->uiManager->isButtonPressed() == true) {
 		// 現在の輝度を黒の値とする
 		this->lineMonitor->calibrateBlack();
-		return new ReadyState();
+		return new CalibrationFigureWhiteState();
 	}
 
 	return this;

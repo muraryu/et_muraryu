@@ -1,63 +1,55 @@
 /******************************************************************************
- *  FigureSpinState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/24
- *  制御ステートに応じた制御を行う
+ *  CalibrationFigureWhiteState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/07/02
  *  ステートパターンConcrete
- *  フィギュアLスピン
+ *  タッチボタンを押すとフィギュアLの白の値をキャリブレーションする
  *  Author: muraryu
  *****************************************************************************/
 
-#include "FigureSpinState.h"
+#include "CalibrationFigureWhiteState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/FigureDownState.h"
+#include "control_state/ReadyState.h"
 
 /**
  * コンストラクタ
  */
-FigureSpinState::FigureSpinState() {
+CalibrationFigureWhiteState::CalibrationFigureWhiteState() {
 
-	Bluetooth::sendMessage("State changed : FigureSpinState\n", 33);
+	Bluetooth::sendMessage("State changed : CalibrationFigureWhiteState\n", 45);
 
 	// メンバ初期化
-	this->balancingWalker = BalancingWalker::getInstance();
-	this->postureEstimation = PostureEstimation::getInstance();
+	this->uiManager = UIManager::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
 
-	// execute(
+	// execute()
 
 	// next()
 
-	// その他
-
 	// 初期処理
-	startDirection = this->postureEstimation->getDirection();
+	this->uiManager->resetButtonPressed();
 }
 
 /**
  * デストラクタ
  */
-FigureSpinState::~FigureSpinState() {
+CalibrationFigureWhiteState::~CalibrationFigureWhiteState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void FigureSpinState::execute() {
-
-	int forward = 0;
-	int turn = 50;
+void CalibrationFigureWhiteState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
-
 
 }
 
@@ -66,7 +58,7 @@ void FigureSpinState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* FigureSpinState::next() {
+ControlState* CalibrationFigureWhiteState::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -76,11 +68,11 @@ ControlState* FigureSpinState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	// 360度回転で遷移
-	double diff = this->postureEstimation->getDirection() - this->startDirection;
-	Bluetooth::sendMessage((int)diff);
-	if(diff < -360 || 360 < diff) {
-		return new FigureDownState();
+	// タッチボタンが押されたら遷移
+	if(this->uiManager->isButtonPressed() == true) {
+		// 現在の輝度をフィギュアLの白の値とする
+		this->lineMonitor->calibrateFigureWhite();
+		return new ReadyState();
 	}
 
 	return this;

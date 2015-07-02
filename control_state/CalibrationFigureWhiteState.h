@@ -1,23 +1,23 @@
 /******************************************************************************
- *  CalibrationBlackState.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/15
- *  Definition of the Class CalibrationBlackState
+ *  CalibrationFigureWhiteState.h (for LEGO Mindstorms NXT)
+ *  Created on: 2015/07/02
+ *  Definition of the Class CalibrationFigureWhiteState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_CALIBRATIONBLACKSTATE_H_
-#define NXT_CONTROL_STATE_CALIBRATIONBLACKSTATE_H_
+#ifndef NXT_CONTROL_STATE_CALIBRATIONFIGUREWHITESTATE_H_
+#define NXT_CONTROL_STATE_CALIBRATIONFIGUREWHITESTATE_H_
 
 #include "control_state/ControlState.h"
 #include "app/UIManager.h"
 #include "app/LineMonitor.h"
 
-class CalibrationBlackState : public ControlState {
+class CalibrationFigureWhiteState : public ControlState {
 	typedef ControlState base;
 
 public:
-	CalibrationBlackState();
-	virtual ~CalibrationBlackState();
+	CalibrationFigureWhiteState();
+	virtual ~CalibrationFigureWhiteState();
 
 	// override
 	virtual void execute();
@@ -35,4 +35,4 @@ private:
 
 };
 
-#endif  // NXT_CONTROL_STATE_CALIBRATIONBLACKSTATE_H_
+#endif  // NXT_CONTROL_STATE_CALIBRATIONFIGUREWHITESTATE_H_

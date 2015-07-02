@@ -49,11 +49,10 @@ void FigureLineTraceState::execute() {
 
 	int forward = 20;
 	int turn = 0;
-	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = -this->pid->calc(this->lineMonitor->getBorderBrightness(),(double)this->lineMonitor->getBrightness(),-100,100);
+	turn = (int)-this->pid->calc(this->lineMonitor->getBorderFigureBrightness(),this->lineMonitor->getBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

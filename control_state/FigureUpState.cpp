@@ -52,11 +52,10 @@ void FigureUpState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
+	forward = (int)this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
