@@ -60,7 +60,8 @@ void PostureEstimation::init(BalancingWalker* balancingWalker) {
  */
 void PostureEstimation::update() {
 	// 方位[deg] TODO 回転速度を誰に聞くか TODO 周速度あたりの計算おかしい 0.05
-	this->direction += (this->balancingWalker->getLeftAngularVelocity() - this->balancingWalker->getRightAngularVelocity()) / this->wheelWidth * this->interval * 0.03857;
+	this->direction += (this->balancingWalker->getLeftAngularVelocity() - this->balancingWalker->getRightAngularVelocity()) / this->wheelWidth * this->interval * 0.04002;
+	//Bluetooth::sendMessage(this->direction);
 }
 
 /**

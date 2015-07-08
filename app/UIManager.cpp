@@ -104,6 +104,10 @@ void UIManager::update() {
 				K_F[3] += 0.1F;
 			} else if(buf[0] == 'f') {
 				K_F[3] -= 0.1F;
+			} else if(buf[0] == 't') {
+				K_THETADOT += 0.1F;
+			} else if(buf[0] == 'g') {
+				K_THETADOT -= 0.1F;
 			} else if(buf[0] == '1') {
 				this->isReadyToStartFlag = true;
 			}

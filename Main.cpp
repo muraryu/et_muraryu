@@ -15,7 +15,10 @@
 #include "app/Driver.h"
 #include "app/UIManager.h"
 #include "app/PostureEstimation.h"
+
 #include "control_state/CalibrationWhiteState.h"
+#include "control_state/ReadyState.h"
+
 //#include "util/Test.h"
 #include "util/Time.h"
 #include "util/Str.h"
@@ -58,10 +61,10 @@ DeclareCounter(SysTimerCnt);
 DeclareAlarm(CyclicAlarm1); 	// 倒立制御用アラーム 4msでexpire 設定はSetRelAlarm()の引数で行う
 DeclareAlarm(CyclicAlarm2); 	// bluetooth接続アラーム
 DeclareAlarm(CyclicAlarm3); 	// 制御パターンアラーム
-DeclareTask(MainTask);			// 最初に実行されるタスク
+DeclareTask(InitTask);			// 最初に実行されるタスク
 DeclareTask(TracerTask);		// 倒立制御用タスク 4ms周期で起動
 DeclareTask(BluetoothTask);		// bluetoothタスク
-DeclareTask(ControlPattern);	// 制御パターンタスク
+DeclareTask(MainTask);			// メインタスク
 DeclareResource(resource1);
 
 /**
@@ -82,6 +85,7 @@ static void user_system_create() {
     tail->init(&gTail);
 
     driver = new Driver(new CalibrationWhiteState());
+    //driver = new Driver(new ReadyState());
 
     time = Time::getInstance();
 
@@ -138,7 +142,7 @@ void user_1ms_isr_type2(void) {
     }
 }
 
-TASK(MainTask) {
+TASK(InitTask) {
     user_system_create();
 
     StatusType ercd;
@@ -176,18 +180,6 @@ TASK(TracerTask) {
 	gBalancingWalker->control();
 	tail->control();
 
-	// 時刻を進める
-	time->forward();
-
-	// まいまい式 光センサ値更新
-	lineMonitor->maimai();
-
-	// 足角速度更新
-	gBalancingWalker->updateStateVariable();
-
-	// 姿勢状態を推定して更新
-	postureEstimation->update();
-
     TerminateTask();
 }
 
@@ -203,12 +195,26 @@ TASK(BluetoothTask) {
 }
 
 /**
- * 制御パターンタスク 4ms周期で起動
- * 制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
+ * メインタスク 4ms周期で起動
+ * システムの各値を更新したあと、制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
  */
-TASK(ControlPattern) {
+TASK(MainTask) {
 
-    driver->execute();
+	// 時刻を進める
+	time->forward();
+
+	// まいまい式 光センサ値更新
+	lineMonitor->maimai();
+
+	// 足角速度更新
+	gBalancingWalker->updateStateVariable();
+
+	// 姿勢状態を推定して更新
+	postureEstimation->update();
+
+	// 制御パターン実行
+	driver->execute();
+
 
     TerminateTask();
 }

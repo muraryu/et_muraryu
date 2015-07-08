@@ -22,16 +22,20 @@ FigureLineTraceState::FigureLineTraceState() {
 	// シングルトン取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
+	this->time = Time::getInstance();
 
 	// execute(), next()
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 
 	// execute()
 	this->pid = new PID(240,0,0);
+	this->pidForward = new PID(0.2,0,0);
 
 	// next()
+	this->satTime = this->time->getTime();
 
 	/* 初期処理 */
+	this->referenceEncValue = this->balancingWalker->getRightEnc() + 400;	// 現在位置＋スピン位置まで
 
 }
 
@@ -52,6 +56,7 @@ void FigureLineTraceState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	turn = (int)-this->pid->calc(this->lineMonitor->getBorderFigureBrightness(),this->lineMonitor->getBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
@@ -78,8 +83,15 @@ ControlState* FigureLineTraceState::next() {
 	 */
 
 	// スピン位置まで一定量進んで遷移
-	if(270 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
-		return new FigureSpinState();
+	//if(270 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	int pos = this->balancingWalker->getRightEnc();
+	if(this->referenceEncValue - 45 < pos && pos < this->referenceEncValue + 45) {
+		if(3.0 < this->time->getTime() - this->satTime) {
+			return new FigureSpinState();
+		}
+	}
+	else {
+		this->satTime = this->time->getTime();
 	}
 
 	return this;

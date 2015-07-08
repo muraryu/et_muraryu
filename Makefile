@@ -38,11 +38,14 @@ TARGET_CPP_SOURCES = \
 	control_state/TailStandDownState.cpp \
 	control_state/ReadyState.cpp \
 	control_state/FigureFindState.cpp \
+	control_state/FigureSitDownState.cpp \
 	control_state/FigureUpState.cpp \
 	control_state/FigureLineTraceState.cpp \
 	control_state/FigureSpinState.cpp \
+	control_state/FigureFindLineState.cpp \
 	control_state/FigureDownState.cpp \
 	control_state/Test1State.cpp \
+	control_state/TestStopState.cpp \
 	device/TouchSensor.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \

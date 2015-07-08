@@ -1,53 +1,58 @@
 /******************************************************************************
- *  ReadyState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/15
- *  Bluetooth発信合図を待機
+ *  FigureSitDownState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/03
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "ReadyState.h"
+#include "FigureSitDownState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/TestStopState.h"
-#include "control_state/Test1State.h"
+#include "control_state/TailStandDownState.h"
 
 /**
  * コンストラクタ
  */
-ReadyState::ReadyState() {
+FigureSitDownState::FigureSitDownState() {
 
-	Bluetooth::sendMessage("State changed : ReadyState\n", 28);
+	Bluetooth::sendMessage("State changed : FigureSitDownState\n", 36);
 
 	// メンバ初期化
 	this->tail = Tail::getInstance();
+	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
-	this->uiManager = UIManager::getInstance();
 
 	// execute(), next()
+	this->startTime = this->time->getTime();
 
 	// execute()
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
+	// その他
+	this->pid = new PID(0.2,0,0);
+
 	// 初期処理
-	this->uiManager->resetReadyToStart();
+	this->balancingWalker->setStandControlMode(false);
 }
 
 /**
  * デストラクタ
  */
-ReadyState::~ReadyState() {
+FigureSitDownState::~FigureSitDownState() {
+	delete this->pid;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void ReadyState::execute() {
+void FigureSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 105;
+	int angle = 100;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -67,7 +72,7 @@ void ReadyState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* ReadyState::next() {
+ControlState* FigureSitDownState::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -77,11 +82,12 @@ ControlState* ReadyState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	// 走行開始合図が来たら遷移
-	if(this->uiManager->isReadyToStart() == true) {
-		//return new TestStopState();
-		return new Test1State();
-	}
 
+	// 経過時間で遷移
+	/*
+	if(5.5 < this->time->getTime() - this->startTime) {
+		return new TailStandDownState();
+	}
+	*/
 	return this;
 }

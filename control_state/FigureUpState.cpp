@@ -81,7 +81,7 @@ ControlState* FigureUpState::next() {
 
 
 	// 車輪が一定以上回転したら遷移
-	if(200 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	if(90 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 		return new FigureLineTraceState();
 	}
 

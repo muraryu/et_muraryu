@@ -11,6 +11,7 @@
 #include "ControlState.h"
 #include "unit/BalancingWalker.h"
 #include "util/PID.h"
+#include "util/Time.h"
 #include "app/LineMonitor.h"
 
 class FigureLineTraceState: public ControlState {
@@ -27,14 +28,20 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	LineMonitor* lineMonitor;
+	Time* time;
+	PID* pidForward;
 	PID* pid;
+
 
 	// execute(), next()
 	int startRightEnc;
+	int referenceEncValue;
 
 	// execute()
 
 	// next()
+	double satTime;
+
 };
 
 #endif /* NXT_CONTROL_STATE_FIGURELINETRACESTATE_H_ */

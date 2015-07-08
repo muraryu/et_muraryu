@@ -27,7 +27,7 @@ CPU ATMEL_AT91SAM7S256
     MASK = AUTO;
   };
 
-  TASK MainTask
+  TASK InitTask
   {
     AUTOSTART = TRUE
     {
@@ -59,7 +59,7 @@ CPU ATMEL_AT91SAM7S256
     STACKSIZE = 512;
   };
 
-  TASK ControlPattern
+  TASK MainTask
   {
     AUTOSTART = FALSE;
     PRIORITY = 15;
@@ -97,7 +97,7 @@ CPU ATMEL_AT91SAM7S256
     COUNTER = SysTimerCnt;
     ACTION  = ACTIVATETASK
     {
-      TASK = ControlPattern;
+      TASK = MainTask;
     };
     AUTOSTART = FALSE;
   };

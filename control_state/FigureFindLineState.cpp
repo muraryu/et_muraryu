@@ -1,5 +1,5 @@
 /******************************************************************************
- *  FigureSpinState.cpp (for LEGO Mindstorms NXT)
+ *  FigureFindLineState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/24
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
@@ -7,52 +7,71 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#include "FigureSpinState.h"
+#include "FigureFindLineState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/FigureFindLineState.h"
+#include "control_state/FigureDownState.h"
 
 /**
  * コンストラクタ
  */
-FigureSpinState::FigureSpinState() {
+FigureFindLineState::FigureFindLineState() {
 
-	Bluetooth::sendMessage("State changed : FigureSpinState\n", 33);
+	Bluetooth::sendMessage("State changed : FigureFindLineState\n", 37);
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
-
+	this->findFlag = false;
 	// execute(
 
 	// next()
+	this->minBrightness = this->lineMonitor->getBrightness();
 
 	// その他
 
 	// 初期処理
-	startDirection = this->postureEstimation->getDirection();
+	this->startDirection = this->postureEstimation->getDirection();
 }
 
 /**
  * デストラクタ
  */
-FigureSpinState::~FigureSpinState() {
+FigureFindLineState::~FigureFindLineState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void FigureSpinState::execute() {
+void FigureFindLineState::execute() {
 
 	int forward = 0;
-	int turn = -50;
+	int turn = 0;
+	double brightness = this->lineMonitor->getBrightness();
+
+	/* ライン左端発見の判断 */
+	if(brightness < this->minBrightness) {
+		this->minBrightness = brightness;
+	}
+	if(this->minBrightness*1.25 < brightness) {
+		Bluetooth::sendMessage("LineFound\n", 11);
+		this->findFlag = true;
+	}
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	if(this->findFlag == false) {
+		forward = 20;
+		turn = -30;
+	} else {
+		forward = 0;
+		turn = 30;
+	}
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	this->balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
@@ -66,7 +85,7 @@ void FigureSpinState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* FigureSpinState::next() {
+ControlState* FigureFindLineState::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -76,10 +95,9 @@ ControlState* FigureSpinState::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
-	// 360度回転で遷移
 	double diff = this->postureEstimation->getDirection() - this->startDirection;
-	if(diff < -360 || 360 < diff) {
-		return new FigureFindLineState();
+	if(this->findFlag == true && 0 < diff) { // 左旋回でライン見つけた後0度を超えるまで右旋回したら遷移
+		return new FigureDownState();
 	}
 
 	return this;
