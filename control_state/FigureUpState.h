@@ -10,7 +10,6 @@
 
 #include "control_state/ControlState.h"
 #include "unit/balancingWalker.h"
-#include "util/Time.h"
 #include "util/PID.h"
 
 class FigureUpState : public ControlState {
@@ -26,10 +25,8 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
-	Time* time;
 
 	// execute(), next()
-	int referenceEncValue;
 
 	// execute()
 

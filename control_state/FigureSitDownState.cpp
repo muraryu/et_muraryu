@@ -9,7 +9,7 @@
 #include "FigureSitDownState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/TailStandDownState.h"
+#include "control_state/FigureUpState.h"
 
 /**
  * コンストラクタ
@@ -84,10 +84,10 @@ ControlState* FigureSitDownState::next() {
 
 
 	// 経過時間で遷移
-	/*
-	if(5.5 < this->time->getTime() - this->startTime) {
-		return new TailStandDownState();
+
+	if(1.0 < this->time->getTime() - this->startTime) {
+		return new FigureUpState();
 	}
-	*/
+
 	return this;
 }

@@ -22,10 +22,8 @@ FigureUpState::FigureUpState() {
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
-	this->time = Time::getInstance();
 
 	// execute(), next()
-	this->referenceEncValue = this->balancingWalker->getRightEnc() + 630;	// 現在位置+目標位置までの差
 
 	// execute()
 
@@ -50,12 +48,12 @@ FigureUpState::~FigureUpState() {
  */
 void FigureUpState::execute() {
 
-	int forward = 0;
+	int forward = 30;
 	int turn = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = (int)this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
+	//turn
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -81,7 +79,7 @@ ControlState* FigureUpState::next() {
 
 
 	// 車輪が一定以上回転したら遷移
-	if(90 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	if(180 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 		return new FigureLineTraceState();
 	}
 
