@@ -48,10 +48,10 @@ private:
     S32 turn;
     bool standControlMode;
     int offset;
-    S32 rightWheelEncOffset;
-    S32 leftWheelEncOffset;
-    S32 rightWheelEnc;
-    S32 leftWheelEnc;
+    S32 rightWheelEncOffset;	// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
+    S32 leftWheelEncOffset;		// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
+    S32 rightWheelEnc;			// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
+    S32 leftWheelEnc;			// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
     int rightAngularVelocity;		// 右車輪 角速度
     int* rightWheelEncBuf;			// 右車輪 角速度計算用循環バッファ
     short rightWheelEncBufNext;		// 右車輪 角速度計算用循環バッファ 次の書き込み位置
