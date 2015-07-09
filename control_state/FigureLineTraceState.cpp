@@ -28,8 +28,8 @@ FigureLineTraceState::FigureLineTraceState() {
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 
 	// execute()
-	this->pid = new PID(240,0,0);
-	this->pidForward = new PID(0.2,0,0);
+	this->pid = new PID(20,0,0);
+	this->pidForward = new PID(0.1,0,0);
 
 	// next()
 	this->satTime = this->time->getTime();
@@ -51,7 +51,7 @@ FigureLineTraceState::~FigureLineTraceState() {
  */
 void FigureLineTraceState::execute() {
 
-	int forward = 20;
+	int forward = 0;
 	int turn = 0;
 
 	/* 足の制御 */
@@ -85,13 +85,8 @@ ControlState* FigureLineTraceState::next() {
 	// スピン位置まで一定量進んで遷移
 	//if(270 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 	int pos = this->balancingWalker->getRightEnc();
-	if(this->referenceEncValue - 45 < pos && pos < this->referenceEncValue + 45) {
-		if(3.0 < this->time->getTime() - this->satTime) {
-			return new FigureSpinState();
-		}
-	}
-	else {
-		this->satTime = this->time->getTime();
+	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
+		return new FigureSpinState();
 	}
 
 	return this;

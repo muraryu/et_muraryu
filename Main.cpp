@@ -84,7 +84,7 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new CalibrationWhiteState());
+    driver = new Driver(new ReadyState());
     //driver = new Driver(new ReadyState());
 
     time = Time::getInstance();

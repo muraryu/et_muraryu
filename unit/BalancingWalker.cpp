@@ -59,8 +59,8 @@ void BalancingWalker::control() {
     	mRightWheel->setPWM(mBalancer->getPwmRight());
     }
     else {
-    	mLeftWheel->setPWM(forward); // TODO しっぽで旋回
-    	mRightWheel->setPWM(forward);
+    	mLeftWheel->setPWM(forward + this->turn*1.0); // TODO しっぽで走行するときの旋回と前進のPWM計算
+    	mRightWheel->setPWM(forward - this->turn*1.0);//      現状適当 前進量と進行方向速度、旋回量と旋回角速度が比例するようにする
     }
 }
 

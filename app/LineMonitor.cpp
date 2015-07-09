@@ -22,11 +22,13 @@ LineMonitor::LineMonitor() {
 	this->brightness = 0;
 	this->brightnessBottom = 0;
 	this->maimaiCount = 0;
-	this->whiteBrightness = 0;
-	this->blackBrightness = 0;
-	this->borderBrightness = 0;
-	this->whiteFigureBrightness = 0;
-	this->borderFigureBrightness = 0;
+
+	// プリセット値
+	this->whiteBrightness = 0.30;
+	this->blackBrightness = 0.12;
+	this->borderBrightness = 0.21;
+	this->whiteFigureBrightness = 0.32;
+	this->borderFigureBrightness = 0.26;
 }
 
 /**

@@ -25,7 +25,7 @@ FigureSpinState::FigureSpinState() {
 
 	// execute(), next()
 
-	// execute(
+	// execute()
 
 	// next()
 
