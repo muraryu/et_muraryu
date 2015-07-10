@@ -153,6 +153,7 @@ void BalancingWalker::setStandControlMode(bool b) {
 	else if(this->standControlMode == false && b == true) {
 		this->rightWheelEncOffset = mRightWheel->getCount() - this->rightWheelEnc;
 		this->leftWheelEncOffset = mLeftWheel->getCount() - this->leftWheelEnc;
+		this->init();
 	}
 
 	this->standControlMode = b;

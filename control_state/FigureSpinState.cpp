@@ -11,6 +11,7 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/FigureFindLineState.h"
+#include "control_state/FigureLineTraceState.h"
 
 /**
  * コンストラクタ
@@ -47,7 +48,7 @@ FigureSpinState::~FigureSpinState() {
 void FigureSpinState::execute() {
 
 	int forward = 0;
-	int turn = -50;
+	int turn = -30;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -78,8 +79,8 @@ ControlState* FigureSpinState::next() {
 
 	// 360度回転で遷移
 	double diff = this->postureEstimation->getDirection() - this->startDirection;
-	if(diff < -360 || 360 < diff) {
-		return new FigureFindLineState();
+	if(diff < -330 || 330 < diff) {
+		return new FigureLineTraceState();
 	}
 
 	return this;

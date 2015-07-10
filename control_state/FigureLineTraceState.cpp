@@ -21,6 +21,7 @@ FigureLineTraceState::FigureLineTraceState() {
 	/* メンバ初期化 */
 	// シングルトン取得
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->tail = Tail::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->time = Time::getInstance();
 
@@ -28,14 +29,15 @@ FigureLineTraceState::FigureLineTraceState() {
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 
 	// execute()
-	this->pid = new PID(20,0,0);
-	this->pidForward = new PID(0.1,0,0);
+	this->pid = new PID(250,0,0);
+	this->pidForward = new PID(0.1,0.0002,0);
 
 	// next()
 	this->satTime = this->time->getTime();
 
 	/* 初期処理 */
-	this->referenceEncValue = this->balancingWalker->getRightEnc() + 400;	// 現在位置＋スピン位置まで
+	//this->balancingWalker->setStandControlMode(true);
+	this->referenceEncValue = this->balancingWalker->getRightEnc() + 180;	// 現在位置＋スピン位置まで
 
 }
 
@@ -44,6 +46,7 @@ FigureLineTraceState::FigureLineTraceState() {
  */
 FigureLineTraceState::~FigureLineTraceState() {
 	delete this->pid;
+	delete this->pidForward;
 }
 
 /**
@@ -51,12 +54,14 @@ FigureLineTraceState::~FigureLineTraceState() {
  */
 void FigureLineTraceState::execute() {
 
-	int forward = 0;
+	int forward = 20;
 	int turn = 0;
+	int angle = 0;
 
+	Bluetooth::sendMessage(this->lineMonitor->getBrightness()*100);
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
+	//forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	turn = (int)-this->pid->calc(this->lineMonitor->getBorderFigureBrightness(),this->lineMonitor->getBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
@@ -64,6 +69,7 @@ void FigureLineTraceState::execute() {
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
+	//this->tail->setCommandAngle(angle);
 
 }
 
@@ -85,8 +91,9 @@ ControlState* FigureLineTraceState::next() {
 	// スピン位置まで一定量進んで遷移
 	//if(270 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 	int pos = this->balancingWalker->getRightEnc();
-	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
-		return new FigureSpinState();
+	//if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
+	if(this->referenceEncValue < pos) {
+	return new FigureSpinState();
 	}
 
 	return this;

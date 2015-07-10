@@ -10,6 +10,7 @@
 
 #include "ControlState.h"
 #include "unit/BalancingWalker.h"
+#include "app/Tail.h"
 #include "util/PID.h"
 #include "util/Time.h"
 #include "app/LineMonitor.h"
@@ -27,6 +28,7 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
+	Tail* tail;
 	LineMonitor* lineMonitor;
 	Time* time;
 	PID* pidForward;

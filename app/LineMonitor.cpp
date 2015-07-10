@@ -28,7 +28,7 @@ LineMonitor::LineMonitor() {
 	this->blackBrightness = 0.12;
 	this->borderBrightness = 0.21;
 	this->whiteFigureBrightness = 0.32;
-	this->borderFigureBrightness = 0.26;
+	this->borderFigureBrightness = 0.19;
 }
 
 /**

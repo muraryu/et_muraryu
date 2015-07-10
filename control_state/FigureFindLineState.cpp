@@ -65,10 +65,10 @@ void FigureFindLineState::execute() {
 	// 前進値、旋回値を設定
 	if(this->findFlag == false) {
 		forward = 20;
-		turn = -30;
+		turn = -20;
 	} else {
 		forward = 0;
-		turn = 30;
+		turn = -20;
 	}
 	// 足の制御実行
 	this->balancingWalker->setForwardTurn(forward, turn);

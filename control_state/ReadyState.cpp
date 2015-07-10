@@ -52,7 +52,7 @@ void ReadyState::execute() {
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	this->balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
