@@ -85,7 +85,7 @@ ControlState* Test1State::next() {
 	 */
 
 	// チョイ走る
-	if(.0 < this->time->getTime() - this->startTime ) {
+	if(3.0 < this->time->getTime() - this->startTime ) {
 		return new FigureFindState();
 	}
 

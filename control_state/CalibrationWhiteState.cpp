@@ -10,8 +10,6 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/CalibrationBlackState.h"
-#include "control_state/LineTraceState.h"
-
 
 /**
  * コンストラクタ
@@ -83,10 +81,8 @@ ControlState* CalibrationWhiteState::next() {
 	// タッチボタンが押されたら遷移
 	if(this->uiManager->isButtonPressed() == true) {
 		// 現在の輝度を白の値とする
-		//this->lineMonitor->calibrateWhite();
-		//this->lineMonitor->setBorderBrightness(this->lineMonitor->getBrightness());
+		this->lineMonitor->calibrateWhite();
 		return new CalibrationBlackState();
-		//return new LineTraceState();
 	}
 
 	return this;

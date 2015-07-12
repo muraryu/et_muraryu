@@ -136,7 +136,3 @@ double LineMonitor::getBorderBrightness() {
 double LineMonitor::getBorderFigureBrightness() {
 	return this->borderFigureBrightness;
 }
-
-void LineMonitor::setBorderBrightness(double val) {
-	this->borderBrightness = val;
-}

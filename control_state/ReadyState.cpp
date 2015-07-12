@@ -81,7 +81,6 @@ ControlState* ReadyState::next() {
 	if(this->uiManager->isReadyToStart() == true) {
 		//return new TestStopState();
 		return new Test1State();
-
 	}
 
 	return this;
