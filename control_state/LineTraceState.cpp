@@ -9,7 +9,8 @@
 #include "LineTraceState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/StopState.h"
+#include "control_state/FigureFindState.h"
+#include "control_state/CalibrationWhiteState.h"
 
 /**
  * コンストラクタ
@@ -27,7 +28,7 @@ LineTraceState::LineTraceState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(240,0,0);
+	this->pid = new PID(200,0,0);
 
 	// next()
 
@@ -48,7 +49,7 @@ LineTraceState::~LineTraceState() {
  */
 void LineTraceState::execute() {
 
-	int forward = 40;
+	int forward = 30;
 	int turn = 0;
 	int angle = 0;
 
@@ -79,6 +80,10 @@ ControlState* LineTraceState::next() {
 	 * ここまでコード編集禁止
 	 * 以下に遷移条件を記述する
 	 */
+
+	if(13000 < this->balancingWalker->getRightEnc()) {
+		return new CalibrationWhiteState();
+	}
 
 
 	return this;

@@ -91,9 +91,11 @@ bool Bluetooth::connect() {
 	if(ecrobot_get_bt_status()==BT_STREAM ){
 		//ecrobot_set_light_sensor_inactive(NXT_PORT_S3);
 		sendMessage("\nbluetooth connected\n>");
+		ecrobot_get_bt_device_name("ET247");
 		ret = true;
 	}
 	else {
+		ecrobot_get_bt_device_name("ET247");
 		ecrobot_init_bt_slave("1234"); // ここの引数がペアリング時の値と同じ必要があるかは不明
 		//ecrobot_set_light_sensor_active(NXT_PORT_S3);
 		ret = false;

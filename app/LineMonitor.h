@@ -23,6 +23,7 @@ public:
     void calibrateFigureWhite();			// フィギュアLの白のキャリブレーションと白黒の境界値更新
     double getBorderBrightness();			// 白黒の境界地を取得する
     double getBorderFigureBrightness();		// フィギュアLの白黒の境界地を取得する
+    void setBorderBrightness(double val); //臨時
 
 private:
     LineMonitor();

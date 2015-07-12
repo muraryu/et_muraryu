@@ -46,6 +46,7 @@ TARGET_CPP_SOURCES = \
 	control_state/FigureFindLineState.cpp \
 	control_state/FigureDownState.cpp \
 	control_state/Test1State.cpp \
+	control_state/Test2State.cpp \
 	control_state/TestStopState.cpp \
 	device/TouchSensor.cpp \
 	unit/BalancerCpp.cpp \

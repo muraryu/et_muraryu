@@ -70,6 +70,7 @@ void UIManager::update() {
 	}
 
 	// 走行開始合図があったか TODO 接続処理をどうするか
+
 	static char buf[128];
 	static bool cflag = false;
 
@@ -79,6 +80,7 @@ void UIManager::update() {
 		cflag = Bluetooth::connect();
 	}
 	else {
+		ecrobot_get_bt_device_name("ET247");
 		if(Bluetooth::receiveMessage(buf, 128) != 0) {
 			buf[1] = '\n';
 			buf[2] = buf[0];
@@ -114,6 +116,7 @@ void UIManager::update() {
 
 		}
 	}
+
 }
 
 /**

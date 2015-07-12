@@ -18,6 +18,7 @@
 
 #include "control_state/CalibrationWhiteState.h"
 #include "control_state/ReadyState.h"
+#include "control_state/LineTraceState.h"
 
 //#include "util/Test.h"
 #include "util/Time.h"
@@ -84,7 +85,7 @@ static void user_system_create() {
     tail = Tail::getInstance();
     tail->init(&gTail);
 
-    driver = new Driver(new ReadyState());
+    driver = new Driver(new CalibrationWhiteState());
     //driver = new Driver(new ReadyState());
 
     time = Time::getInstance();
