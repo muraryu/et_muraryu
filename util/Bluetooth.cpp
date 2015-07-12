@@ -90,6 +90,7 @@ bool Bluetooth::connect() {
 
 	if(ecrobot_get_bt_status()==BT_STREAM ){
 		//ecrobot_set_light_sensor_inactive(NXT_PORT_S3);
+		//ecrobot_set_bt_device_name("ET247");
 		sendMessage("\nbluetooth connected\n>");
 		ret = true;
 	}
