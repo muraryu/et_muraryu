@@ -11,22 +11,25 @@
 
 #include "LightSensor.h"
 
+#include "app/Line.h"
+
 // 定義
 class LineMonitor {
 public:
 	static LineMonitor* getInstance();
 	void init(ecrobot::LightSensor* lightSensor);
-    double getBrightness();
+    double getAdjustedBrightness();			// 現在の範囲調整済み輝度を取得 ライン種類によりフィードバック制御に差が出るのを防ぐために制御計算で用いる
     void maimai();							// 周期的に呼び出して輝度を更新する
-    void calibrateWhite();					// 白のキャリブレーションと白黒の境界値更新
-    void calibrateBlack();					// 黒のキャリブレーションと白黒の境界値更新
-    void calibrateFigureWhite();			// フィギュアLの白のキャリブレーションと白黒の境界値更新
-    double getBorderBrightness();			// 白黒の境界地を取得する
-    double getBorderFigureBrightness();		// フィギュアLの白黒の境界地を取得する
+    void calibrateWhite();					// 白のキャリブレーション
+    void calibrateBlack();					// 黒のキャリブレーション
+    void calibrateFigureWhite();			// フィギュアLの白のキャリブレーション
 
 private:
     LineMonitor();
     virtual ~LineMonitor();
+
+    double getBrightness();								// 現在の輝度を取得する
+    double adjustBrightnessRange(double brightness);	// 走行中のラインのキャリブレーション上下幅で輝度を0～1の範囲に伸長して調整
 
 	static bool insFlag;				// シングルトンインスタンス生成フラグ(生成前=false, 生成後=true)
 	static LineMonitor* instance;		// シングルトンインスタンス
@@ -35,11 +38,12 @@ private:
     double brightness;					// 光センサ値 maimai()が呼ばれるたびに更新される
     double brightnessBottom;			// 光センサ値 まいまい式用 外光のみの反射光
     short maimaiCount;					// まいまい式用カウンタ
-    double whiteBrightness;				// 白のキャリブレーション値
-    double blackBrightness;				// 黒のキャリブレーション値
-    double whiteFigureBrightness;		// フィギュアLの白のキャリブレーション値
-    double borderBrightness;			// 白黒の境界値（トレース時の目標値）
-    double borderFigureBrightness;		// フィギュアLの白黒の境界値（トレース時の目標値）
+
+    Line* currentLine;	// 現在のライン
+    Line* normalLine;	// 普通のライン
+    Line* grayLine;		// グレーライン
+    Line* figureLine;	// フィギュアLのライン
+
 };
 
 #endif  // NXT_UNIT_LINEMONITOR_H_

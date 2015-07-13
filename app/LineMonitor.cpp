@@ -23,12 +23,13 @@ LineMonitor::LineMonitor() {
 	this->brightnessBottom = 0;
 	this->maimaiCount = 0;
 
-	// プリセット値
-	this->whiteBrightness = 0.30;
-	this->blackBrightness = 0.12;
-	this->borderBrightness = 0.21;
-	this->whiteFigureBrightness = 0.32;
-	this->borderFigureBrightness = 0.19;
+	// ライン情報をプリセット値で生成
+	this->normalLine = new Line(0.30, 0.12);
+	this->grayLine = new Line(0.20, 0.12);
+	this->figureLine = new Line(0.26, 0.12);
+
+	// 現在のラインをノーマルラインに設定
+	this->currentLine = normalLine;
 }
 
 /**
@@ -63,29 +64,36 @@ void LineMonitor::init(ecrobot::LightSensor* lightSensor) {
 }
 
 /**
- * まいまい式による光強度取得
+ * まいまい式による輝度取得
  * 0～1で正規化済み
  */
 double LineMonitor::getBrightness() {
-
 	return this->brightness;
-	//return this->lightSensor->getBrightness();
+}
+
+/**
+ * 現在の範囲調整済み輝度を取得
+ * ライン種類によりフィードバック制御に差が出るのを防ぐために制御計算で用いる
+ */
+double LineMonitor::getAdjustedBrightness() {
+	return this->adjustBrightnessRange(this->brightness);
 }
 
 /**
  * まいまい式
- * LEDオンオフ切替と輝度更新を行う
+ * LEDオンオフ切替、0～1に正規化した輝度更新を行う
+ * この関数を周期的に呼び出すことでメンバ変数brightnessに最新の輝度が入るようになる
  */
 void LineMonitor::maimai() {
 
 	if(this->maimaiCount == 3) {		// LEDオン操作 センサ値最小値(外光)取得
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,4);
-		this->brightnessBottom = (double)this->lightSensor->getBrightness()/1000;
+		this->brightnessBottom = (double)this->lightSensor->getBrightness()/1024;
 		ecrobot_set_light_sensor_active(NXT_PORT_S3); //TODO 光センサクラスにやらせたほうがよさそう
 	}
 	else if(this->maimaiCount == 6){	// LEDオフ操作 センサ値最大値(外光＋LED光)取得
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,8);
-		this->brightness = (double)this->lightSensor->getBrightness()/1000 - this->brightnessBottom;
+		this->brightness = (double)this->lightSensor->getBrightness()/1024 - this->brightnessBottom;
 		ecrobot_set_light_sensor_inactive(NXT_PORT_S3); //TODO 光センサクラスにやらせたほうがよさそう
 		this->maimaiCount = 0;
 	}
@@ -96,43 +104,53 @@ void LineMonitor::maimai() {
 }
 
 /**
- * 白のキャリブレーションと白黒の境界値更新
+ * 白のキャリブレーション
  */
 void LineMonitor::calibrateWhite() {
-	this->whiteBrightness = this->getBrightness();
-	this->borderBrightness = (this->whiteBrightness + this->blackBrightness) / 2;
-	Bluetooth::sendMessage((int)(this->whiteBrightness*100));
+	double white = this->getBrightness();
+	this->normalLine->setBrightnessTop(white);
+	this->grayLine->setBrightnessTop(white);
+	Bluetooth::sendMessage((int)(white*100));
 }
 
 /**
- * 黒のキャリブレーションと白黒の境界値更新
+ * 黒のキャリブレーション
  */
 void LineMonitor::calibrateBlack() {
-	this->blackBrightness = this->getBrightness();
-	this->borderBrightness = (this->whiteBrightness + this->blackBrightness) / 2;
-	this->borderFigureBrightness = (this->whiteFigureBrightness + this->blackBrightness) / 2;
-	Bluetooth::sendMessage((int)(this->blackBrightness*100));
+	double black = this->getBrightness();
+	this->normalLine->setBrightnessBottom(black);
+	this->grayLine->setBrightnessBottom(black);
+	this->figureLine->setBrightnessBottom(black);
+	Bluetooth::sendMessage((int)(black*100));
 }
 
 /**
- * フィギュアLの白のキャリブレーションと白黒の境界値更新
+ * フィギュアLの白のキャリブレーション
  */
 void LineMonitor::calibrateFigureWhite() {
-	this->whiteFigureBrightness = this->getBrightness();
-	this->borderFigureBrightness = (this->whiteFigureBrightness + this->blackBrightness) / 2;
-	Bluetooth::sendMessage((int)(this->whiteFigureBrightness*100));
+	this->figureLine->setBrightnessTop(this->getBrightness());
+	Bluetooth::sendMessage((int)(this->figureLine->getBrightnessTop()*100));
 }
 
 /**
- * 白黒の境界地を取得する
+ * 走行中のラインのキャリブレーション上下幅で輝度を0～1の範囲に伸長して調整
  */
-double LineMonitor::getBorderBrightness() {
-	return this->borderBrightness;
-}
+double LineMonitor::adjustBrightnessRange(double brightness) {
 
-/**
- * フィギュアLの白黒の境界地を取得する
- */
-double LineMonitor::getBorderFigureBrightness() {
-	return this->borderFigureBrightness;
+	double top = this->currentLine->getBrightnessTop();
+	double bottom = this->currentLine->getBrightnessBottom();
+	double adjustedBrightness = 0;
+	// 割るゼロ回避
+	if(top - bottom != 0) {
+		adjustedBrightness = (brightness - bottom) / (top - bottom);
+		// 範囲外になったら切り詰める
+		if(adjustedBrightness < 0) {
+			adjustedBrightness = 0;
+		}
+		else if(1 < adjustedBrightness) {
+			adjustedBrightness = 1;
+		}
+	}
+
+	return adjustedBrightness;
 }

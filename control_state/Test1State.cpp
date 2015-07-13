@@ -58,7 +58,7 @@ void Test1State::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = (int)-this->pid->calc(this->lineMonitor->getBorderBrightness(),this->lineMonitor->getBrightness(),-100,100);	// サンプルコース
+	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -66,6 +66,8 @@ void Test1State::execute() {
 	// 角度目標値を設定
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
+
+	Bluetooth::sendMessage((int)(this->lineMonitor->getAdjustedBrightness()*100));
 
 }
 
@@ -84,11 +86,12 @@ ControlState* Test1State::next() {
 	 * 以下に遷移条件を記述する
 	 */
 
+	/*
 	// チョイ走る
 	if(3.0 < this->time->getTime() - this->startTime ) {
 		return new FigureFindState();
 	}
-
+*/
 
 	return this;
 }

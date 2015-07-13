@@ -58,11 +58,11 @@ void FigureLineTraceState::execute() {
 	int turn = 0;
 	int angle = 0;
 
-	Bluetooth::sendMessage(this->lineMonitor->getBrightness()*100);
+	Bluetooth::sendMessage(this->lineMonitor->getAdjustedBrightness()*100);
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	//forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
-	turn = (int)-this->pid->calc(this->lineMonitor->getBorderFigureBrightness(),this->lineMonitor->getBrightness(),-100,100);
+	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

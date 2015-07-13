@@ -29,7 +29,7 @@ FigureFindLineState::FigureFindLineState() {
 	// execute(
 
 	// next()
-	this->minBrightness = this->lineMonitor->getBrightness();
+	this->minBrightness = this->lineMonitor->getAdjustedBrightness();
 
 	// その他
 
@@ -50,7 +50,7 @@ void FigureFindLineState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	double brightness = this->lineMonitor->getBrightness();
+	double brightness = this->lineMonitor->getAdjustedBrightness();
 
 	/* ライン左端発見の判断 */
 	if(brightness < this->minBrightness) {

@@ -28,6 +28,7 @@ TARGET_CPP_SOURCES = \
 	app/LineMonitor.cpp \
 	app/UIManager.cpp \
 	app/PostureEstimation.cpp \
+	app/Line.cpp \
 	control_state/CalibrationWhiteState.cpp \
 	control_state/CalibrationBlackState.cpp \
 	control_state/CalibrationFigureWhiteState.cpp\
