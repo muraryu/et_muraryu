@@ -6,7 +6,6 @@
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
-
 #include "LineMonitor.h"
 
 #include "util/Bluetooth.h"
@@ -28,7 +27,7 @@ LineMonitor::LineMonitor() {
 	this->grayLine = new Line(0.20, 0.12);
 	this->figureLine = new Line(0.26, 0.12);
 
-	// 現在のラインをノーマルラインに設定
+	// 現在のラインをノーマルラインに初期化
 	this->currentLine = normalLine;
 }
 
@@ -42,7 +41,7 @@ LineMonitor::~LineMonitor() {
  * インスタンス取得
  */
 LineMonitor* LineMonitor::getInstance() {
-	if(insFlag == false){
+	if (insFlag == false) {
 		LineMonitor::instance = new LineMonitor();
 		insFlag = true;
 	}
@@ -86,18 +85,18 @@ double LineMonitor::getAdjustedBrightness() {
  */
 void LineMonitor::maimai() {
 
-	if(this->maimaiCount == 3) {		// LEDオン操作 センサ値最小値(外光)取得
+	if (this->maimaiCount == 3) {		// LEDオン操作 センサ値最小値(外光)取得
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,4);
-		this->brightnessBottom = (double)this->lightSensor->getBrightness()/1024;
+		this->brightnessBottom = (double) this->lightSensor->getBrightness()
+				/ 1024;
 		ecrobot_set_light_sensor_active(NXT_PORT_S3); //TODO 光センサクラスにやらせたほうがよさそう
-	}
-	else if(this->maimaiCount == 6){	// LEDオフ操作 センサ値最大値(外光＋LED光)取得
+	} else if (this->maimaiCount == 6) {	// LEDオフ操作 センサ値最大値(外光＋LED光)取得
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,8);
-		this->brightness = (double)this->lightSensor->getBrightness()/1024 - this->brightnessBottom;
+		this->brightness = (double) this->lightSensor->getBrightness() / 1024
+				- this->brightnessBottom;
 		ecrobot_set_light_sensor_inactive(NXT_PORT_S3); //TODO 光センサクラスにやらせたほうがよさそう
 		this->maimaiCount = 0;
-	}
-	else {
+	} else {
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,0);
 	}
 	this->maimaiCount++;
@@ -110,7 +109,7 @@ void LineMonitor::calibrateWhite() {
 	double white = this->getBrightness();
 	this->normalLine->setBrightnessTop(white);
 	this->grayLine->setBrightnessTop(white);
-	Bluetooth::sendMessage((int)(white*100));
+	Bluetooth::sendMessage((int) (white * 100));
 }
 
 /**
@@ -121,7 +120,7 @@ void LineMonitor::calibrateBlack() {
 	this->normalLine->setBrightnessBottom(black);
 	this->grayLine->setBrightnessBottom(black);
 	this->figureLine->setBrightnessBottom(black);
-	Bluetooth::sendMessage((int)(black*100));
+	Bluetooth::sendMessage((int) (black * 100));
 }
 
 /**
@@ -129,11 +128,33 @@ void LineMonitor::calibrateBlack() {
  */
 void LineMonitor::calibrateFigureWhite() {
 	this->figureLine->setBrightnessTop(this->getBrightness());
-	Bluetooth::sendMessage((int)(this->figureLine->getBrightnessTop()*100));
+	Bluetooth::sendMessage((int) (this->figureLine->getBrightnessTop() * 100));
+}
+
+/**
+ * 現在のライン種別をノーマルラインに変更
+ */
+void LineMonitor::changeLineToNormal() {
+	this->currentLine = this->normalLine;
+}
+
+/**
+ * 現在のライン種別をグレーラインに変更
+ */
+void LineMonitor::changeLineToGray() {
+	this->currentLine = this->grayLine;
+}
+
+/**
+ * 現在のライン種別をラインに変更
+ */
+void LineMonitor::changeLineToFigure() {
+	this->currentLine = this->figureLine;
 }
 
 /**
  * 走行中のラインのキャリブレーション上下幅で輝度を0～1の範囲に伸長して調整
+ * @param brightness	輝度
  */
 double LineMonitor::adjustBrightnessRange(double brightness) {
 
@@ -141,13 +162,12 @@ double LineMonitor::adjustBrightnessRange(double brightness) {
 	double bottom = this->currentLine->getBrightnessBottom();
 	double adjustedBrightness = 0;
 	// 割るゼロ回避
-	if(top - bottom != 0) {
+	if (top - bottom != 0) {
 		adjustedBrightness = (brightness - bottom) / (top - bottom);
 		// 範囲外になったら切り詰める
-		if(adjustedBrightness < 0) {
+		if (adjustedBrightness < 0) {
 			adjustedBrightness = 0;
-		}
-		else if(1 < adjustedBrightness) {
+		} else if (1 < adjustedBrightness) {
 			adjustedBrightness = 1;
 		}
 	}

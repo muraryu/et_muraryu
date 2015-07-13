@@ -33,6 +33,7 @@ TARGET_CPP_SOURCES = \
 	control_state/CalibrationBlackState.cpp \
 	control_state/CalibrationFigureWhiteState.cpp\
 	control_state/LineTraceState.cpp \
+	control_state/LineTraceFindGrayState.cpp \
 	control_state/StopState.cpp \
 	control_state/TailStandUpState.cpp \
 	control_state/TailWalkState.cpp \

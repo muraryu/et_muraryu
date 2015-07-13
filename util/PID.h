@@ -1,7 +1,7 @@
 /******************************************************************************
  *  PID.h (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/02
- *  Definition of the Class Balancer
+ *  Definition of the Class PID
  *  Author: muraryu
  *****************************************************************************/
 
