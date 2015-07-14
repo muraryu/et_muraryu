@@ -68,8 +68,9 @@ double PID::calc(double r, double y, double min, double max) {
 		u = max;
 		//Bluetooth::sendMessage("max\n", 5);
 	}
-	//Bluetooth::dataLogger((signed char)r,(signed char)y);
 
+	//Bluetooth::dataLogger(u,diff*100);
+	//Bluetooth::sendMessage(diff*10000);
 	return u;
 
 }

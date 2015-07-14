@@ -13,6 +13,7 @@
 #include "unit/BalancingWalker.h"
 #include "util/PID.h"
 #include "app/LineMonitor.h"
+#include "util/Time.h"
 
 class LineTraceFindGrayState: public ControlState {
 	typedef ControlState base;
@@ -34,6 +35,8 @@ private:
 	// execute(), next()
 
 	// execute()
+	Time* time;
+	double startTime;
 
 	// next()
 };

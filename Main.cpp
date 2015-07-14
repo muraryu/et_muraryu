@@ -161,7 +161,7 @@ TASK(InitTask) {
     }
 
     // 制御パターンタスク開始
-    ercd = SetRelAlarm(CyclicAlarm3, 1, 4);
+    ercd = SetRelAlarm(CyclicAlarm3, 1, 24);
     if (ercd != E_OK) {
         ShutdownOS(ercd);
     }
@@ -179,6 +179,18 @@ TASK(TracerTask) {
     // 4ms周期で、ライントレーサにトレース走行を依頼する
 	gBalancingWalker->control();
 	tail->control();
+
+	// 時刻を進める
+	time->forward();
+
+	// まいまい式 光センサ値更新
+	lineMonitor->maimai();
+
+	// 足角速度更新
+	gBalancingWalker->updateStateVariable();
+
+	// 姿勢状態を推定して更新
+	postureEstimation->update();
 
     TerminateTask();
 }
@@ -199,18 +211,6 @@ TASK(BluetoothTask) {
  * システムの各値を更新したあと、制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
  */
 TASK(MainTask) {
-
-	// 時刻を進める
-	time->forward();
-
-	// まいまい式 光センサ値更新
-	lineMonitor->maimai();
-
-	// 足角速度更新
-	gBalancingWalker->updateStateVariable();
-
-	// 姿勢状態を推定して更新
-	postureEstimation->update();
 
 	// 制御パターン実行
 	driver->execute();
