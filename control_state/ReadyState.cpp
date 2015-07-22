@@ -69,21 +69,13 @@ void ReadyState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* ReadyState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
 	// 走行開始合図が来たら遷移
-	//if(this->uiManager->isReadyToStart() == true) {
-	if(true) {
+	if(this->uiManager->isReadyToStart() == true) {
+	//if(true) {
 		//return new TestStopState();
-		//return new Test1State();
-		return new LineTraceFindGrayState();
+		return new Test1State();
+		//return new LineTraceFindGrayState();
 	}
 
 	return this;

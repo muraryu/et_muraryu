@@ -30,7 +30,7 @@ Test1State::Test1State() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(200,0,0);
+	this->pid = new PID(80,0,200);
 
 	// next()
 
@@ -67,8 +67,6 @@ void Test1State::execute() {
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
-	Bluetooth::sendMessage((int)(this->lineMonitor->getAdjustedBrightness()*100));
-
 }
 
 /**
@@ -77,21 +75,12 @@ void Test1State::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* Test1State::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
-	/*
 	// チョイ走る
 	if(3.0 < this->time->getTime() - this->startTime ) {
 		return new FigureFindState();
 	}
-*/
+
 
 	return this;
 }

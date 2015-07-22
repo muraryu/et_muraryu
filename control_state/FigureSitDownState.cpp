@@ -73,19 +73,10 @@ void FigureSitDownState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* FigureSitDownState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
-
 
 	// 経過時間で遷移
 
-	if(1.0 < this->time->getTime() - this->startTime) {
+	if(2.0 < this->time->getTime() - this->startTime) {
 		return new FigureUpState();
 	}
 

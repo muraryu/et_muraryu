@@ -23,7 +23,8 @@ FigureStopState::FigureStopState() {
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
-	this->pid = new PID(0.1,0.0001,0);
+	this->tail = Tail::getInstance();
+	this->pidForward = new PID(0.1,0.0001,0);
 
 	// execute(), next()
 
@@ -50,16 +51,18 @@ void FigureStopState::execute() {
 
 	int forward = 0;
 	int turn = 0;
+	int angle = 80;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pid->calc(this->referenceRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
+	forward = this->pidForward->calc(this->referenceRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
+	this->tail->setCommandAngle(angle);
 }
 
 /**
@@ -68,15 +71,6 @@ void FigureStopState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* FigureStopState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
-
 
 	// 車輪が一定以上回転したら遷移
 	//if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {

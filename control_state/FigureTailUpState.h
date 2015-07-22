@@ -1,24 +1,24 @@
 /******************************************************************************
- *  FigureStopState.h (for LEGO Mindstorms NXT)
+ *  FigureTailUpState.h (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/23
- *  Definition of the Class FigureStopState
+ *  Definition of the Class FigureTailUpState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_FIGURESTOPSTATE_H_
-#define NXT_CONTROL_STATE_FIGURESTOPSTATE_H_
+#ifndef NXT_CONTROL_STATE_FIGURETAILUPSTATE_H_
+#define NXT_CONTROL_STATE_FIGURETAILUPSTATE_H_
 
 #include "control_state/ControlState.h"
 #include "unit/balancingWalker.h"
 #include "app/Tail.h"
-#include "util/PID.h"
+#include "util/Time.h"
 
-class FigureStopState : public ControlState {
+class FigureTailUpState : public ControlState {
 	typedef ControlState base;
 
 public:
-	FigureStopState();
-	virtual ~FigureStopState();
+	FigureTailUpState();
+	virtual ~FigureTailUpState();
 
 	// override
 	virtual void execute();
@@ -27,17 +27,11 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
-	PID* pidForward;
+	Time* time;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
-	int referenceRightEnc;
+	double startTime;		// 開始時の時刻
+	int startRightEnc;		// 開始時の右車輪角度
 
 };
 
-#endif  // NXT_CONTROL_STATE_FIGURESTOPSTATE_H_
+#endif  // NXT_CONTROL_STATE_FIGURETAILUPSTATE_H_

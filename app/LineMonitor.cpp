@@ -23,9 +23,9 @@ LineMonitor::LineMonitor() {
 	this->maimaiCount = 0;
 
 	// ライン情報をプリセット値で生成
-	this->normalLine = new Line(0.30, 0.12);
+	this->normalLine = new Line(0.30, 0.10);
 	this->grayLine = new Line(0.20, 0.12);
-	this->figureLine = new Line(0.26, 0.12);
+	this->figureLine = new Line(0.30, 0.10);
 
 	// 現在のラインをノーマルラインに初期化
 	this->currentLine = normalLine;

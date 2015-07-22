@@ -56,6 +56,7 @@ void LineTraceFindGrayState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	/*
 	double currentTime = this->time->getTime();
 	if(this->startTime+5 < currentTime && currentTime < this->startTime+10 ) {
 		turn = (int)-this->pid->calc(0.60,this->lineMonitor->getAdjustedBrightness(),-100,100);
@@ -64,7 +65,8 @@ void LineTraceFindGrayState::execute() {
 	else {
 		turn = (int)-this->pid->calc(0.55,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	}
-
+*/
+	turn = (int)-this->pid->calc(0.60,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

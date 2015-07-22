@@ -1,71 +1,70 @@
 /******************************************************************************
- *  FigureUpState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/23
+ *  FigureTailUpState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/07/22
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  フィギュアL段差のぼり
- *  とりあえず位置制御
+ *  しっぽを段差にあげる
  *  Author: muraryu
  *****************************************************************************/
 
-#include "FigureUpState.h"
+#include "FigureTailUpState.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/FigureLineTraceState.h"
-#include "control_state/FigureStopState.h"
-#include "control_state/FigureTailUpState.h"
-
+//#include "control_state/FigureSpinState.h"
 
 /**
  * コンストラクタ
  */
-FigureUpState::FigureUpState() {
+FigureTailUpState::FigureTailUpState() {
 
-	Bluetooth::sendMessage("State changed : FigureUpState\n", 31);
+	Bluetooth::sendMessage("State changed : FigureTailUpState\n", 35);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
+	this->time = Time::getInstance();
 
-	// execute(), next()
+	// 開始時刻取得
+	this->startTime = this->time->getTime();
 
-	// execute()
+	// 右車輪の目標
+	startRightEnc = this->balancingWalker->getRightEnc();
 
-	// next()
-
-	// その他
-	this->pid = new PID(0.06,0,0);
-
-	// 初期処理
-	this->startRightEnc = this->balancingWalker->getRightEnc();
 }
 
 /**
  * デストラクタ
  */
-FigureUpState::~FigureUpState() {
-	delete this->pid;
+FigureTailUpState::~FigureTailUpState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void FigureUpState::execute() {
+void FigureTailUpState::execute() {
 
-	int forward = 60;
+	int forward = 20;
 	int turn = 0;
-	int angle = 110;
+	int angle = 0;
+
+	double stateTime = this->time->getTime() - this->startTime;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	//turn
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	if(360 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
-	//angle = 110;
+
+	if(0 < stateTime && stateTime <= 0.5) {
+		angle = 1000;
+		Bluetooth::sendMessage(1);
+	}
+	else {
+		angle = 80;
+		Bluetooth::sendMessage(2);
 	}
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
@@ -76,14 +75,13 @@ void FigureUpState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* FigureUpState::next() {
+ControlState* FigureTailUpState::next() {
 
 	// 車輪が一定以上回転したら遷移
-	if(1080 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
-	//if(110 < this->tail->getAngle()) {
+	//if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
+	if(280 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+		//return new FigureSpinState();
 		//return new FigureLineTraceState();
-		//return new FigureStopState();
-		return new FigureTailUpState();
 	}
 
 	return this;

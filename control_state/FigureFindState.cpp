@@ -28,7 +28,7 @@ FigureFindState::FigureFindState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(200,0,0);
+	this->pid = new PID(80,0,200);
 
 	// next()
 
@@ -48,12 +48,12 @@ FigureFindState::~FigureFindState() {
  */
 void FigureFindState::execute() {
 
-	int forward = 20;
+	int forward = 30;
 	int turn = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = (int)-this->pid->calc(0.5,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
+	turn = (int)-this->pid->calc(0.60,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -69,14 +69,6 @@ void FigureFindState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* FigureFindState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
 	// フィギュアＬ段差にぶつかったら遷移
 	// 両足モーター角速度deg/secが0になったら遷移する

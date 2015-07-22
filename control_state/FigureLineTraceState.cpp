@@ -29,15 +29,17 @@ FigureLineTraceState::FigureLineTraceState() {
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 
 	// execute()
-	this->pid = new PID(250,0,0);
-	this->pidForward = new PID(0.1,0.0002,0);
+	this->pid = new PID(80,0,200);
+	this->pidForward = new PID(0.1,0.0012,0);
 
 	// next()
 	this->satTime = this->time->getTime();
 
 	/* 初期処理 */
 	//this->balancingWalker->setStandControlMode(true);
-	this->referenceEncValue = this->balancingWalker->getRightEnc() + 180;	// 現在位置＋スピン位置まで
+	this->referenceEncValue = this->balancingWalker->getRightEnc() + 360;	// 現在位置＋スピン位置まで
+	this->lineMonitor->changeLineToFigure();
+
 
 }
 
