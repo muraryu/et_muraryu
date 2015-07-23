@@ -51,6 +51,7 @@ TARGET_CPP_SOURCES = \
 	control_state/Test1State.cpp \
 	control_state/TestStopState.cpp \
 	device/TouchSensor.cpp \
+	device/SonarSensor.cpp \
 	unit/BalancerCpp.cpp \
 	unit/BalancingWalker.cpp \
 	Main.cpp

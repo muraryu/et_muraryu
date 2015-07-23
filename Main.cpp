@@ -9,6 +9,7 @@
 #include "Main.h"
 
 #include "device/TouchSensor.h"
+#include "device/SonarSensor.h"
 #include "app/LineMonitor.h"
 #include "unit/BalancingWalker.h"
 #include "util/Bluetooth.h"
@@ -29,6 +30,7 @@ using ecrobot::GyroSensor;
 using ecrobot::Motor;
 using ecrobot::Nxt;
 using ecrobot::TouchSensor;
+using ecrobot::SonarSensor;
 
 // Device objects
 // オブジェクトを静的に確保する
@@ -39,6 +41,7 @@ Motor       gRightWheel(PORT_B);
 Motor       gTail(PORT_A);
 Nxt         gNxt;
 TouchSensor gTouchSensor(PORT_4);
+SonarSensor gSonarSensor(PORT_2);
 
 // オブジェクトの定義
 static LineMonitor			*lineMonitor;
@@ -215,6 +218,7 @@ TASK(MainTask) {
 	// 制御パターン実行
 	driver->execute();
 
+	//Bluetooth::sendMessage(gSonarSensor.getValue());
 
     TerminateTask();
 }
