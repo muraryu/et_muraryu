@@ -2,7 +2,8 @@
  *  FigureDownState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/07/23
  *  超音波センサ
- *  コンストラクタとデストラクタを呼ぶときに計測開始終了しているため注意
+ *  シングルトン
+ *  init()で初期化時に計測開始
  *  Author: muraryu
  *****************************************************************************/
 
@@ -14,24 +15,48 @@ extern "C" {
 
 using namespace ecrobot;
 
+bool SonarSensor::insFlag = false;
+SonarSensor* SonarSensor::instance;
 
 /**
  * コンストラクタ
  * @param port	ポート番号
  */
-SonarSensor::SonarSensor(ePortS port) {
-	this->port = port;
-
-	// 超音波センサ初期化
-	ecrobot_init_sonar_sensor(this->port);
+SonarSensor::SonarSensor() {
 }
 
 /**
  * デストラクタ
  */
 SonarSensor::~SonarSensor() {
+
 	// 超音波センサ測定停止
 	ecrobot_term_sonar_sensor(this->port);
+}
+
+/**
+ * インスタンス取得
+ */
+SonarSensor* SonarSensor::getInstance() {
+	if (insFlag == false) {
+		SonarSensor::instance = new SonarSensor();
+		insFlag = true;
+	}
+	return SonarSensor::instance;
+}
+
+/**
+ * インスタンス初期化
+ */
+void SonarSensor::init(ePortS port) {
+
+	/* メンバ初期化 */
+	this->port = port;
+
+	/* 初期処理 */
+	// 超音波センサ測定開始
+	ecrobot_init_sonar_sensor(this->port);
+
 }
 
 /**

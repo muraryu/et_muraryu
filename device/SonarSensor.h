@@ -16,13 +16,20 @@ namespace ecrobot
 class SonarSensor
 {
 public:
-	SonarSensor(ePortS port);	// コンストラクタ
-	virtual ~SonarSensor();		// デストラクタ		計測を終了する
+	static SonarSensor* getInstance();
+	void init(ePortS por);
+
+    // シングルトンパターン
+	static bool insFlag;				// シングルトンインスタンス生成フラグ(生成前=false, 生成後=true)
+	static SonarSensor* instance;		// シングルトンインスタンス
 
 	long getValue();			// 距離センサ値を取得 0~255
 
 private:
 	ePortS port;
+
+	SonarSensor();	// コンストラクタ
+	virtual ~SonarSensor();		// デストラクタ		計測を終了する
 
 };
 

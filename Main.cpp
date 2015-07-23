@@ -41,7 +41,6 @@ Motor       gRightWheel(PORT_B);
 Motor       gTail(PORT_A);
 Nxt         gNxt;
 TouchSensor gTouchSensor(PORT_4);
-SonarSensor gSonarSensor(PORT_2);
 
 // オブジェクトの定義
 static LineMonitor			*lineMonitor;
@@ -52,6 +51,7 @@ static Driver				*driver;
 static Time					*time;
 static UIManager			*uiManager;
 static PostureEstimation	*postureEstimation;
+static SonarSensor			*sonarSensor;
 //static Test				*test;
 
 extern "C" {
@@ -97,6 +97,9 @@ static void user_system_create() {
 
     postureEstimation = PostureEstimation::getInstance();
     postureEstimation->init(gBalancingWalker);
+
+    sonarSensor = SonarSensor::getInstance();
+    sonarSensor->init(PORT_2);
 
     //test = new Test();
 }
@@ -210,7 +213,7 @@ TASK(BluetoothTask) {
 }
 
 /**
- * メインタスク 4ms周期で起動
+ * メインタスク 24ms周期で起動
  * システムの各値を更新したあと、制御パターンに応じた制御を実行、制御パターン切替判断、切替を行う
  */
 TASK(MainTask) {
@@ -218,7 +221,7 @@ TASK(MainTask) {
 	// 制御パターン実行
 	driver->execute();
 
-	//Bluetooth::sendMessage(gSonarSensor.getValue());
+	Bluetooth::sendMessage(sonarSensor->getValue());
 
     TerminateTask();
 }
