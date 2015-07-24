@@ -30,7 +30,7 @@ FigureLineTraceState::FigureLineTraceState() {
 
 	// execute()
 	this->pid = new PID(80,0,200);
-	this->pidForward = new PID(0.1,0.0012,0);
+	this->pidForward = new PID(0.06,0.1,0);
 
 	// next()
 	this->satTime = this->time->getTime();
@@ -63,7 +63,7 @@ void FigureLineTraceState::execute() {
 	Bluetooth::sendMessage(this->lineMonitor->getAdjustedBrightness()*100);
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	//forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
+	forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
 	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
@@ -95,7 +95,7 @@ ControlState* FigureLineTraceState::next() {
 	int pos = this->balancingWalker->getRightEnc();
 	//if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
 	if(this->referenceEncValue < pos) {
-	return new FigureSpinState();
+		return new FigureSpinState();
 	}
 
 	return this;

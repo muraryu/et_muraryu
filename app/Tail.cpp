@@ -19,7 +19,7 @@ Tail* Tail::instance;
 Tail::Tail()
 {
 	// メンバ初期化
-	this->pid = new PID(2.8,0.0005,30);
+	this->pid = new PID(2.8,0.002,30);
 	this->commandAngle = 0;
 }
 

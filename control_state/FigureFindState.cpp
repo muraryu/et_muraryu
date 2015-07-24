@@ -73,7 +73,7 @@ ControlState* FigureFindState::next() {
 	// フィギュアＬ段差にぶつかったら遷移
 	// 両足モーター角速度deg/secが0になったら遷移する
 	// 失敗する場合はジャイロセンサも使う
-	if(this->balancingWalker->getRightAngularVelocity() < -10 && this->balancingWalker->getLeftAngularVelocity() < -10) {
+	if(this->balancingWalker->getRightAngularVelocity() < -0 && this->balancingWalker->getLeftAngularVelocity() < -0) {
 		return new FigureSitDownState();
 	}
 

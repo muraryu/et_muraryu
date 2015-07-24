@@ -12,7 +12,7 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/FigureLineTraceState.h"
-//#include "control_state/FigureSpinState.h"
+#include "control_state/FigureSpinState.h"
 
 /**
  * コンストラクタ
@@ -24,18 +24,21 @@ FigureStopState::FigureStopState() {
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-	this->pidForward = new PID(0.1,0.0001,0);
+	this->pidForward = new PID(0.13,0.0001,0);
+	this->postureEstimation = PostureEstimation::getInstance();
 
 	// execute(), next()
 
 	// execute()
+	this->angle = 80;
 
 	// next()
 
 	// その他
 
 	// 初期処理
-	this->referenceRightEnc = this->balancingWalker->getRightEnc() + 360;
+	this->referenceRightEnc = this->balancingWalker->getRightEnc() + 450;
+	this->startDirection = this->postureEstimation->getDirection();
 }
 
 /**
@@ -51,7 +54,6 @@ void FigureStopState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 80;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -61,8 +63,13 @@ void FigureStopState::execute() {
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
+	if(this->balancingWalker->getLeftAngularVelocity() <= 10 && this->balancingWalker->getRightAngularVelocity() <= 10) {
+		this->angle += 0.05;
+	}
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
+
+	Bluetooth::sendMessage(this->postureEstimation->getDirection() - this->startDirection);
 }
 
 /**
@@ -72,11 +79,11 @@ void FigureStopState::execute() {
  */
 ControlState* FigureStopState::next() {
 
-	// 車輪が一定以上回転したら遷移
-	//if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
-	if(this->referenceRightEnc - this->balancingWalker->getRightEnc() < 180) {
-		//return new FigureSpinState();
-		return new FigureLineTraceState();
+	// 車輪角速度がゼロ以下、かつ、しっぽが100°前後になったら
+	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0 && 100 < this->tail->getAngle()) {
+	//if(this->referenceRightEnc - this->balancingWalker->getRightEnc() < 180) {
+		return new FigureSpinState();
+		//return new FigureLineTraceState();
 	}
 
 	return this;

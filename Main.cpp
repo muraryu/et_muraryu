@@ -221,7 +221,7 @@ TASK(MainTask) {
 	// 制御パターン実行
 	driver->execute();
 
-	Bluetooth::sendMessage(sonarSensor->getValue());
+	//Bluetooth::sendMessage(sonarSensor->getValue());
 
     TerminateTask();
 }
