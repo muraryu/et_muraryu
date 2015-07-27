@@ -1,71 +1,69 @@
 /******************************************************************************
- *  FigureUpState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/23
+ *  FigureStandUpState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  フィギュアL段差のぼり
- *  とりあえず位置制御
  *  Author: muraryu
  *****************************************************************************/
 
-#include "FigureUpState.h"
+#include "FigureStandUpState.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/FigureLineTraceState.h"
-#include "control_state/FigureStopState.h"
-#include "control_state/FigureTailUpState.h"
-
+#include "control_state/StopState.h"
 
 /**
  * コンストラクタ
  */
-FigureUpState::FigureUpState() {
+FigureStandUpState::FigureStandUpState() {
 
-	Bluetooth::sendMessage("State changed : FigureUpState\n", 31);
+	Bluetooth::sendMessage("State changed : FigureStandUpState\n", 36);
 
 	// メンバ初期化
-	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
+	this->time = Time::getInstance();
+	this->balancingWalker = BalancingWalker::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
+	this->startTime = this->time->getTime();
 
 	// execute()
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
 	// その他
-	this->pid = new PID(0.06,0,0);
 
 	// 初期処理
-	this->startRightEnc = this->balancingWalker->getRightEnc();
 }
 
 /**
  * デストラクタ
  */
-FigureUpState::~FigureUpState() {
-	delete this->pid;
+FigureStandUpState::~FigureStandUpState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void FigureUpState::execute() {
+void FigureStandUpState::execute() {
 
-	int forward = 70;
+	int forward = 0;
 	int turn = 0;
-	int angle = 104;
+	int angle = 110;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	//turn
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	this->balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
+
+
 }
 
 /**
@@ -73,13 +71,12 @@ void FigureUpState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* FigureUpState::next() {
+ControlState* FigureStandUpState::next() {
 
-	// 車輪が一定以上回転したら遷移
-	if(560 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
-		//return new FigureLineTraceState();
-		return new FigureStopState();
-		//return new FigureTailUpState();
+	// 前に倒れかけたら遷移
+	if(110 < this->tail->getAngle()) {
+		this->balancingWalker->init();
+		return new StopState();
 	}
 
 	return this;

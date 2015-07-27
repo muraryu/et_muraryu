@@ -10,6 +10,7 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/FigureUpState.h"
+#include "control_state/FigureBackState.h"
 
 /**
  * コンストラクタ
@@ -54,7 +55,7 @@ void FigureSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 100;
+	int angle = 90;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -79,7 +80,8 @@ ControlState* FigureSitDownState::next() {
 	// 経過時間で遷移
 
 	if(2.0 < this->time->getTime() - this->startTime) {
-		return new FigureUpState();
+		//return new FigureUpState();
+		return new FigureBackState();
 	}
 
 	return this;

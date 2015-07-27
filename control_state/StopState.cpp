@@ -27,7 +27,6 @@ StopState::StopState() {
 	this->startTime = this->time->getTime();
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
@@ -36,6 +35,8 @@ StopState::StopState() {
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
+	this->balancingWalker->init();
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 }
 
 /**

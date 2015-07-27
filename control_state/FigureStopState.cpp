@@ -13,6 +13,7 @@
 #include "util/Bluetooth.h"
 #include "control_state/FigureLineTraceState.h"
 #include "control_state/FigureSpinState.h"
+#include "control_state/StopState.h"
 
 /**
  * コンストラクタ
@@ -61,21 +62,21 @@ void FigureStopState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	//forward = this->pidForward->calc((double)this->referenceRightEnc, (double)this->balancingWalker->getRightEnc(), -100, 100);
-	//turn = this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
+	forward = this->pidForward->calc((double)this->referenceRightEnc, (double)this->balancingWalker->getRightEnc(), -100, 100);
+	turn = this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	/*
+
 	if(this->balancingWalker->getLeftAngularVelocity() <= 10 && this->balancingWalker->getRightAngularVelocity() <= 10) {
 		this->angle += 0.1;
 		if(90 < this->angle) {
 			this->angle = 90;
 		}
 	}
-	*/
+
 	// しっぽの制御実行
 	this->tail->setCommandAngle(angle);
 
@@ -92,9 +93,10 @@ ControlState* FigureStopState::next() {
 
 	// 車輪角速度がゼロ以下、かつ、しっぽが100°前後になったら
 	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {// && 88 < this->tail->getAngle()) {
-	//if(this->referenceRightEnc - this->balancingWalker->getRightEnc() < 180) {
-		//return new FigureSpinState();
+	//if(this->referenceRightEnc - this->balancingWalker->getRightEnc() < 200) {
+		return new FigureSpinState();
 		//return new FigureLineTraceState();
+		//return new StopState();
 	}
 
 	return this;
