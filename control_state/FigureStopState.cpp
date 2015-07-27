@@ -62,7 +62,13 @@ void FigureStopState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = this->pidForward->calc((double)this->referenceRightEnc, (double)this->balancingWalker->getRightEnc(), -100, 100);
+	//forward = this->pidForward->calc((double)this->referenceRightEnc, (double)this->balancingWalker->getRightEnc(), -100, 100);
+	if(77 < this->tail->getAngle()) {
+		forward = 100;
+	}
+	else {
+		forward = 0;
+	}
 	turn = this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

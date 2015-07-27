@@ -74,7 +74,7 @@ void FigureStandUpState::execute() {
 ControlState* FigureStandUpState::next() {
 
 	// 前に倒れかけたら遷移
-	if(110 < this->tail->getAngle()) {
+	if(105 < this->tail->getAngle()) {
 		this->balancingWalker->init();
 		return new StopState();
 	}

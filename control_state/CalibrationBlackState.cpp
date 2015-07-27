@@ -21,6 +21,7 @@ CalibrationBlackState::CalibrationBlackState() {
 	// メンバ初期化
 	this->uiManager = UIManager::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
+	this->tail = Tail::getInstance();
 
 	// execute(), next()
 
@@ -43,6 +44,8 @@ CalibrationBlackState::~CalibrationBlackState() {
  */
 void CalibrationBlackState::execute() {
 
+	int angle = 105;
+
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	// 足の制御実行
@@ -50,6 +53,7 @@ void CalibrationBlackState::execute() {
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
+	this->tail->setCommandAngle(angle);
 
 }
 
@@ -59,14 +63,6 @@ void CalibrationBlackState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* CalibrationBlackState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
 	// タッチボタンが押されたら遷移
 	if(this->uiManager->isButtonPressed() == true) {

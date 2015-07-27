@@ -21,6 +21,7 @@ CalibrationFigureWhiteState::CalibrationFigureWhiteState() {
 	// メンバ初期化
 	this->uiManager = UIManager::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
+	this->tail = Tail::getInstance();
 
 	// execute(), next()
 
@@ -43,6 +44,8 @@ CalibrationFigureWhiteState::~CalibrationFigureWhiteState() {
  */
 void CalibrationFigureWhiteState::execute() {
 
+	int angle = 45;
+
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	// 足の制御実行
@@ -50,6 +53,7 @@ void CalibrationFigureWhiteState::execute() {
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
+	this->tail->setCommandAngle(angle);
 
 }
 

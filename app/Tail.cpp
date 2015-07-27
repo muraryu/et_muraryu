@@ -19,7 +19,7 @@ Tail* Tail::instance;
 Tail::Tail()
 {
 	// メンバ初期化
-	this->pid = new PID(2.8,0.002,30);
+	this->pid = new PID(2.8,0,0);
 	this->commandAngle = 0;
 }
 
@@ -60,6 +60,7 @@ void Tail::control() {
 
 	double pwm = (int)this->pid->calc(this->commandAngle, this->getAngle(), -100, 100);
 	gTail->setPWM((signed char)pwm);
+	//Bluetooth::sendMessage(pwm+this->gTail->getCount()*1000);
 }
 
 /**

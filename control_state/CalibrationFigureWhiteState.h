@@ -11,6 +11,7 @@
 #include "control_state/ControlState.h"
 #include "app/UIManager.h"
 #include "app/LineMonitor.h"
+#include "app/Tail.h"
 
 class CalibrationFigureWhiteState : public ControlState {
 	typedef ControlState base;
@@ -26,6 +27,7 @@ public:
 private:
 	UIManager* uiManager;
 	LineMonitor* lineMonitor;
+	Tail* tail;
 
 	// execute(), next()
 
