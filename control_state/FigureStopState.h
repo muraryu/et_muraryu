@@ -12,7 +12,6 @@
 #include "unit/balancingWalker.h"
 #include "app/Tail.h"
 #include "app/PostureEstimation.h"
-#include "app/LineMonitor.h"
 #include "util/PID.h"
 
 class FigureStopState : public ControlState {
@@ -29,20 +28,16 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
-	PID* pidForward;
 	PID* pidTurn;
 	PostureEstimation* postureEstimation;
-	LineMonitor* lineMonitor;
 
 	// execute(), next()
 
 	// execute()
-	double angle;
 
 	// next()
 
 	// その他
-	int referenceRightEnc;
 	double startDirection;
 
 };

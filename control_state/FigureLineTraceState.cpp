@@ -24,20 +24,21 @@ FigureLineTraceState::FigureLineTraceState() {
 	this->tail = Tail::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->time = Time::getInstance();
+	this->postureEstimation = PostureEstimation::getInstance();
 
 	// execute(), next()
-	this->startRightEnc = this->balancingWalker->getRightEnc();
 
 	// execute()
 	this->pidTurn = new PID(80,0,200);
-	this->pidForward = new PID(0.06,0.1,0);
+	this->pidForward = new PID(0.2,0,0);
 
 	// next()
-	this->satTime = this->time->getTime();
+	this->startTime = this->time->getTime();
 
 	/* 初期処理 */
-	//this->balancingWalker->setStandControlMode(true);
-	this->referenceEncValue = this->balancingWalker->getRightEnc() + 360;	// 現在位置＋スピン位置まで
+	this->lineMonitor->changeLineToFigure();
+	this->startRightEnc = this->balancingWalker->getRightEnc();
+	this->startDirection = this->postureEstimation->getDirection();
 
 
 }
@@ -55,24 +56,33 @@ FigureLineTraceState::~FigureLineTraceState() {
  */
 void FigureLineTraceState::execute() {
 
-	int forward = 20;
+	int forward = 0;
 	int turn = 0;
 	int angle = 0;
+	double direction = 0;
 
-	Bluetooth::sendMessage(this->lineMonitor->getAdjustedBrightness()*100);
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	//forward = this->pidForward->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
-	//turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+	if(this->time->getTime() - this->startTime < 5.0) { // 5秒待機して安定させる
+		forward = (int)this->pidForward->calc(this->startRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
+		this->startDirection = this->postureEstimation->getDirection();
+	}
+	else { // 5秒後からトレース
+		forward = 20;
+		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+		direction = this->postureEstimation->getDirection() - this->startDirection;
+		if(direction < -20 || 20 < direction) {
+			turn = 0;
+		}
+	}
+
 	// 足の制御実行
-	//balancingWalker->setForwardTurn(forward, turn);
-	balancingWalker->setForwardTurn(0, 0);
-	Bluetooth::sendMessage(this->lineMonitor->getBrightness());
+	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
-	//this->tail->setCommandAngle(angle);
+	this->tail->setCommandAngle(angle);
 
 }
 
@@ -82,22 +92,8 @@ void FigureLineTraceState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* FigureLineTraceState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
-	// スピン位置まで一定量進んで遷移
-	//if(270 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
-	int pos = this->balancingWalker->getRightEnc();
-	//if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
-	if(this->referenceEncValue < pos) {
-		//return new FigureSpinState();
-	}
+	// 落下検知して遷移 ここの位置を使ってゴールまでの距離を進む
 
 	return this;
 }

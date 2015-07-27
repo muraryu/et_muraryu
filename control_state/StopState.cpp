@@ -34,8 +34,6 @@ StopState::StopState() {
 	this->pid = new PID(0.2,0,0);
 
 	// 初期処理
-	this->balancingWalker->setStandControlMode(true);
-	this->balancingWalker->init();
 	this->referenceEncValue = this->balancingWalker->getRightEnc();
 }
 

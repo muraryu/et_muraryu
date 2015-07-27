@@ -10,7 +10,6 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/FigureLineTraceState.h"
-#include "control_state/StopState.h"
 
 /**
  * コンストラクタ
@@ -21,15 +20,11 @@ FigureStandUpState::FigureStandUpState() {
 
 	// メンバ初期化
 	this->tail = Tail::getInstance();
-	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
-	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
-	this->startTime = this->time->getTime();
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
@@ -76,7 +71,8 @@ ControlState* FigureStandUpState::next() {
 	// 前に倒れかけたら遷移
 	if(105 < this->tail->getAngle()) {
 		this->balancingWalker->init();
-		return new StopState();
+		this->balancingWalker->setStandControlMode(true);
+		return new FigureLineTraceState();
 	}
 
 	return this;

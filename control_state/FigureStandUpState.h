@@ -10,10 +10,7 @@
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
-#include "app/LineMonitor.h"
 #include "unit/balancingWalker.h"
-#include "util/Time.h"
-#include "util/PID.h"
 
 class FigureStandUpState : public ControlState {
 	typedef ControlState base;
@@ -28,20 +25,15 @@ public:
 
 private:
 	Tail* tail;
-	Time* time;
 	BalancingWalker* balancingWalker;
-	LineMonitor* lineMonitor;
 
 	// execute(), next()
-	double startTime;
 
 	// execute()
-	int referenceEncValue;
 
 	// next()
 
 	// その他
-	PID* pid;
 
 };
 
