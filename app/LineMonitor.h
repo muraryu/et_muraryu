@@ -26,6 +26,7 @@ public:
     void changeLineToNormal();				// 現在のライン種別をノーマルラインに変更
     void changeLineToGray();				// 現在のライン種別をグレーラインに変更
     void changeLineToFigure();				// 現在のライン種別をフィギュアLラインに変更
+    double getBrightness();								// 現在の輝度を取得する
 
 private:
     LineMonitor();
@@ -48,7 +49,6 @@ private:
     Line* figureLine;	// フィギュアLライン
 
     // privateメソッド
-    double getBrightness();								// 現在の輝度を取得する
     double adjustBrightnessRange(double brightness);	// 走行中のラインのキャリブレーション上下幅で輝度を0～1の範囲に伸長して調整
 
 };

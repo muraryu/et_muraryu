@@ -48,10 +48,11 @@ PostureEstimation* PostureEstimation::getInstance() {
 /**
  * インスタンス初期化
  */
-void PostureEstimation::init(BalancingWalker* balancingWalker) {
+void PostureEstimation::init(BalancingWalker* balancingWalker, ecrobot::GyroSensor* gyroSensor) {
 
 	// メンバ初期化
 	this->balancingWalker = balancingWalker;
+	this->gyroSensor = gyroSensor;
 
 }
 
@@ -62,6 +63,8 @@ void PostureEstimation::update() {
 	// 方位[deg] TODO 回転速度を誰に聞くか TODO 周速度あたりの計算おかしい 0.05
 	this->direction += (this->balancingWalker->getLeftAngularVelocity() - this->balancingWalker->getRightAngularVelocity()) / this->wheelWidth * this->interval * 0.04002;
 	//Bluetooth::sendMessage(this->direction);
+	this->tilt += this->interval * (this->gyroSensor->getAnglerVelocity() + 6.00);
+	//Bluetooth::sendMessage(this->tilt*100);
 }
 
 /**
@@ -83,4 +86,8 @@ double PostureEstimation::getPosY() {
  */
 double PostureEstimation::getDirection() {
 	return this->direction;
+}
+
+double PostureEstimation::getTilt() {
+	return this->tilt;
 }

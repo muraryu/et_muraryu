@@ -52,9 +52,9 @@ FigureUpState::~FigureUpState() {
  */
 void FigureUpState::execute() {
 
-	int forward = 60;
+	int forward = 65;
 	int turn = 0;
-	int angle = 105;
+	int angle = 104;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -79,7 +79,7 @@ void FigureUpState::execute() {
 ControlState* FigureUpState::next() {
 
 	// 車輪が一定以上回転したら遷移
-	if(270 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	if(220 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 	//if(110 < this->tail->getAngle()) {
 		//return new FigureLineTraceState();
 		return new FigureStopState();

@@ -71,7 +71,7 @@ double LineMonitor::getBrightness() {
 }
 
 /**
- * 現在の範囲調整済み輝度を取得
+ * 現在の正規化済み輝度を取得
  * ライン種類によりフィードバック制御に差が出るのを防ぐために制御計算で用いる
  */
 double LineMonitor::getAdjustedBrightness() {
@@ -161,6 +161,7 @@ double LineMonitor::adjustBrightnessRange(double brightness) {
 	double top = this->currentLine->getBrightnessTop();
 	double bottom = this->currentLine->getBrightnessBottom();
 	double adjustedBrightness = 0;
+
 	// 割るゼロ回避
 	if (top - bottom != 0) {
 		adjustedBrightness = (brightness - bottom) / (top - bottom);

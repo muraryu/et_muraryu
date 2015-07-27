@@ -9,16 +9,18 @@
 #define NXT_APP_POSTUREESTIMATION_H_
 
 #include "unit/BalancingWalker.h"
+#include "GyroSensor.h"
 
 class PostureEstimation {
 public:
 	static PostureEstimation* getInstance();
-	void init(BalancingWalker* balancingWalker);
+	void init(BalancingWalker* balancingWalker, ecrobot::GyroSensor* gyroSensor);
 
 	void update();			// 姿勢状態を推定して更新
 	double getPosX();		// TODO Postureクラスにしてスレッドセーフにする xy同時に更新しないといけない
 	double getPosY();
 	double getDirection();
+	double getTilt();
 
 private:
 	PostureEstimation();
@@ -28,6 +30,7 @@ private:
 	static PostureEstimation* instance;			// シングルトンインスタンス
 
 	BalancingWalker* balancingWalker;
+	ecrobot::GyroSensor* gyroSensor;
 
 	double wheelWidth;		// 車輪幅[m] TODO 固定パラメータをどこにするか 定数にできない？！
 	double interval;		// 計算周期[sec] TODO 場所
@@ -41,6 +44,7 @@ private:
 	double posX;		// x座標[m] TODO
 	double posY;		// y座標[m] TODO
 	double direction;	// 方位[deg] TODO
+	double tilt;
 
 };
 

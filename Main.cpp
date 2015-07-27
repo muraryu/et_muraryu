@@ -96,7 +96,7 @@ static void user_system_create() {
     uiManager->init(&gTouchSensor);
 
     postureEstimation = PostureEstimation::getInstance();
-    postureEstimation->init(gBalancingWalker);
+    postureEstimation->init(gBalancingWalker, &gGyroSensor);
 
     sonarSensor = SonarSensor::getInstance();
     sonarSensor->init(PORT_2);

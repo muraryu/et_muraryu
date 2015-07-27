@@ -12,6 +12,7 @@
 #include "util/Bluetooth.h"
 #include "control_state/FigureFindLineState.h"
 #include "control_state/FigureLineTraceState.h"
+#include "control_state/FigureStandUpState.h"
 
 /**
  * コンストラクタ
@@ -79,8 +80,9 @@ ControlState* FigureSpinState::next() {
 
 	// 360度回転で遷移
 	double diff = this->postureEstimation->getDirection() - this->startDirection;
-	if(diff < -330 || 330 < diff) {
-		return new FigureLineTraceState();
+	if(diff < -360 || 360 < diff) {
+		//return new FigureLineTraceState();
+		return new FigureStandUpState();
 	}
 
 	return this;

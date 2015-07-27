@@ -32,7 +32,7 @@ private:
 	LineMonitor* lineMonitor;
 	Time* time;
 	PID* pidForward;
-	PID* pid;
+	PID* pidTurn;
 
 
 	// execute(), next()

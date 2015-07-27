@@ -46,6 +46,7 @@ TARGET_CPP_SOURCES = \
 	control_state/FigureStopState.cpp \
 	control_state/FigureLineTraceState.cpp \
 	control_state/FigureSpinState.cpp \
+	control_state/FigureStandUpState.cpp \
 	control_state/FigureFindLineState.cpp \
 	control_state/FigureDownState.cpp \
 	control_state/Test1State.cpp \

@@ -22,6 +22,7 @@ FigureSitDownState::FigureSitDownState() {
 	this->tail = Tail::getInstance();
 	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
 	this->startTime = this->time->getTime();
@@ -36,6 +37,7 @@ FigureSitDownState::FigureSitDownState() {
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
+	this->lineMonitor->changeLineToFigure();
 }
 
 /**
