@@ -58,7 +58,7 @@ void FigureBackState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
+	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
