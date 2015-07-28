@@ -9,7 +9,7 @@
 #include "StopState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/TailStandDownState.h"
+#include "control_state/LookupSitDownState.h"
 
 /**
  * コンストラクタ
@@ -90,7 +90,7 @@ ControlState* StopState::next() {
 
 	// 経過時間で遷移
 	if(5.5 < this->time->getTime() - this->startTime) {
-		return new TailStandDownState();
+		return new LookupSitDownState();
 	}
 	return this;
 }

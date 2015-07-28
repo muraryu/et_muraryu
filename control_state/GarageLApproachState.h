@@ -1,25 +1,26 @@
 /******************************************************************************
- *  FigureFindLineState.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/24
- *  Definition of the Class FigureFindLineState
+ *  GarageLApproachState.h (for LEGO Mindstorms NXT)
+ *  Created on: 2015/07/28
+ *  Definition of the Class GarageLApproachState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_FIGUREFINDLINESTATE_H_
-#define NXT_CONTROL_STATE_FIGUREFINDLINESTATE_H_
+#ifndef NXT_CONTROL_STATE_GARAGELAPPROACHSTATE_H_
+#define NXT_CONTROL_STATE_GARAGELAPPROACHSTATE_H_
 
 #include "control_state/ControlState.h"
-
 #include "unit/balancingWalker.h"
+#include "app/Tail.h"
 #include "app/PostureEstimation.h"
 #include "app/LineMonitor.h"
+#include "util/PID.h"
 
-class FigureFindLineState : public ControlState {
+class GarageLApproachState : public ControlState {
 	typedef ControlState base;
 
 public:
-	FigureFindLineState();
-	virtual ~FigureFindLineState();
+	GarageLApproachState();
+	virtual ~GarageLApproachState();
 
 	// override
 	virtual void execute();
@@ -27,20 +28,16 @@ public:
 
 private:
 	BalancingWalker* balancingWalker;
+	Tail* tail;
+	PID* pidTurn;
 	PostureEstimation* postureEstimation;
 	LineMonitor* lineMonitor;
 
-	// execute(), next()
-	bool findFlag;
-
-	// execute()
-	double minBrightness;
-
-	// next()
 	double startDirection;
-
-	// その他
+	int startRightEnc;
+	int figureEndRightEnc;
+	bool figureEndFlag;
 
 };
 
-#endif  // NXT_CONTROL_STATE_FIGUREFINDLINESTATE_H_
+#endif  // NXT_CONTROL_STATE_GARAGELAPPROACHSTATE_H_

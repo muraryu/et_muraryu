@@ -1,23 +1,23 @@
 /******************************************************************************
- *  TailStandUpState.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/12
- *  Definition of the Class TailStandUpState
+ *  LookupSitDownState.h (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/03
+ *  Definition of the Class LookupSitDownState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_TAILSTANDUPSTATE_H_
-#define NXT_CONTROL_STATE_TAILSTANDUPSTATE_H_
+#ifndef NXT_CONTROL_STATE_LOOKUPSITDOWNSTATE_H_
+#define NXT_CONTROL_STATE_LOOKUPSITDOWNSTATE_H_
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
 
-class TailStandUpState : public ControlState {
+class LookupSitDownState : public ControlState {
 	typedef ControlState base;
 
 public:
-	TailStandUpState();
-	virtual ~TailStandUpState();
+	LookupSitDownState();
+	virtual ~LookupSitDownState();
 
 	// override
 	virtual void execute();
@@ -27,12 +27,6 @@ private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
 };
 
-#endif  // NXT_CONTROL_STATE_TAILSTANDUPSTATE_H_
+#endif  // NXT_CONTROL_STATE_LOOKUPSITDOWNSTATE_H_

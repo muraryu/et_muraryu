@@ -1,12 +1,12 @@
 /******************************************************************************
- *  GarageLFindState.h (for LEGO Mindstorms NXT)
+ *  GarageRApproachState.h (for LEGO Mindstorms NXT)
  *  Created on: 2015/07/28
- *  Definition of the Class GarageLFindState
+ *  Definition of the Class GarageRApproachState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_GARAGELFINDSTATE_H_
-#define NXT_CONTROL_STATE_GARAGELFINDSTATE_H_
+#ifndef NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_
+#define NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_
 
 #include "control_state/ControlState.h"
 #include "unit/balancingWalker.h"
@@ -15,12 +15,12 @@
 #include "app/LineMonitor.h"
 #include "util/PID.h"
 
-class GarageLFindState : public ControlState {
+class GarageRApproachState : public ControlState {
 	typedef ControlState base;
 
 public:
-	GarageLFindState();
-	virtual ~GarageLFindState();
+	GarageRApproachState();
+	virtual ~GarageRApproachState();
 
 	// override
 	virtual void execute();
@@ -40,4 +40,4 @@ private:
 
 };
 
-#endif  // NXT_CONTROL_STATE_GARAGELFINDSTATE_H_
+#endif  // NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_

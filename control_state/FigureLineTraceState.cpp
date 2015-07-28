@@ -9,7 +9,7 @@
 #include "FigureLineTraceState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/GarageLFindState.h"
+#include "control_state/GarageRApproachState.h"
 
 /**
  * コンストラクタ
@@ -106,7 +106,7 @@ ControlState* FigureLineTraceState::next() {
 	//Bluetooth::sendMessage(currentBrightness*100);
 	if(0.35 < currentBrightness && currentBrightness < 0.65) { // 安定
 		if(2.0 < currentTime - this->stableTime) {
-			return new GarageLFindState();
+			return new GarageRApproachState();
 		}
 	}
 	else { // 不安定

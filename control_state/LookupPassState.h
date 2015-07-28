@@ -1,46 +1,40 @@
 /******************************************************************************
- *  TestStopState.h (for LEGO Mindstorms NXT)
+ *  LookupPassState.h (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
- *  Definition of the Class TestStopState
+ *  Definition of the Class LookupPassState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_TESTSTOPSTATE_H_
-#define NXT_CONTROL_STATE_TESTSTOPSTATE_H_
+#ifndef NXT_CONTROL_STATE_LOOKUPPASSSTATE_H_
+#define NXT_CONTROL_STATE_LOOKUPPASSSTATE_H_
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
 #include "util/Time.h"
-#include "util/PID.h"
 
-class TestStopState : public ControlState {
+class LookupPassState : public ControlState {
 	typedef ControlState base;
 
 public:
-	TestStopState();
-	virtual ~TestStopState();
+	LookupPassState();
+	virtual ~LookupPassState();
 
 	// override
 	virtual void execute();
 	virtual ControlState* next();
 
 private:
-	Tail* tail;
-	Time* time;
 	BalancingWalker* balancingWalker;
+	Time* time;
 
 	// execute(), next()
-	double startTime;
 
 	// execute()
-	int referenceEncValue;
 
 	// next()
-
-	// その他
-	PID* pid;
+	double startTime;
 
 };
 
-#endif  // NXT_CONTROL_STATE_TESTSTOPSTATE_H_
+#endif  // NXT_CONTROL_STATE_LOOKUPPASSSTATE_H_

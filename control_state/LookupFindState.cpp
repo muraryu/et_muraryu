@@ -1,38 +1,37 @@
 /******************************************************************************
- *  TestStopState.cpp (for LEGO Mindstorms NXT)
+ *  LookupFindState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "TestStopState.h"
+#include "LookupFindState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/TailStandDownState.h"
+#include "control_state/LookupSitDownState.h"
 
 /**
  * コンストラクタ
  */
-TestStopState::TestStopState() {
+LookupFindState::LookupFindState() {
 
-	Bluetooth::sendMessage("State changed : TestStopState\n", 31);
+	Bluetooth::sendMessage("State changed : LookupFindState\n", 33);
 
 	// メンバ初期化
 	this->tail = Tail::getInstance();
-	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->sonarSensor = SonarSensor::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
-	this->startTime = this->time->getTime();
 
 	// execute()
-	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
 	// その他
-	this->pid = new PID(0.2,0,0);
+	this->pidTurn = new PID(80,0,200);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
@@ -41,22 +40,22 @@ TestStopState::TestStopState() {
 /**
  * デストラクタ
  */
-TestStopState::~TestStopState() {
-	delete this->pid;
+LookupFindState::~LookupFindState() {
+	delete this->pidTurn;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void TestStopState::execute() {
+void LookupFindState::execute() {
 
-	int forward = 0;
+	int forward = 10;
 	int turn = 0;
-	int angle = 0;
+	int angle = 45;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	forward = (int)this->pid->calc(this->referenceEncValue, this->balancingWalker->getRightEnc(), -100, 100);
+	turn = (int)-this->pidTurn->calc(0.60,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -73,20 +72,13 @@ void TestStopState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* TestStopState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
+ControlState* LookupFindState::next() {
 
-	// 経過時間で遷移
-	/*
-	if(5.5 < this->time->getTime() - this->startTime) {
-		return new TailStandDownState();
-	}*/
+	// ルックアップ検知で遷移
+	Bluetooth::sendMessage(this->sonarSensor->getValue());
+	if(this->sonarSensor->getValue() < 30) {
+		return new LookupSitDownState();
+	}
+
 	return this;
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- *  GarageLFindState.cpp (for LEGO Mindstorms NXT)
+ *  GarageRApproachState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/23
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
@@ -8,7 +8,7 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#include "GarageLFindState.h"
+#include "GarageRApproachState.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/GarageStopState.h"
@@ -16,9 +16,9 @@
 /**
  * コンストラクタ
  */
-GarageLFindState::GarageLFindState() {
+GarageRApproachState::GarageRApproachState() {
 
-	Bluetooth::sendMessage("State changed : GarageLFindState\n", 34);
+	Bluetooth::sendMessage("State changed : GarageRApproachState\n", 38);
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
@@ -45,14 +45,14 @@ GarageLFindState::GarageLFindState() {
 /**
  * デストラクタ
  */
-GarageLFindState::~GarageLFindState() {
+GarageRApproachState::~GarageRApproachState() {
 	delete this->pidTurn;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void GarageLFindState::execute() {
+void GarageRApproachState::execute() {
 
 	int forward = 40;
 	int turn = 0;
@@ -87,7 +87,7 @@ void GarageLFindState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* GarageLFindState::next() {
+ControlState* GarageRApproachState::next() {
 
 	// フィギュアL段差下りを検出して位置を記録
 	if(this->figureEndFlag == false && 350 < this->balancingWalker->getLeftAngularVelocity() && 350 < this->balancingWalker->getRightAngularVelocity() ) {

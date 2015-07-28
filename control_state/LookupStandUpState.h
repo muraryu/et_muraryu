@@ -1,33 +1,31 @@
 /******************************************************************************
- *  FigureDownState.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/24
- *  Definition of the Class FigureDownState
+ *  LookupStandUpState.h (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/12
+ *  Definition of the Class LookupStandUpState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_
-#define NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_
+#ifndef NXT_CONTROL_STATE_LOOKUPSTANDUPSTATE_H_
+#define NXT_CONTROL_STATE_LOOKUPSTANDUPSTATE_H_
 
 #include "control_state/ControlState.h"
+#include "app/Tail.h"
 #include "unit/balancingWalker.h"
-#include "app/LineMonitor.h"
-#include "util/PID.h"
 
-class FigureDownState : public ControlState {
+class LookupStandUpState : public ControlState {
 	typedef ControlState base;
 
 public:
-	FigureDownState();
-	virtual ~FigureDownState();
+	LookupStandUpState();
+	virtual ~LookupStandUpState();
 
 	// override
 	virtual void execute();
 	virtual ControlState* next();
 
 private:
+	Tail* tail;
 	BalancingWalker* balancingWalker;
-	PID* pid;
-	LineMonitor*lineMonitor;
 
 	// execute(), next()
 
@@ -37,4 +35,4 @@ private:
 
 };
 
-#endif  // NXT_CONTROL_STATE_FIGUREDOWNSTATE_H_
+#endif  // NXT_CONTROL_STATE_LOOKUPSTANDUPSTATE_H_

@@ -1,26 +1,26 @@
 /******************************************************************************
- *  TailStandUpState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/06/12
+ *  LookupSitDownState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "TailStandUpState.h"
+#include "LookupSitDownState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/StopState.h"
+#include "control_state/LookupPassState.h"
 
 /**
  * コンストラクタ
  */
-TailStandUpState::TailStandUpState() {
+LookupSitDownState::LookupSitDownState() {
 
-	Bluetooth::sendMessage("State changed : TailStandUpState\n", 34);
+	Bluetooth::sendMessage("State changed : LookupSitDownState\n", 36);
 
 	// メンバ初期化
-	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
+	this->tail = Tail::getInstance();
 
 	// execute(), next()
 
@@ -28,33 +28,42 @@ TailStandUpState::TailStandUpState() {
 
 	// next()
 
+	// その他
+
 	// 初期処理
+	this->balancingWalker->setStandControlMode(false);
 }
 
 /**
  * デストラクタ
  */
-TailStandUpState::~TailStandUpState() {
+LookupSitDownState::~LookupSitDownState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void TailStandUpState::execute() {
+void LookupSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	double angle = 110;
+	int angle = 80;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	if(77 < this->tail->getAngle()) {
+		forward = 50;
+	}
+	else {
+		forward = 0;
+	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
 	// しっぽの制御実行
-	this->tail->setCommandAngle((int)angle);
+	this->tail->setCommandAngle(angle);
 
 }
 
@@ -63,21 +72,12 @@ void TailStandUpState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* TailStandUpState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
+ControlState* LookupSitDownState::next() {
 
-
-	// 前に倒れかけたら遷移
-	if(110 < this->tail->getAngle()) {
-		this->balancingWalker->init();
-		return new StopState();
+	// しっぽ角度が78°以下でが5秒間停止したら遷移 TODO
+	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
+		return new LookupPassState();
 	}
+
 	return this;
 }

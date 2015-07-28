@@ -1,22 +1,22 @@
 /******************************************************************************
- *  TailWalkState.cpp (for LEGO Mindstorms NXT)
+ *  LookupPassState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  Author: muraryu
  *****************************************************************************/
 
-#include "TailWalkState.h"
+#include "LookupPassState.h"
 
-#include "control_state/TailStandUpState.h"
+#include "control_state/LookupStandUpState.h"
 #include "util/Bluetooth.h"
 
 /**
  * コンストラクタ
  */
-TailWalkState::TailWalkState() {
+LookupPassState::LookupPassState() {
 
-	Bluetooth::sendMessage("State changed : TailWalkState\n", 32);
+	Bluetooth::sendMessage("State changed : LookupPassState\n", 33);
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
@@ -35,13 +35,13 @@ TailWalkState::TailWalkState() {
 /**
  * デストラクタ
  */
-TailWalkState::~TailWalkState() {
+LookupPassState::~LookupPassState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void TailWalkState::execute() {
+void LookupPassState::execute() {
 
 	int forward = 30;
 	int turn = 0;
@@ -62,7 +62,7 @@ void TailWalkState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* TailWalkState::next() {
+ControlState* LookupPassState::next() {
 	ControlState* baseControlState = base::next();
 	if(baseControlState != this) {
 		return baseControlState;
@@ -75,7 +75,7 @@ ControlState* TailWalkState::next() {
 
 	// 経過時刻で遷移
 	if(3.0 < this->time->getTime() - this->startTime) {
-		return new TailStandUpState();
+		return new LookupStandUpState();
 	}
 	return this;
 
