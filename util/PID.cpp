@@ -86,3 +86,9 @@ void PID::setI(double i) {
 void PID::setD(double d) {
 	this->d = d;
 }
+
+void PID::setPID(double p, double i, double d) {
+	this->p = p;
+	this->i = i;
+	this->d = d;
+}

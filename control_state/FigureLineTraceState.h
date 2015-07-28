@@ -45,6 +45,7 @@ private:
 
 	// next()
 	double startTime;
+	double stableTime;
 
 };
 

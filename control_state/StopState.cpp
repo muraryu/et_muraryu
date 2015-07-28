@@ -33,7 +33,7 @@ StopState::StopState() {
 	// その他
 	this->pid = new PID(0.2,0,0);
 
-	// 初期処理
+	// 初期処理z
 	this->referenceEncValue = this->balancingWalker->getRightEnc();
 }
 

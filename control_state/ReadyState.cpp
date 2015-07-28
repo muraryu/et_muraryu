@@ -12,6 +12,8 @@
 #include "control_state/TestStopState.h"
 #include "control_state/Test1State.h"
 #include "control_state/LineTraceFindGrayState.h"
+#include "control_state/FigureLineTraceState.h"
+#include "control_state/FigureSpinState.h"
 
 /**
  * コンストラクタ
@@ -72,10 +74,11 @@ ControlState* ReadyState::next() {
 
 	// 走行開始合図が来たら遷移
 	if(this->uiManager->isReadyToStart() == true) {
-	//if(true) {
 		//return new TestStopState();
 		return new Test1State();
+		//return new FigureLineTraceState();
 		//return new LineTraceFindGrayState();
+		//return new FigureSpinState();
 	}
 
 	return this;

@@ -9,7 +9,7 @@
 #include "FigureLineTraceState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/FigureSpinState.h"
+#include "control_state/GarageLFindState.h"
 
 /**
  * コンストラクタ
@@ -29,16 +29,18 @@ FigureLineTraceState::FigureLineTraceState() {
 	// execute(), next()
 
 	// execute()
-	this->pidTurn = new PID(80,0,200);
+	this->pidTurn = new PID(100,0,100);
 	this->pidForward = new PID(0.2,0,0);
 
 	// next()
-	this->startTime = this->time->getTime();
 
 	/* 初期処理 */
 	this->lineMonitor->changeLineToFigure();
+	this->balancingWalker->setStandControlMode(true);
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 	this->startDirection = this->postureEstimation->getDirection();
+	this->startTime = this->time->getTime();
+	this->stableTime = this->time->getTime();
 
 
 }
@@ -63,15 +65,20 @@ void FigureLineTraceState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->time->getTime() - this->startTime < 5.0) { // 5秒待機して安定させる
+	if(this->time->getTime() - this->startTime < 3.0) { // 5秒待機して安定させる
 		forward = (int)this->pidForward->calc(this->startRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
 		this->startDirection = this->postureEstimation->getDirection();
 	}
-	else { // 5秒後からトレース
-		forward = 20;
+	else { // 5秒後からライントレース
+		forward = 10;
 		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 		direction = this->postureEstimation->getDirection() - this->startDirection;
-		if(direction < -20 || 20 < direction) {
+		if(direction < -25 && turn < 0) {
+			Bluetooth::sendMessage(direction);
+			turn = 0;
+		}
+		else if(25 < direction && 0 < turn) {
+			Bluetooth::sendMessage(1);
 			turn = 0;
 		}
 	}
@@ -93,7 +100,18 @@ void FigureLineTraceState::execute() {
  */
 ControlState* FigureLineTraceState::next() {
 
-	// 落下検知して遷移 ここの位置を使ってゴールまでの距離を進む
+	// ライントレースが安定して一定時間経過で遷移
+	double currentBrightness = this->lineMonitor->getAdjustedBrightness();
+	double currentTime = this->time->getTime();
+	//Bluetooth::sendMessage(currentBrightness*100);
+	if(0.35 < currentBrightness && currentBrightness < 0.65) { // 安定
+		if(2.0 < currentTime - this->stableTime) {
+			return new GarageLFindState();
+		}
+	}
+	else { // 不安定
+		this->stableTime = currentTime;
+	}
 
 	return this;
 }

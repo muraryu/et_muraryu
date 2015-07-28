@@ -18,6 +18,7 @@ public:
 	void setP(double p);
 	void setI(double i);
 	void setD(double d);
+	void setPID(double p, double i, double d);
 
 private:
 	double p;			// 比例パラメータ
