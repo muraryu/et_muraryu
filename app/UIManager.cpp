@@ -110,6 +110,14 @@ void UIManager::update() {
 				K_THETADOT -= 0.1F;
 			} else if(buf[0] == '1') {
 				this->isReadyToStartFlag = true;
+			} else if(buf[0] == 'j') {
+				mura_p -= 10;
+			} else if(buf[0] == 'u') {
+				mura_p += 10;
+			} else if(buf[0] == 'k') {
+				mura_d -= 50;
+			} else if(buf[0] == 'i') {
+				mura_d += 50;
 			}
 
 		}

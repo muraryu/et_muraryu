@@ -22,6 +22,10 @@ public:
 	S32 getAngle();
 	double saturationTime();
 
+	// TODO
+	double getAngularVelocity();	// 角速度を取得
+	void update();
+
 private:
 	Tail();
 	~Tail();
@@ -32,6 +36,11 @@ private:
 	ecrobot::Motor* gTail;			// しっぽモーター
 	int commandAngle;				// しっぽ目標角度
 	PID* pid;						// PIDコントローラ
+
+	// TODO モータークラスに統合
+    int rightAngularVelocity;		// 角速度
+    int* rightWheelEncBuf;			// 角速度計算用循環バッファ
+    short rightWheelEncBufNext;		// 角速度計算用循環バッファ 次の書き込み位置
 
 };
 

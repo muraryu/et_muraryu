@@ -47,12 +47,13 @@ void LookupSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 80;
+	int angle = 75;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(77 < this->tail->getAngle()) {
-		forward = 50;
+	Bluetooth::sendMessage(this->tail->getAngle());
+	if(72 < this->tail->getAngle()) {
+		forward = 100;
 	}
 	else {
 		forward = 0;

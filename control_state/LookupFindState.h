@@ -14,6 +14,7 @@
 #include "device/SonarSensor.h"
 #include "unit/balancingWalker.h"
 #include "util/PID.h"
+#include "app/PostureEstimation.h"
 
 class LookupFindState : public ControlState {
 	typedef ControlState base;
@@ -32,14 +33,9 @@ private:
 	SonarSensor* sonarSensor;
 	LineMonitor* lineMonitor;
 	PID* pidTurn;
+	PostureEstimation* postureEstimation;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	double startDirection; // TODO test
 
 };
 

@@ -10,9 +10,6 @@
 
 #include "Port.h"
 
-namespace ecrobot
-{
-
 class SonarSensor
 {
 public:
@@ -23,7 +20,7 @@ public:
 	static bool insFlag;				// シングルトンインスタンス生成フラグ(生成前=false, 生成後=true)
 	static SonarSensor* instance;		// シングルトンインスタンス
 
-	long getValue();			// 距離センサ値を取得 0~255
+	int getValue();			// 距離センサ値を取得 0~255
 
 private:
 	ePortS port;
@@ -32,7 +29,5 @@ private:
 	virtual ~SonarSensor();		// デストラクタ		計測を終了する
 
 };
-
-}
 
 #endif

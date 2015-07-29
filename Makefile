@@ -2,7 +2,7 @@
 NXTOSEK_ROOT = ../../../../nxtOSEK
 
 # ターゲット実行形式ファイル名
-TARGET = etrobo_tr
+TARGET = et2015
 
 # インクルードパス
 USER_INC_PATH = \
@@ -31,13 +31,15 @@ TARGET_CPP_SOURCES = \
 	app/Line.cpp \
 	control_state/CalibrationWhiteState.cpp \
 	control_state/CalibrationBlackState.cpp \
-	control_state/CalibrationFigureWhiteState.cpp\
+	control_state/CalibrationFigureWhiteState.cpp \
 	control_state/LineTraceState.cpp \
 	control_state/LineTraceFindGrayState.cpp \
 	control_state/StopState.cpp \
-	control_state/TailStandUpState.cpp \
-	control_state/TailWalkState.cpp \
-	control_state/TailStandDownState.cpp \
+	control_state/LookupFindState.cpp \
+	control_state/LookupSitDownState.cpp \
+	control_state/LookupPassState.cpp \
+	control_state/LookupStandUpState.cpp \
+	control_state/GarageLApproachState.cpp \
 	control_state/ReadyState.cpp \
 	control_state/FigureFindState.cpp \
 	control_state/FigureSitDownState.cpp \
@@ -48,12 +50,9 @@ TARGET_CPP_SOURCES = \
 	control_state/FigureSpinState.cpp \
 	control_state/FigureStandUpState.cpp \
 	control_state/FigureLineTraceState.cpp \
-	control_state/GarageLFindState.cpp \
+	control_state/GarageRApproachState.cpp \
 	control_state/GarageStopState.cpp \
-	control_state/FigureFindLineState.cpp \
-	control_state/FigureDownState.cpp \
 	control_state/Test1State.cpp \
-	control_state/TestStopState.cpp \
 	device/TouchSensor.cpp \
 	device/SonarSensor.cpp \
 	unit/BalancerCpp.cpp \

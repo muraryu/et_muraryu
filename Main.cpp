@@ -30,7 +30,6 @@ using ecrobot::GyroSensor;
 using ecrobot::Motor;
 using ecrobot::Nxt;
 using ecrobot::TouchSensor;
-using ecrobot::SonarSensor;
 
 // Device objects
 // オブジェクトを静的に確保する
@@ -167,7 +166,7 @@ TASK(InitTask) {
     }
 
     // 制御パターンタスク開始
-    ercd = SetRelAlarm(CyclicAlarm3, 1, 24);
+    ercd = SetRelAlarm(CyclicAlarm3, 1, 32);
     if (ercd != E_OK) {
         ShutdownOS(ercd);
     }
@@ -194,6 +193,9 @@ TASK(TracerTask) {
 
 	// 足角速度更新
 	gBalancingWalker->updateStateVariable();
+
+	// TODO しっぽ角速度
+	tail->update();
 
 	// 姿勢状態を推定して更新
 	postureEstimation->update();

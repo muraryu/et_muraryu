@@ -30,4 +30,10 @@ float K_THETADOT = 7.5F; /* モータ目標回転角速度係数 */
 
 const float BATTERY_GAIN = 0.001089F;  /* PWM出力算出用バッテリ電圧補正係数 */
 const float BATTERY_OFFSET = 0.625F;   /* PWM出力算出用バッテリ電圧補正オフセット */
+
+// mura_ryu追加パラメータ
+double mura_p = 80;
+double mura_i = 0;
+double mura_d = 500;
+
 /******************************** END OF FILE ********************************/

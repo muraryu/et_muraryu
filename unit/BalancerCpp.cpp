@@ -74,6 +74,16 @@ void Balancer::setCommand(int forward, int turn) {
  * @return 右車輪のPWM値
  */
 S8 Balancer::getPwmRight() {
+	/*
+	S8 ret = mRightPwm * 1.0;
+	if(ret < -100) {
+		ret = 100;
+	}
+	else if(100 < ret) {
+		ret = 100;
+	}
+	return ret;
+	*/
     return mRightPwm;
 }
 
@@ -82,5 +92,16 @@ S8 Balancer::getPwmRight() {
  * @return 左車輪のPWM値
  */
 S8 Balancer::getPwmLeft() {
+	/*
+	S8 ret = mRightPwm * 1.0;
+	if(ret < -100) {
+		ret = 100;
+	}
+	else if(100 < ret) {
+		ret = 100;
+	}
+	return ret;
+	}
+	*/
     return mLeftPwm;
 }

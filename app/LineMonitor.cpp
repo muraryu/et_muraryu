@@ -85,14 +85,14 @@ double LineMonitor::getAdjustedBrightness() {
  */
 void LineMonitor::maimai() {
 
-	if (this->maimaiCount == 3) {		// LEDオン操作 センサ値最小値(外光)取得
+	if (this->maimaiCount == 4) {		// LEDオン操作 センサ値最小値(外光)取得
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,4);
 		this->brightnessBottom = (double) this->lightSensor->getBrightness()
 				/ 1024;
 		ecrobot_set_light_sensor_active(NXT_PORT_S3); //TODO 光センサクラスにやらせたほうがよさそう
-	} else if (this->maimaiCount == 6) {	// LEDオフ操作 センサ値最大値(外光＋LED光)取得
+	} else if (this->maimaiCount == 8) {	// LEDオフ操作 センサ値最大値(外光＋LED光)取得
 		//Bluetooth::dataLogger(this->lightSensor->getBrightness()/10,8);
-		this->brightness = (double) this->lightSensor->getBrightness() / 1024 - this->brightnessBottom;
+		this->brightness = this->brightness*0.6 + ((double) this->lightSensor->getBrightness() / 1024 - this->brightnessBottom)*0.4;
 		ecrobot_set_light_sensor_inactive(NXT_PORT_S3); //TODO 光センサクラスにやらせたほうがよさそう
 		this->maimaiCount = 0;
 		//Bluetooth::dataLogger(this->getAdjustedBrightness()*100,this->getBrightness()*100);

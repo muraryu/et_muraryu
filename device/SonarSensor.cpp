@@ -13,8 +13,6 @@ extern "C" {
 #include "ecrobot_interface.h"
 }
 
-using namespace ecrobot;
-
 bool SonarSensor::insFlag = false;
 SonarSensor* SonarSensor::instance;
 
@@ -63,6 +61,10 @@ void SonarSensor::init(ePortS port) {
  * 超音波センサから距離を取得
  * @return	距離
  */
-long SonarSensor::getValue() {
-	return ecrobot_get_sonar_sensor(this->port);
+int SonarSensor::getValue() {
+	int value = ecrobot_get_sonar_sensor(this->port);
+	if(value == 0) { // なぜか一発目の値が0になるため対策
+		value = 255;
+	}
+	return value;
 }
