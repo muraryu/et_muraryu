@@ -24,7 +24,6 @@ GarageLApproachState::GarageLApproachState() {
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->pidTurn = new PID(5,0,0);
-	this->postureEstimation = PostureEstimation::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
@@ -36,10 +35,6 @@ GarageLApproachState::GarageLApproachState() {
 	// その他
 
 	// 初期処理
-	this->startDirection = this->postureEstimation->getDirection();
-	this->startRightEnc = this->balancingWalker->getRightEnc();
-	this->figureEndRightEnc = this->startRightEnc + 36000; // 適当に大きい値で初期化
-	this->figureEndFlag = false;
 }
 
 /**
@@ -56,10 +51,11 @@ void GarageLApproachState::execute() {
 
 	int forward = 40;
 	int turn = 0;
-	int angle = 0;
+	int angle = 80;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	turn = (int)-this->pidTurn->calc(0.55,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -77,7 +73,10 @@ void GarageLApproachState::execute() {
  */
 ControlState* GarageLApproachState::next() {
 
-	//
+	// ガレージまでの距離がゼロで遷移
+	if(this->balancingWalker->calcGarageDistance() < 0) {
+		return new GarageStopState();
+	}
 
 	return this;
 }

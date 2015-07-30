@@ -10,8 +10,10 @@
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
+#include "app/PostureEstimation.h"
 #include "unit/balancingWalker.h"
 #include "util/Time.h"
+#include "util/PID.h"
 
 class LookupPassState : public ControlState {
 	typedef ControlState base;
@@ -27,13 +29,14 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	Time* time;
+	PostureEstimation* postureEstimation;
+	PID* pidTurn;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
 	double startTime;
+	int startRightEnc;
+	double startDirection;
+	bool backFlag;
+	int forward;
 
 };
 

@@ -18,19 +18,12 @@ FigureStandUpState::FigureStandUpState() {
 
 	Bluetooth::sendMessage("State changed : FigureStandUpState\n", 36);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
-
-	// 初期処理
+	// メンバ初期化
+	this->angle = tail->getAngle();
 }
 
 /**
@@ -46,7 +39,6 @@ void FigureStandUpState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 110;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -55,9 +47,15 @@ void FigureStandUpState::execute() {
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
+	this->angle += 0.30;
 	// しっぽの制御実行
-	this->tail->setCommandAngle(angle);
-
+	Bluetooth::sendMessage(this->tail->getAngularVelocity());
+	if(this->tail->getAngularVelocity() == 0) {
+		this->tail->setCommandAngle(this->angle + 20);
+	}
+	else {
+		this->tail->setCommandAngle(this->angle);
+	}
 
 }
 

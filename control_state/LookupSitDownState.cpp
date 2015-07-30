@@ -47,12 +47,11 @@ void LookupSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 75;
+	int angle = 73;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	Bluetooth::sendMessage(this->tail->getAngle());
-	if(72 < this->tail->getAngle()) {
+	if(70 < this->tail->getAngle()) {
 		forward = 100;
 	}
 	else {
@@ -75,7 +74,7 @@ void LookupSitDownState::execute() {
  */
 ControlState* LookupSitDownState::next() {
 
-	// しっぽ角度が78°以下でが5秒間停止したら遷移 TODO
+	// 車輪が停止したら遷移
 	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
 		return new LookupPassState();
 	}

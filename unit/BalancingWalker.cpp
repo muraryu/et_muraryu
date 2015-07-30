@@ -79,13 +79,14 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
         Balancer* balancer) {
 
 	// メンバ初期化
-	this->mGyroSensor 	= gyroSensor;
-	this->mLeftWheel 	= leftWheel;
-	this->mRightWheel 	= rightWheel;
-	this->mNxt 			= nxt;
-	this->mBalancer 	= balancer;
-	this->forward 		= 0;
-	this->turn 			= 0;
+	this->mGyroSensor 		= gyroSensor;
+	this->mLeftWheel 		= leftWheel;
+	this->mRightWheel 		= rightWheel;
+	this->mNxt 				= nxt;
+	this->mBalancer 		= balancer;
+	this->forward 			= 0;
+	this->turn 				= 0;
+	this->garageDistance	= 0;
 
 	this->standControlMode = false;
 
@@ -214,4 +215,18 @@ void BalancingWalker::updateStateVariable() {
 		this->leftWheelEncBufNext = 0;
 	}
 
+}
+
+/**
+ * ガレージまでの車輪角度[deg]をセットする
+ */
+void BalancingWalker::notifyGarageDistance(int distance) {
+	this->garageDistance = this->getRightEnc() + distance;
+}
+
+/**
+ * ガレージまでの車輪角度[deg]を取得する
+ */
+int BalancingWalker::calcGarageDistance() {
+	return this->garageDistance - this->getRightEnc();
 }

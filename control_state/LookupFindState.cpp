@@ -34,8 +34,8 @@ LookupFindState::LookupFindState() {
 	// next()
 
 	// その他
-	//this->pidTurn = new PID(5,0,0);
-	this->pidTurn = new PID(mura_p,mura_i,mura_d);
+	this->pidTurn = new PID(5,0,0);
+	//this->pidTurn = new PID(mura_p,mura_i,mura_d);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
@@ -62,10 +62,9 @@ void LookupFindState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	Bluetooth::sendMessage(this->lineMonitor->getAdjustedBrightness()*100);
-	//turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
-	this->pidTurn->setPID(mura_p,mura_i,mura_d);
-	turn = (int)-this->pidTurn->calc(0.55,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
+	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
+	//this->pidTurn->setPID(mura_p,mura_i,mura_d);
+	//turn = (int)-this->pidTurn->calc(0.55,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -86,8 +85,10 @@ void LookupFindState::execute() {
 ControlState* LookupFindState::next() {
 
 	// ルックアップ検知で遷移
-	if(this->sonarSensor->getValue() < 30) {
-		//return new LookupSitDownState();
+	Bluetooth::sendMessage(this->sonarSensor->getValue());
+	if(this->sonarSensor->getValue() < 25) {
+		this->balancingWalker->notifyGarageDistance(720);
+		return new LookupSitDownState();
 	}
 
 	return this;

@@ -18,16 +18,18 @@ LookupPassState::LookupPassState() {
 
 	Bluetooth::sendMessage("State changed : LookupPassState\n", 33);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->time = Time::getInstance();
+	this->postureEstimation = PostureEstimation::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
+	// メンバ初期化
 	this->startTime = this->time->getTime();
+	this->startRightEnc = this->balancingWalker->getRightEnc();
+	this->startDirection = this->postureEstimation->getDirection();
+	this->pidTurn = new PID(5,0,0);
+	this->backFlag = false;
+	this->forward = 30;
 
 	// 初期処理
 }
@@ -36,6 +38,7 @@ LookupPassState::LookupPassState() {
  * デストラクタ
  */
 LookupPassState::~LookupPassState() {
+	delete this->pidTurn;
 }
 
 /**
@@ -43,13 +46,20 @@ LookupPassState::~LookupPassState() {
  */
 void LookupPassState::execute() {
 
-	int forward = 30;
 	int turn = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	if(this->backFlag == false && 420 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+		this->backFlag = true;
+		this->forward = -30;
+	}
+	else if(this->backFlag == true && this->balancingWalker->getRightEnc() - this->startRightEnc < 0) {
+		this->forward = 30;
+	}
+	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	balancingWalker->setForwardTurn(this->forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
@@ -63,18 +73,9 @@ void LookupPassState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LookupPassState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
-
-	// 経過時刻で遷移
-	if(3.0 < this->time->getTime() - this->startTime) {
+	// タイヤが一定以上回転したら
+	if(540 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 		return new LookupStandUpState();
 	}
 	return this;

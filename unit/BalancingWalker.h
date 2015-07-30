@@ -32,6 +32,8 @@ public:
     int getRightAngularVelocity();
     int getLeftAngularVelocity();
     void updateStateVariable();
+    void notifyGarageDistance(int distance);
+    int calcGarageDistance();
 
 private:
     BalancingWalker();
@@ -48,6 +50,7 @@ private:
     S32 turn;
     bool standControlMode;
     int offset;
+
     S32 rightWheelEncOffset;	// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
     S32 leftWheelEncOffset;		// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
     S32 rightWheelEnc;			// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
@@ -58,6 +61,8 @@ private:
     int leftAngularVelocity;		// 左車輪 角速度
     int* leftWheelEncBuf;			// 左車輪 角速度計算用循環バッファ
     short leftWheelEncBufNext;		// 左車輪 角速度計算用循環バッファ 次の書き込み位置
+
+    int garageDistance;
 
 };
 

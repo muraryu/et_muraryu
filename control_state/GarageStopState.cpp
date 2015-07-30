@@ -53,7 +53,7 @@ void GarageStopState::execute() {
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	if(77 < this->tail->getAngle()) {
-		forward = 50;
+		forward = 80;
 	}
 	else {
 		forward = 0;

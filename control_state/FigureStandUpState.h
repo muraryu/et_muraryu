@@ -27,13 +27,7 @@ private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	double angle;
 
 };
 
