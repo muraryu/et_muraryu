@@ -27,7 +27,7 @@ LineTraceState::LineTraceState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(80,0,5000);
+	this->pid = new PID(80,0,3000);
 
 	// next()
 
@@ -48,7 +48,7 @@ LineTraceState::~LineTraceState() {
  */
 void LineTraceState::execute() {
 
-	int forward = 40;
+	int forward = 100;
 	int turn = 0;
 	int angle = 0;
 
@@ -71,15 +71,6 @@ void LineTraceState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LineTraceState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
-
 
 	return this;
 }

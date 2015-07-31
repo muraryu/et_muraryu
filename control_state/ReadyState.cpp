@@ -13,6 +13,7 @@
 #include "control_state/FigureLineTraceState.h"
 #include "control_state/FigureSpinState.h"
 #include "control_state/LookupFindState.h"
+#include "control_State/QuickStartState.h"
 
 /**
  * コンストラクタ
@@ -77,7 +78,8 @@ ControlState* ReadyState::next() {
 		//return new Test1State();
 		//return new FigureLineTraceState();
 		//return new FigureSpinState();
-		return new LookupFindState();
+		//return new LookupFindState();
+		return new QuickStartState();
 	}
 
 	return this;
