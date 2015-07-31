@@ -10,7 +10,6 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/Test1State.h"
-#include "control_state/LineTraceFindGrayState.h"
 #include "control_state/FigureLineTraceState.h"
 #include "control_state/FigureSpinState.h"
 #include "control_state/LookupFindState.h"
@@ -77,7 +76,6 @@ ControlState* ReadyState::next() {
 		//return new TestStopState();
 		//return new Test1State();
 		//return new FigureLineTraceState();
-		//return new LineTraceFindGrayState();
 		//return new FigureSpinState();
 		return new LookupFindState();
 	}

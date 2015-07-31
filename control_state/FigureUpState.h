@@ -35,9 +35,6 @@ private:
 	// next()
 	int startRightEnc;
 
-	// その他
-	PID* pid;
-
 };
 
 #endif  // NXT_CONTROL_STATE_FIGUREUPSTATE_H_

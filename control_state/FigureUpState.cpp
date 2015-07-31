@@ -34,7 +34,6 @@ FigureUpState::FigureUpState() {
 	// next()
 
 	// その他
-	this->pid = new PID(0.06,0,0);
 
 	// 初期処理
 	this->startRightEnc = this->balancingWalker->getRightEnc();
@@ -44,7 +43,6 @@ FigureUpState::FigureUpState() {
  * デストラクタ
  */
 FigureUpState::~FigureUpState() {
-	delete this->pid;
 }
 
 /**

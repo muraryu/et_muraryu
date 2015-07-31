@@ -28,7 +28,7 @@ FigureFindState::FigureFindState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(80,0,200);
+	this->pid = new PID(80,0,1200);
 
 	// next()
 

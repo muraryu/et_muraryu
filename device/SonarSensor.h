@@ -20,10 +20,12 @@ public:
 	static bool insFlag;				// シングルトンインスタンス生成フラグ(生成前=false, 生成後=true)
 	static SonarSensor* instance;		// シングルトンインスタンス
 
+	void update();			// 距離センサ値を更新
 	int getValue();			// 距離センサ値を取得 0~255
 
 private:
 	ePortS port;
+	int value;		// 距離センサ値
 
 	SonarSensor();	// コンストラクタ
 	virtual ~SonarSensor();		// デストラクタ		計測を終了する

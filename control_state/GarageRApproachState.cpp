@@ -64,7 +64,7 @@ void GarageRApproachState::execute() {
 		turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	}
 	else { // 段差後すこし進んだらライントレース再開
-		this->pidTurn->setPID(80,0,200);
+		this->pidTurn->setPID(80,0,1200);
 		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	}
 	// 足の制御実行

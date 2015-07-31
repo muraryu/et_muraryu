@@ -50,7 +50,7 @@ void LookupPassState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->backFlag == false && 420 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	if(this->backFlag == false && 440 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 		this->backFlag = true;
 		this->forward = -30;
 	}

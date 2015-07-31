@@ -34,6 +34,6 @@ const float BATTERY_OFFSET = 0.625F;   /* PWM出力算出用バッテリ電圧�
 // mura_ryu追加パラメータ
 double mura_p = 80;
 double mura_i = 0;
-double mura_d = 500;
+double mura_d = 3000;
 
 /******************************** END OF FILE ********************************/

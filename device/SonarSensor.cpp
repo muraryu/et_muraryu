@@ -9,6 +9,8 @@
 
 #include "SonarSensor.h"
 
+#include "util/Bluetooth.h"
+
 extern "C" {
 #include "ecrobot_interface.h"
 }
@@ -50,6 +52,7 @@ void SonarSensor::init(ePortS port) {
 
 	/* メンバ初期化 */
 	this->port = port;
+	this->value = 255;
 
 	/* 初期処理 */
 	// 超音波センサ測定開始
@@ -58,13 +61,22 @@ void SonarSensor::init(ePortS port) {
 }
 
 /**
- * 超音波センサから距離を取得
- * @return	距離
+ * 距離センサ値を更新
+ * 40msec以上の間隔で呼び出す（40以下では正常に値を取得できない）
  */
-int SonarSensor::getValue() {
+void SonarSensor::update() {
 	int value = ecrobot_get_sonar_sensor(this->port);
 	if(value == 0) { // なぜか一発目の値が0になるため対策
 		value = 255;
 	}
-	return value;
+	this->value = value;
+	//Bluetooth::sendMessage(this->value);
+}
+
+/**
+ * 超音波センサから距離を取得
+ * @return	距離
+ */
+int SonarSensor::getValue() {
+	return this->value;
 }

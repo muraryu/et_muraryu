@@ -30,13 +30,7 @@ private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
 	PID* pidTurn;
-	PostureEstimation* postureEstimation;
 	LineMonitor* lineMonitor;
-
-	double startDirection;
-	int startRightEnc;
-	int figureEndRightEnc;
-	bool figureEndFlag;
 
 };
 

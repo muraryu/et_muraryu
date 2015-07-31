@@ -29,7 +29,7 @@ FigureLineTraceState::FigureLineTraceState() {
 	// execute(), next()
 
 	// execute()
-	this->pidTurn = new PID(100,0,100);
+	this->pidTurn = new PID(100,0,600);
 	this->pidForward = new PID(0.2,0,0);
 
 	// next()

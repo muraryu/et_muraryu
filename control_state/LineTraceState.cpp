@@ -27,7 +27,7 @@ LineTraceState::LineTraceState() {
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(240,0,0);
+	this->pid = new PID(80,0,5000);
 
 	// next()
 
