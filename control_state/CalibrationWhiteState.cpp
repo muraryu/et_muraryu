@@ -69,14 +69,6 @@ void CalibrationWhiteState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* CalibrationWhiteState::next() {
-	ControlState* baseControlState = base::next();
-	if(baseControlState != this) {
-		return baseControlState;
-	}
-	/*
-	 * ここまでコード編集禁止
-	 * 以下に遷移条件を記述する
-	 */
 
 	// タッチボタンが押されたら遷移
 	if(this->uiManager->isButtonPressed() == true) {
