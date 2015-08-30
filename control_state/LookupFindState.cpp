@@ -87,7 +87,7 @@ ControlState* LookupFindState::next() {
 	// ルックアップ検知で遷移
 	Bluetooth::sendMessage(this->sonarSensor->getValue());
 	if(this->sonarSensor->getValue() < 25) {
-		this->balancingWalker->notifyGarageDistance(720);
+		this->balancingWalker->notifyGarageDistance(600);
 		return new LookupSitDownState();
 	}
 

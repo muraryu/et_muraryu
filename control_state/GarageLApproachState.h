@@ -31,6 +31,9 @@ private:
 	Tail* tail;
 	PID* pidTurn;
 	LineMonitor* lineMonitor;
+	PostureEstimation* postureEstimation;
+
+	double startDirection;
 
 };
 

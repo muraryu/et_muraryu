@@ -47,11 +47,11 @@ void LookupSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 73;
+	int angle = 63;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(70 < this->tail->getAngle()) {
+	if(62 < this->tail->getAngle()) {
 		forward = 100;
 	}
 	else {

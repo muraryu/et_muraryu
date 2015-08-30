@@ -14,6 +14,7 @@
 #include "control_state/FigureSpinState.h"
 #include "control_state/LookupFindState.h"
 #include "control_State/QuickStartState.h"
+#include "control_state/LineTraceState.h"
 
 /**
  * コンストラクタ
@@ -79,7 +80,9 @@ ControlState* ReadyState::next() {
 		//return new FigureLineTraceState();
 		//return new FigureSpinState();
 		//return new LookupFindState();
-		return new QuickStartState();
+		this->balancingWalker->init();
+		this->balancingWalker->setStandControlMode(true);
+		return new LineTraceState();
 	}
 
 	return this;

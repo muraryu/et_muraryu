@@ -23,8 +23,9 @@ GarageLApproachState::GarageLApproachState() {
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-	this->pidTurn = new PID(5,0,0);
+	this->pidTurn = new PID(100,0,600);
 	this->lineMonitor = LineMonitor::getInstance();
+	this->postureEstimation = PostureEstimation::getInstance();
 
 	// execute(), next()
 
@@ -35,6 +36,8 @@ GarageLApproachState::GarageLApproachState() {
 	// その他
 
 	// 初期処理
+	this->startDirection = this->postureEstimation->getDirection();
+	//Bluetooth::sendMessage(this->postureEstimation->getDirection());
 }
 
 /**
@@ -52,10 +55,21 @@ void GarageLApproachState::execute() {
 	int forward = 40;
 	int turn = 0;
 	int angle = 80;
-
+	double direction = 0;
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	turn = (int)-this->pidTurn->calc(0.55,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
+	direction = this->postureEstimation->getDirection() - this->startDirection;
+	Bluetooth::sendMessage(direction);
+	// 向き制限
+	if(direction < -25 && turn < 0) {
+		//Bluetooth::sendMessage(direction);
+		turn = 0;
+	}
+	else if(25 < direction && 0 < turn) {
+		//Bluetooth::sendMessage(1);
+		turn = 0;
+	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

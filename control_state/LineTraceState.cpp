@@ -10,6 +10,8 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/StopState.h"
+#include "control_state/FigureFindState.h"
+#include "control_state/LookupFindState.h"
 
 /**
  * コンストラクタ
@@ -71,6 +73,21 @@ void LineTraceState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LineTraceState::next() {
+
+	// 一定距離は知ったら（ゴールしたら）遷移
+	// コースR フィギュア
+/*
+	if(13000 <= this->balancingWalker->getRightEnc()) {
+		return new FigureFindState();
+	}
+*/
+
+	// コースL ルックアップ
+	Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
+	if(12200 <= this->balancingWalker->getRightEnc()) {
+			return new LookupFindState();
+	}
+
 
 	return this;
 }

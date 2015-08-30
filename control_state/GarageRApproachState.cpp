@@ -65,7 +65,7 @@ void GarageRApproachState::execute() {
 	}
 	else { // 段差後すこし進んだらライントレース再開
 		this->pidTurn->setPID(80,0,1200);
-		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+		turn = (int)-this->pidTurn->calc(0.6,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
@@ -94,14 +94,15 @@ ControlState* GarageRApproachState::next() {
 		this->figureEndFlag = true;
 		this->figureEndRightEnc = this->balancingWalker->getRightEnc();
 		this->lineMonitor->changeLineToNormal();
-		Bluetooth::sendMessage("Step Found\n");
+		//Bluetooth::sendMessage("Step Found\n");
 	}
 	else {
-		Bluetooth::sendMessage(this->balancingWalker->getLeftAngularVelocity());
+		//Bluetooth::sendMessage(this->balancingWalker->getLeftAngularVelocity());
 	}
 
 	// フィギュアL段差から一定距離進んで遷移
-	if(680 < this->balancingWalker->getRightEnc() - this->figureEndRightEnc) {
+	Bluetooth::sendMessage(this->balancingWalker->getRightEnc() - this->figureEndRightEnc);
+	if(1070 < this->balancingWalker->getRightEnc() - this->figureEndRightEnc) {
 		return new GarageStopState();
 	}
 
