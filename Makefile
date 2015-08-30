@@ -40,6 +40,7 @@ TARGET_CPP_SOURCES = \
 	control_state/LookupStandUpState.cpp \
 	control_state/GarageLApproachState.cpp \
 	control_state/ReadyState.cpp \
+	control_state/QuickStartState.cpp \
 	control_state/FigureFindState.cpp \
 	control_state/FigureSitDownState.cpp \
 	control_state/FigureBackState.cpp \
