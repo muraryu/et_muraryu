@@ -24,8 +24,10 @@ GarageLApproachState::GarageLApproachState() {
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->pidTurn = new PID(100,0,600);
+	this->pidForward = new PID(0.2,0,0);
 	this->lineMonitor = LineMonitor::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
+	this->time = Time::getInstance();
 
 	// execute(), next()
 
@@ -37,7 +39,8 @@ GarageLApproachState::GarageLApproachState() {
 
 	// 初期処理
 	this->startDirection = this->postureEstimation->getDirection();
-	//Bluetooth::sendMessage(this->postureEstimation->getDirection());
+	this->startTime = this->time->getTime();
+	this->startRightEnc = this->balancingWalker->getRightEnc();
 }
 
 /**
@@ -45,6 +48,7 @@ GarageLApproachState::GarageLApproachState() {
  */
 GarageLApproachState::~GarageLApproachState() {
 	delete this->pidTurn;
+	delete this->pidForward;
 }
 
 /**
@@ -52,23 +56,29 @@ GarageLApproachState::~GarageLApproachState() {
  */
 void GarageLApproachState::execute() {
 
-	int forward = 40;
+	int forward = 0;
 	int turn = 0;
 	int angle = 80;
 	double direction = 0;
+
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = (int)-this->pidTurn->calc(0.55,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
-	direction = this->postureEstimation->getDirection() - this->startDirection;
-	Bluetooth::sendMessage(direction);
-	// 向き制限
-	if(direction < -25 && turn < 0) {
-		//Bluetooth::sendMessage(direction);
-		turn = 0;
+	if(this->time->getTime() - this->startTime < 1.0) { // 1秒待機して安定させる
+		forward = (int)this->pidForward->calc(this->startRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
+		this->startDirection = this->postureEstimation->getDirection();
 	}
-	else if(25 < direction && 0 < turn) {
-		//Bluetooth::sendMessage(1);
-		turn = 0;
+	else { // 5秒後からライントレース
+		forward = 10;
+		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+		direction = this->postureEstimation->getDirection() - this->startDirection;
+		if(direction < -25 && turn < 0) {
+			Bluetooth::sendMessage(direction);
+			turn = 0;
+		}
+		else if(25 < direction && 0 < turn) {
+			Bluetooth::sendMessage(1);
+			turn = 0;
+		}
 	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

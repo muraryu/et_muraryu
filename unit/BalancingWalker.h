@@ -50,6 +50,7 @@ private:
     S32 turn;
     bool standControlMode;
     int offset;
+    double offsetRightEncBeforeInit;
 
     S32 rightWheelEncOffset;	// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない
     S32 leftWheelEncOffset;		// 倒立制御復帰時にエンコーダをリセットしないように実装するとき必要 今は使ってない

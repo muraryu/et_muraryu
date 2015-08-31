@@ -30,10 +30,14 @@ private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
 	PID* pidTurn;
+	PID* pidForward;
 	LineMonitor* lineMonitor;
 	PostureEstimation* postureEstimation;
+	Time* time;
 
 	double startDirection;
+	double startTime;
+	int startRightEnc;
 
 };
 

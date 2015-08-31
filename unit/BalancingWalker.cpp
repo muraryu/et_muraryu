@@ -113,11 +113,17 @@ void BalancingWalker::init(const ecrobot::GyroSensor* gyroSensor,
 
     // 倒立振子制御初期化
     mBalancer->init(this->offset);
+
+    // 再初期化時
+    this->offsetRightEncBeforeInit = 0;
 }
 
 void BalancingWalker::init() {
 	// ジャイロセンサオフセット初期化
     //int offset = mGyroSensor->getAnglerVelocity();  // ジャイロセンサ値
+
+    // ガレージ距離調整
+    this->offsetRightEncBeforeInit += this->getRightEnc();
 
 	// モータエンコーダをリセットする
     mLeftWheel->reset();
@@ -125,6 +131,7 @@ void BalancingWalker::init() {
 
     // 倒立振子制御初期化
     mBalancer->init(this->offset);
+
 }
 
 /**
@@ -221,12 +228,12 @@ void BalancingWalker::updateStateVariable() {
  * ガレージまでの車輪角度[deg]をセットする
  */
 void BalancingWalker::notifyGarageDistance(int distance) {
-	this->garageDistance = this->getRightEnc() + distance;
+	this->garageDistance = this->getRightEnc() + this->offsetRightEncBeforeInit + distance;
 }
 
 /**
  * ガレージまでの車輪角度[deg]を取得する
  */
 int BalancingWalker::calcGarageDistance() {
-	return this->garageDistance - this->getRightEnc();
+	return this->garageDistance - this->getRightEnc() - this->offsetRightEncBeforeInit;
 }
