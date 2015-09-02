@@ -12,6 +12,7 @@
 #include "control_state/StopState.h"
 #include "control_state/FigureFindState.h"
 #include "control_state/LookupFindState.h"
+#include "balancer_param.c"
 
 /**
  * コンストラクタ
@@ -56,6 +57,12 @@ void LineTraceState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	if(this->balancingWalker->getRightEnc() < 720) { // 出だしはゆっくり
+		K_THETADOT = 7.5;
+	}
+	else {
+		K_THETADOT = 11.5;
+	}
 	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

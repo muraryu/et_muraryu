@@ -53,6 +53,7 @@ TARGET_CPP_SOURCES = \
 	control_state/GarageRApproachState.cpp \
 	control_state/GarageStopState.cpp \
 	control_state/Test1State.cpp \
+	control_state/Test2State.cpp \
 	device/TouchSensor.cpp \
 	device/SonarSensor.cpp \
 	unit/BalancerCpp.cpp \

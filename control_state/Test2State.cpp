@@ -1,5 +1,5 @@
 /******************************************************************************
- *  Test1State.cpp (for LEGO Mindstorms NXT)
+ *  Test2State.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/25
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
@@ -7,7 +7,7 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#include "Test1State.h"
+#include "Test2State.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/StopState.h"
@@ -18,9 +18,9 @@
 /**
  * コンストラクタ
  */
-Test1State::Test1State() {
+Test2State::Test2State() {
 
-	Bluetooth::sendMessage("State changed : Test1State\n", 28);
+	Bluetooth::sendMessage("State changed : Test2State\n", 28);
 
 	/* メンバ初期化 */
 	// シングルトン取得
@@ -34,7 +34,7 @@ Test1State::Test1State() {
 
 	// execute()
 	this->pidTurn = new PID(1,0,0);
-	//this->pidTurn = new PID(80,0,3000);
+	this->pidTurnLine = new PID(80,0,3000);
 
 	// next()
 
@@ -44,52 +44,56 @@ Test1State::Test1State() {
 	this->startDirection = this->postureEstimation->getDirection();
 
 	this->turnflag = false;
+	this->forward = 70;
 }
 
 /**
  * デストラクタ
  */
-Test1State::~Test1State() {
+Test2State::~Test2State() {
 	delete this->pidTurn;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void Test1State::execute() {
+void Test2State::execute() {
 
-	int forward = 100;
 	int turn = 0;
 	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->balancingWalker->getRightEnc() < 2000) {
-		K_THETADOT = 7.5;
-	} else {
-		K_THETADOT = 11.5;
-	}
-	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
 	//turn = (int)-this->pidTurn->calc(0.55,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
-/*
+
 	if(6000 < this->balancingWalker->getRightEnc()) {
-		if( -175 < this->postureEstimation->getDirection() && turnflag == false) {
-			forward = 80;
-			turn = -20;
+		if( -175 < this->postureEstimation->getDirection() && this->turnflag == false) {
+			this->forward = 100;
+			K_THETADOT = 7.5;
+			K_PHIDOT = 25.0F*3.5F;
+			turn = -30;
 		}
 		else {
-			turnflag = true;
-			forward = 100;
+			this->turnflag = true;
+			this->forward = 100;
+			K_THETADOT = 11.5;
 			turn = (int)this->pidTurn->calc(this->startDirection-175,this->postureEstimation->getDirection(),-30,30); // test
 		}
 	}
-	else {
+	else if(1080 < this->balancingWalker->getRightEnc()){//100 < this->forward) {//11.0 < K_THETADOT) {
+		this->forward = 100;
+		K_THETADOT = 11.3;
 		turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-100,100); // test
-	}*/
+	}
+	else {
+		this->forward =100;//+= 0.3;
+		//K_THETADOT += 0.008;
+		turn = (int)-this->pidTurnLine->calc(0.55,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
+	}
 
 
 	// 足の制御実行
-	this->balancingWalker->setForwardTurn(forward, turn);
+	balancingWalker->setForwardTurn(this->forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
@@ -103,7 +107,7 @@ void Test1State::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* Test1State::next() {
+ControlState* Test2State::next() {
 
 	Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
 	// チョイ走る

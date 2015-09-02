@@ -10,6 +10,7 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/Test1State.h"
+#include "control_state/Test2State.h"
 #include "control_state/FigureLineTraceState.h"
 #include "control_state/FigureSpinState.h"
 #include "control_state/LookupFindState.h"
@@ -79,6 +80,7 @@ ControlState* ReadyState::next() {
 		this->balancingWalker->setStandControlMode(true);
 		//return new LineTraceState();
 		return new Test1State();
+		//return new Test2State();
 		//return new QuickStartState();
 	}
 
