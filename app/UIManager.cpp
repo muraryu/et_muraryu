@@ -105,9 +105,9 @@ void UIManager::update() {
 			} else if(buf[0] == 'f') {
 				K_F[3] -= 0.1F;
 			} else if(buf[0] == 't') {
-				K_THETADOT += 0.1F;
+				K_THETADOT += 0.2F;
 			} else if(buf[0] == 'g') {
-				K_THETADOT -= 0.1F;
+				K_THETADOT -= 0.2F;
 			} else if(buf[0] == '1') {
 				this->isReadyToStartFlag = true;
 			} else if(buf[0] == 'j') {
@@ -118,6 +118,10 @@ void UIManager::update() {
 				mura_d -= 50;
 			} else if(buf[0] == 'i') {
 				mura_d += 50;
+			} else if(buf[0] == 'o') {
+				K_PHIDOT += 2;
+			} else if(buf[0] == 'l') {
+				K_PHIDOT -= 2;
 			}
 
 		}

@@ -49,12 +49,13 @@ void LookupStandUpState::execute() {
 	// 角度目標値を設定
 	this->angle += 0.05;
 	// しっぽの制御実行
-	Bluetooth::sendMessage(this->tail->getAngularVelocity());
+	//Bluetooth::sendMessage(this->tail->getAngularVelocity());
+	// 静止摩擦補償
 	if(this->tail->getAngularVelocity() == 0) {
-		this->tail->setCommandAngle(this->angle + 20);
+		this->tail->setCommandAngle((int)this->angle + 20);
 	}
 	else {
-		this->tail->setCommandAngle(this->angle);
+		this->tail->setCommandAngle((int)this->angle);
 	}
 
 }
@@ -65,7 +66,7 @@ void LookupStandUpState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LookupStandUpState::next() {
-
+	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// 前に倒れかけたら遷移
 	if(105 < this->tail->getAngle()) {
 		this->balancingWalker->init();

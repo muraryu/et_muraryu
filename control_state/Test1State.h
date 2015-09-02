@@ -14,6 +14,7 @@
 #include "util/PID.h"
 #include "app/LineMonitor.h"
 #include "util/Time.h"
+#include "app/PostureEstimation.h"
 
 class Test1State: public ControlState {
 	typedef ControlState base;
@@ -30,7 +31,8 @@ private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
 	LineMonitor* lineMonitor;
-	PID* pid;
+	PID* pidTurn;
+	PostureEstimation* postureEstimation;
 
 	// execute(), next()
 
@@ -39,6 +41,8 @@ private:
 	// next()
 	Time* time;
 	double startTime;
+	double startDirection;
+	bool turnflag;
 };
 
 #endif /* NXT_CONTROL_STATE_TEST1STATE_H_ */

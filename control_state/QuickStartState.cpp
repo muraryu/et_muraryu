@@ -10,6 +10,7 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/LineTraceState.h"
+#include "control_state/Test1State.h"
 
 /**
  * コンストラクタ
@@ -47,6 +48,7 @@ void QuickStartState::execute() {
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
+	/*
 	this->angle += 0.05;
 	// しっぽの制御実行
 	Bluetooth::sendMessage(this->tail->getAngularVelocity());
@@ -55,8 +57,8 @@ void QuickStartState::execute() {
 	}
 	else {
 		this->tail->setCommandAngle(this->angle);
-	}
-
+	}*/
+	this->tail->setCommandAngle(120);
 }
 
 /**
@@ -67,10 +69,11 @@ void QuickStartState::execute() {
 ControlState* QuickStartState::next() {
 
 	// 前に倒れかけたら遷移
-	if(108 < this->tail->getAngle()) {
+	if(110 < this->tail->getAngle()) {
 		this->balancingWalker->init();
 		this->balancingWalker->setStandControlMode(true);
-		return new LineTraceState();
+		//return new LineTraceState();
+		return new Test1State();
 	}
 
 	return this;

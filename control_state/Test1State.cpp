@@ -12,6 +12,7 @@
 #include "util/Bluetooth.h"
 #include "control_state/StopState.h"
 #include "control_state/FigureFindState.h"
+#include "control_state/GarageStopState.h"
 
 /**
  * コンストラクタ
@@ -26,25 +27,29 @@ Test1State::Test1State() {
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->time = Time::getInstance();
+	this->postureEstimation = PostureEstimation::getInstance();
 
 	// execute(), next()
 
 	// execute()
-	this->pid = new PID(80,0,1200);
+	//this->pidTurn = new PID(1,0,0);
+	this->pidTurn = new PID(80,0,3000);
 
 	// next()
 
 	/* 初期処理 */
 	this->balancingWalker->setStandControlMode(true);
 	this->startTime = this->time->getTime();
+	this->startDirection = this->postureEstimation->getDirection();
 
+	this->turnflag = false;
 }
 
 /**
  * デストラクタ
  */
 Test1State::~Test1State() {
-	delete this->pid;
+	delete this->pidTurn;
 }
 
 /**
@@ -52,13 +57,30 @@ Test1State::~Test1State() {
  */
 void Test1State::execute() {
 
-	int forward = 20;
+	int forward = 100;
 	int turn = 0;
 	int angle = 0;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
+	turn = (int)-this->pidTurn->calc(0.55,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
+/*
+	if(6000 < this->balancingWalker->getRightEnc()) {
+		if( -175 < this->postureEstimation->getDirection() && turnflag == false) {
+			forward = 80;
+			turn = -20;
+		}
+		else {
+			turnflag = true;
+			forward = 100;
+			turn = (int)this->pidTurn->calc(this->startDirection-175,this->postureEstimation->getDirection(),-30,30); // test
+		}
+	}
+	else {
+		turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-100,100); // test
+	}*/
+
+
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -76,10 +98,17 @@ void Test1State::execute() {
  */
 ControlState* Test1State::next() {
 
+	Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
 	// チョイ走る
-	if(3.0 < this->time->getTime() - this->startTime ) {
+	/*
+	if(10.0 < this->time->getTime() - this->startTime ) {
 		return new FigureFindState();
 	}
+	*/
+	if(12000 < this->balancingWalker->getRightEnc()) {
+		return new GarageStopState();
+	}
+
 
 
 	return this;

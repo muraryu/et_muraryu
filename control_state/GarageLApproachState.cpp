@@ -98,6 +98,7 @@ void GarageLApproachState::execute() {
 ControlState* GarageLApproachState::next() {
 
 	// ガレージまでの距離がゼロで遷移
+	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	if(this->balancingWalker->calcGarageDistance() < 0) {
 		return new GarageStopState();
 	}

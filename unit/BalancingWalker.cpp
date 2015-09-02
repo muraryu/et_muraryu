@@ -54,6 +54,8 @@ void BalancingWalker::control() {
         mBalancer->setCommand(forward, turn);
     	mBalancer->update(angle, rightWheelEnc, leftWheelEnc, mNxt->getBattMv());
 
+    	//Bluetooth::sendMessage(mBalancer->getPwmLeft()*1000+mBalancer->getPwmRight());
+
     	// 左右モータに回転を指示する
     	mLeftWheel->setPWM(mBalancer->getPwmLeft());
     	mRightWheel->setPWM(mBalancer->getPwmRight());

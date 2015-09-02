@@ -48,12 +48,12 @@ void GarageStopState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 80;
+	int angle = 85;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(77 < this->tail->getAngle()) {
-		forward = 80;
+	if(82 < this->tail->getAngle()) {
+		forward = 40;
 	}
 	else {
 		forward = 0;

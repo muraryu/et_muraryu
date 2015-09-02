@@ -75,14 +75,11 @@ ControlState* ReadyState::next() {
 
 	// 走行開始合図が来たら遷移
 	if(this->uiManager->isReadyToStart() == true) {
-		//return new TestStopState();
-		//return new Test1State();
-		//return new FigureLineTraceState();
-		//return new FigureSpinState();
-		//return new LookupFindState();
 		this->balancingWalker->init();
 		this->balancingWalker->setStandControlMode(true);
 		return new LineTraceState();
+		//return new Test1State();
+		//return new QuickStartState();
 	}
 
 	return this;
