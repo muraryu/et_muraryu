@@ -13,7 +13,7 @@
 #include "control_state/FigureLineTraceState.h"
 #include "control_state/FigureSpinState.h"
 #include "control_state/LookupFindState.h"
-#include "control_State/QuickStartState.h"
+#include "control_State/StartState.h"
 #include "control_state/LineTraceState.h"
 
 /**
@@ -77,8 +77,8 @@ ControlState* ReadyState::next() {
 	if(this->uiManager->isReadyToStart() == true) {
 		this->balancingWalker->init();
 		this->balancingWalker->setStandControlMode(true);
-		return new LineTraceState();
-		//return new Test1State();
+		//return new LineTraceState();
+		return new Test1State();
 		//return new QuickStartState();
 	}
 

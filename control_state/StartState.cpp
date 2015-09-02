@@ -6,7 +6,7 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#include "QuickStartState.h"
+#include "StartState.h"
 
 #include "util/Bluetooth.h"
 #include "control_state/LineTraceState.h"
@@ -15,9 +15,9 @@
 /**
  * コンストラクタ
  */
-QuickStartState::QuickStartState() {
+StartState::StartState() {
 
-	Bluetooth::sendMessage("State changed : QuickStartState\n", 36);
+	Bluetooth::sendMessage("State changed : StartState\n", 28);
 
 	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
@@ -30,13 +30,13 @@ QuickStartState::QuickStartState() {
 /**
  * デストラクタ
  */
-QuickStartState::~QuickStartState() {
+StartState::~StartState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void QuickStartState::execute() {
+void StartState::execute() {
 
 	int forward = 0;
 	int turn = 0;
@@ -66,7 +66,7 @@ void QuickStartState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* QuickStartState::next() {
+ControlState* StartState::next() {
 
 	// 前に倒れかけたら遷移
 	if(110 < this->tail->getAngle()) {

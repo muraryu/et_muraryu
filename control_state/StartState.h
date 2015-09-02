@@ -5,19 +5,19 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_QUICKSTARTSTATE_H_
-#define NXT_CONTROL_STATE_QUICKSTARTSTATE_H_
+#ifndef NXT_CONTROL_STATE_STARTSTATE_H_
+#define NXT_CONTROL_STATE_STARTSTATE_H_
 
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
 
-class QuickStartState : public ControlState {
+class StartState : public ControlState {
 	typedef ControlState base;
 
 public:
-	QuickStartState();
-	virtual ~QuickStartState();
+	StartState();
+	virtual ~StartState();
 
 	// override
 	virtual void execute();
@@ -31,4 +31,4 @@ private:
 
 };
 
-#endif  // NXT_CONTROL_STATE_QUICKSTARTSTATE_H_
+#endif  // NXT_CONTROL_STATE_STARTSTATE_H_
