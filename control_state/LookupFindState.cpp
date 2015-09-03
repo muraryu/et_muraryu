@@ -40,8 +40,11 @@ LookupFindState::LookupFindState() {
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
-
 	this->startDirection = this->postureEstimation->getDirection();
+
+	K_THETADOT = 7.5;
+	K_PHIDOT = 25.0F*2.5F;
+	K_I = -0.44721F;
 
 }
 
