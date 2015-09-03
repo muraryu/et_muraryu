@@ -79,8 +79,8 @@ ControlState* ReadyState::next() {
 		this->balancingWalker->init();
 		this->balancingWalker->setStandControlMode(true);
 		//return new LineTraceState();
-		return new Test1State();
-		//return new Test2State();
+		//return new Test1State();
+		return new Test2State();
 		//return new QuickStartState();
 	}
 

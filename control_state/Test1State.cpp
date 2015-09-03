@@ -72,6 +72,7 @@ void Test1State::execute() {
 	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
 	//turn = (int)-this->pidTurn->calc(0.55,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
 /*
+	// ショートカット
 	if(6000 < this->balancingWalker->getRightEnc()) {
 		if( -175 < this->postureEstimation->getDirection() && turnflag == false) {
 			forward = 80;

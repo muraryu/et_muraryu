@@ -31,7 +31,7 @@ private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
 	LineMonitor* lineMonitor;
-	PID* pidTurn;
+	PID* pidTurnDirection;
 	PID* pidTurnLine;
 	PostureEstimation* postureEstimation;
 
@@ -45,6 +45,7 @@ private:
 	double startDirection;
 	bool turnflag;
 	double forward;
+	double k_theta;
 };
 
 #endif /* NXT_CONTROL_STATE_TEST2STATE_H_ */

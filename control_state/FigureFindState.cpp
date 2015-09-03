@@ -11,6 +11,7 @@
 #include "util/Bluetooth.h"
 #include "util/Str.h"
 #include "control_state/FigureSitDownState.h"
+#include "balancer_param.c"
 
 
 /**
@@ -33,6 +34,8 @@ FigureFindState::FigureFindState() {
 	// next()
 
 	/* 初期処理 */
+
+	// 各ゲインを走行会２の時の値に設定
 	K_THETADOT = 7.5;
 	K_PHIDOT = 25.0F*2.5F;
 	K_I = -0.44721F;
