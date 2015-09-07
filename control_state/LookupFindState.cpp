@@ -69,7 +69,7 @@ void LookupFindState::execute() {
 	// 前進値、旋回値を設定
 	//turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
 	//this->pidTurn->setPID(mura_p,mura_i,mura_d);
-	turn = (int)-this->pidTurn->calc(0.55,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
+	turn = (int)-this->pidTurn->calc(0.60,(double)this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
@@ -92,7 +92,7 @@ ControlState* LookupFindState::next() {
 	// ルックアップ検知で遷移
 	Bluetooth::sendMessage(this->sonarSensor->getValue());
 	if(this->sonarSensor->getValue() < 25) {
-		this->balancingWalker->notifyGarageDistance(1500);
+		this->balancingWalker->notifyGarageDistance(1800); //TODO 当日調整
 		return new LookupSitDownState();
 	}
 

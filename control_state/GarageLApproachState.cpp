@@ -23,7 +23,7 @@ GarageLApproachState::GarageLApproachState() {
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-	this->pidTurn = new PID(100,0,600);
+	this->pidTurn = new PID(80,0,1200);
 	this->pidForward = new PID(0.2,0,0);
 	this->lineMonitor = LineMonitor::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
@@ -63,20 +63,20 @@ void GarageLApproachState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->time->getTime() - this->startTime < 1.0) { // 1秒待機して安定させる
+	if(this->time->getTime() - this->startTime < 1.0) { // 1秒待機して安定させる （ディレクション計算のため必須）
 		forward = (int)this->pidForward->calc(this->startRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
 		this->startDirection = this->postureEstimation->getDirection();
 	}
-	else { // 5秒後からライントレース
-		forward = 10;
-		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+	else { // 1秒後からライントレース
+		forward = 20;
+		turn = (int)-this->pidTurn->calc(0.70,this->lineMonitor->getAdjustedBrightness(),-100,100);
+		//Bluetooth::sendMessage(this->lineMonitor->getAdjustedBrightness()*100);
+		// 方向制限
 		direction = this->postureEstimation->getDirection() - this->startDirection;
 		if(direction < -25 && turn < 0) {
-			Bluetooth::sendMessage(direction);
 			turn = 0;
 		}
 		else if(25 < direction && 0 < turn) {
-			Bluetooth::sendMessage(1);
 			turn = 0;
 		}
 	}
@@ -98,8 +98,8 @@ void GarageLApproachState::execute() {
 ControlState* GarageLApproachState::next() {
 
 	// ガレージまでの距離がゼロで遷移
-	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
-	if(this->balancingWalker->calcGarageDistance() < 400) { //TODO 当日調整
+	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
+	if(this->balancingWalker->calcGarageDistance() < 500) { //TODO 当日調整
 		return new GarageSitDownState();
 	}
 

@@ -79,11 +79,12 @@ ControlState* ReadyState::next() {
 	if(this->uiManager->isReadyToStart() == true) {
 		this->balancingWalker->init();
 		this->balancingWalker->setStandControlMode(true);
-		//return new LineTraceState();
+		//return new LineTraceState(); //TODO 当日本番
 		//return new Test1State();
 		//return new Test2State();
 		//return new QuickStartState();
-		return new FigureStandUpState();
+		//return new FigureStandUpState(); //TODO 当日調整用 コースR
+		return new LookupFindState();
 	}
 
 	return this;
