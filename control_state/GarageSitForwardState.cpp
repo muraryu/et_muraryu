@@ -1,5 +1,5 @@
 /******************************************************************************
- *  GarageStopState.cpp (for LEGO Mindstorms NXT)
+ *  GarageSitForwardState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/07/28
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
@@ -8,20 +8,23 @@
  *  Author: muraryu
  *****************************************************************************/
 
-#include "GarageStopState.h"
+#include "GarageSitForwardState.h"
 
+#include "control_state/GarageStopState.h"
 #include "util/Bluetooth.h"
 
 /**
  * コンストラクタ
  */
-GarageStopState::GarageStopState() {
+GarageSitForwardState::GarageSitForwardState() {
 
-	Bluetooth::sendMessage("State changed : GarageStopState\n", 33);
+	Bluetooth::sendMessage("State changed : GarageSitForwardState\n", 39);
 
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
+	this->postureEstimation = PostureEstimation::getInstance();
+	this->pidTurn = new PID(5,0,0);
 
 	// execute(), next()
 
@@ -32,25 +35,28 @@ GarageStopState::GarageStopState() {
 	// その他
 
 	// 初期処理
+	this->startDirection = this->postureEstimation->getDirection();
 }
 
 /**
  * デストラクタ
  */
-GarageStopState::~GarageStopState() {
+GarageSitForwardState::~GarageSitForwardState() {
+	delete this->pidTurn;
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void GarageStopState::execute() {
+void GarageSitForwardState::execute() {
 
-	int forward = 0;
+	int forward = 30;
 	int turn = 0;
 	int angle = 85;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	turn = (int)this->pidTurn->calc(this->startDirection+5,this->postureEstimation->getDirection(),-30,30); // +5によりガレージ真ん中よりになる（ライン幅の分ずれてるから）
 	// 足の制御実行
 	this->balancingWalker->setForwardTurn(forward, turn);
 
@@ -66,11 +72,14 @@ void GarageStopState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* GarageStopState::next() {
+ControlState* GarageSitForwardState::next() {
 
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 
-	// 終わり
+	// ガレージ停止位置まで前進して遷移
+	if(this->balancingWalker->calcGarageDistance() < 0) {
+		return new GarageStopState();
+	}
 
 	return this;
 }

@@ -1,26 +1,24 @@
 /******************************************************************************
- *  GarageRApproachState.h (for LEGO Mindstorms NXT)
- *  Created on: 2015/07/28
- *  Definition of the Class GarageRApproachState
+ *  GarageSitForwardState.h (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/23
+ *  Definition of the Class GarageSitForwardState
  *  Author: muraryu
  *****************************************************************************/
 
-#ifndef NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_
-#define NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_
+#ifndef NXT_CONTROL_STATE_GARAGESITFORWARDSTATE_H_
+#define NXT_CONTROL_STATE_GARAGESITFORWARDSTATE_H_
 
 #include "control_state/ControlState.h"
 #include "unit/balancingWalker.h"
 #include "app/Tail.h"
 #include "app/PostureEstimation.h"
-#include "app/LineMonitor.h"
-#include "util/PID.h"
 
-class GarageRApproachState : public ControlState {
+class GarageSitForwardState : public ControlState {
 	typedef ControlState base;
 
 public:
-	GarageRApproachState();
-	virtual ~GarageRApproachState();
+	GarageSitForwardState();
+	virtual ~GarageSitForwardState();
 
 	// override
 	virtual void execute();
@@ -29,13 +27,11 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
-	PID* pidTurn;
 	PostureEstimation* postureEstimation;
-	LineMonitor* lineMonitor;
+	PID* pidTurn;
 
 	double startDirection;
-	bool figureEndFlag;
 
 };
 
-#endif  // NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_
+#endif  // NXT_CONTROL_STATE_GARAGESITFORWARDSTATE_H_

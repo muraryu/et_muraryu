@@ -38,7 +38,6 @@ FigureSitDownState::FigureSitDownState() {
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
-	this->lineMonitor->changeLineToFigure();
 }
 
 /**

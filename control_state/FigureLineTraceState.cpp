@@ -35,7 +35,6 @@ FigureLineTraceState::FigureLineTraceState() {
 	// next()
 
 	/* 初期処理 */
-	this->lineMonitor->changeLineToFigure();
 	this->balancingWalker->setStandControlMode(true);
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 	this->startDirection = this->postureEstimation->getDirection();
@@ -65,7 +64,7 @@ void FigureLineTraceState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->time->getTime() - this->startTime < 3.0) { // 5秒待機して安定させる
+	if(this->time->getTime() - this->startTime < 3.0) { // 3秒待機して安定させる
 		forward = (int)this->pidForward->calc(this->startRightEnc, this->balancingWalker->getRightEnc(), -100, 100);
 		this->startDirection = this->postureEstimation->getDirection();
 	}

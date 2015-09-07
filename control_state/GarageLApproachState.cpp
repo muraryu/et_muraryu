@@ -11,7 +11,7 @@
 #include "GarageLApproachState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/GarageStopState.h"
+#include "control_state/GarageSitDownState.h"
 
 /**
  * コンストラクタ
@@ -99,8 +99,8 @@ ControlState* GarageLApproachState::next() {
 
 	// ガレージまでの距離がゼロで遷移
 	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
-	if(this->balancingWalker->calcGarageDistance() < 0) {
-		return new GarageStopState();
+	if(this->balancingWalker->calcGarageDistance() < 400) { //TODO 当日調整
+		return new GarageSitDownState();
 	}
 
 	return this;

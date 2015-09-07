@@ -1,49 +1,53 @@
 /******************************************************************************
- *  GarageStopState.cpp (for LEGO Mindstorms NXT)
- *  Created on: 2015/07/28
+ *  GarageSitDownState.cpp (for LEGO Mindstorms NXT)
+ *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  尻尾で立って終了
- *  とりあえず位置制御
  *  Author: muraryu
  *****************************************************************************/
 
-#include "GarageStopState.h"
+#include "GarageSitDownState.h"
 
 #include "util/Bluetooth.h"
+#include "control_state/GarageSitForwardState.h"
 
 /**
  * コンストラクタ
  */
-GarageStopState::GarageStopState() {
+GarageSitDownState::GarageSitDownState() {
 
-	Bluetooth::sendMessage("State changed : GarageStopState\n", 33);
+	Bluetooth::sendMessage("State changed : GarageSitDownState\n", 36);
 
 	// メンバ初期化
-	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
+	this->time = Time::getInstance();
+	this->balancingWalker = BalancingWalker::getInstance();
+	this->lineMonitor = LineMonitor::getInstance();
 
 	// execute(), next()
+	this->startTime = this->time->getTime();
 
 	// execute()
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 
 	// next()
 
 	// その他
 
 	// 初期処理
+	this->balancingWalker->setStandControlMode(false);
 }
 
 /**
  * デストラクタ
  */
-GarageStopState::~GarageStopState() {
+GarageSitDownState::~GarageSitDownState() {
 }
 
 /**
  * 制御ステートに応じた制御を実行
  */
-void GarageStopState::execute() {
+void GarageSitDownState::execute() {
 
 	int forward = 0;
 	int turn = 0;
@@ -51,6 +55,12 @@ void GarageStopState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+	if(82 < this->tail->getAngle()) {
+		forward = 100;
+	}
+	else {
+		forward = 0;
+	}
 	// 足の制御実行
 	this->balancingWalker->setForwardTurn(forward, turn);
 
@@ -66,11 +76,15 @@ void GarageStopState::execute() {
  * @return	ControlState* 遷移先クラスインスタンス
  * @note	遷移しないときはthisを返す
  */
-ControlState* GarageStopState::next() {
+ControlState* GarageSitDownState::next() {
 
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 
-	// 終わり
+	// 経過時間で遷移
+	if(2.0 < this->time->getTime() - this->startTime) {
+		//return new FigureUpState();
+		return new GarageSitForwardState();
+	}
 
 	return this;
 }

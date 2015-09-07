@@ -137,7 +137,7 @@ void Test2State::execute() {
 		K_PHIDOT = 25.0F;//*2.5F;
 		K_I = -0.44721F;
 		this->forward = 100; //+= 0.03;
-		this->turnflag
+		this->turnflag;
 		//forward = this->forward;
 		turn = (int)this->pidTurnDirection->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
 	} else if(this->balancingWalker->getRightEnc() < 6000) { // カーブ準備

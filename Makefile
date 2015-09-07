@@ -51,6 +51,8 @@ TARGET_CPP_SOURCES = \
 	control_state/FigureStandUpState.cpp \
 	control_state/FigureLineTraceState.cpp \
 	control_state/GarageRApproachState.cpp \
+	control_state/GarageSitDownState.cpp \
+	control_state/GarageSitForwardState.cpp \
 	control_state/GarageStopState.cpp \
 	control_state/Test1State.cpp \
 	control_state/Test2State.cpp \

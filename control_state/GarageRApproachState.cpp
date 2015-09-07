@@ -11,7 +11,7 @@
 #include "GarageRApproachState.h"
 
 #include "util/Bluetooth.h"
-#include "control_state/GarageStopState.h"
+#include "control_state/GarageSitDownState.h"
 
 /**
  * コンストラクタ
@@ -37,9 +37,8 @@ GarageRApproachState::GarageRApproachState() {
 
 	// 初期処理
 	this->startDirection = this->postureEstimation->getDirection();
-	this->startRightEnc = this->balancingWalker->getRightEnc();
-	this->figureEndRightEnc = this->startRightEnc + 36000; // 適当に大きい値で初期化
 	this->figureEndFlag = false;
+	this->balancingWalker->notifyGarageDistance(10000); // ガレージまでの距離を適当に大きい値で初期化
 }
 
 /**
@@ -67,12 +66,15 @@ void GarageRApproachState::execute() {
 		this->pidTurn->setPID(80,0,1200);
 		turn = (int)-this->pidTurn->calc(0.6,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	}
+	if(this->balancingWalker->calcGarageDistance() < 700) { // 段差を降りて少ししたらスピードダウン
+		forward = 20;
+	}
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
-	if(360 < this->balancingWalker->getRightEnc() - this->figureEndRightEnc) { //
+	if(this->balancingWalker->calcGarageDistance() < 700) { // しばらく走ったらしっぽを途中までおろしておく
 		angle = 80;
 	}
 
@@ -89,21 +91,17 @@ void GarageRApproachState::execute() {
  */
 ControlState* GarageRApproachState::next() {
 
+	Bluetooth::sendMessage(this->balancingWalker->getLeftAngularVelocity() * 1000 + this->balancingWalker->getRightAngularVelocity());
 	// フィギュアL段差下りを検出して位置を記録
-	if(this->figureEndFlag == false && 350 < this->balancingWalker->getLeftAngularVelocity() && 350 < this->balancingWalker->getRightAngularVelocity() ) {
+	if(this->figureEndFlag == false && 250 < this->balancingWalker->getLeftAngularVelocity() && 250 < this->balancingWalker->getRightAngularVelocity() ) {
 		this->figureEndFlag = true;
-		this->figureEndRightEnc = this->balancingWalker->getRightEnc();
-		this->lineMonitor->changeLineToNormal();
-		//Bluetooth::sendMessage("Step Found\n");
-	}
-	else {
-		//Bluetooth::sendMessage(this->balancingWalker->getLeftAngularVelocity());
+		this->balancingWalker->notifyGarageDistance(1070); //TODO 当日調整
 	}
 
-	// フィギュアL段差から一定距離進んで遷移
-	Bluetooth::sendMessage(this->balancingWalker->getRightEnc() - this->figureEndRightEnc);
-	if(1070 < this->balancingWalker->getRightEnc() - this->figureEndRightEnc) {
-		return new GarageStopState();
+	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
+	// フィギュアL段差からガレージ手前まで進んで遷移
+	if(this->balancingWalker->calcGarageDistance() < 500) { //TODO 当日調整
+		return new GarageSitDownState();
 	}
 
 	return this;

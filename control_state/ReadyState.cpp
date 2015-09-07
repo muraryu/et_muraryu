@@ -16,6 +16,7 @@
 #include "control_state/LookupFindState.h"
 #include "control_State/StartState.h"
 #include "control_state/LineTraceState.h"
+#include "control_state/FigureStandUpState.h"
 
 /**
  * コンストラクタ
@@ -80,8 +81,9 @@ ControlState* ReadyState::next() {
 		this->balancingWalker->setStandControlMode(true);
 		//return new LineTraceState();
 		//return new Test1State();
-		return new Test2State();
+		//return new Test2State();
 		//return new QuickStartState();
+		return new FigureStandUpState();
 	}
 
 	return this;
