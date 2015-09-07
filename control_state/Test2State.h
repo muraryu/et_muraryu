@@ -46,6 +46,7 @@ private:
 	bool turnflag;
 	double forward;
 	double k_theta;
+
 };
 
 #endif /* NXT_CONTROL_STATE_TEST2STATE_H_ */

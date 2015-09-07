@@ -12,6 +12,7 @@
 #include "LightSensor.h"
 
 #include "app/Line.h"
+#include "util/Time.h"
 
 // 定義
 class LineMonitor {
@@ -26,7 +27,8 @@ public:
     void changeLineToNormal();				// 現在のライン種別をノーマルラインに変更
     void changeLineToGray();				// 現在のライン種別をグレーラインに変更
     void changeLineToFigure();				// 現在のライン種別をフィギュアLラインに変更
-    double getBrightness();								// 現在の輝度を取得する
+    double getBrightness();					// 現在の輝度を取得する
+    bool getGrayFound();					// グレー検知フラグ 検知から1秒間だけオンになる
 
 private:
     LineMonitor();
@@ -47,6 +49,14 @@ private:
     Line* normalLine;	// ノーマルライン
     Line* grayLine;		// グレーライン
     Line* figureLine;	// フィギュアLライン
+
+	// グレー検知
+	bool lightStable;
+	int lightStableCount;
+	long lightBufIndex;
+	double lightBuf[16];
+	bool grayFound;
+	double GrayFoundTime;
 
     // privateメソッド
     double adjustBrightnessRange(double brightness);	// 走行中のラインのキャリブレーション上下幅で輝度を0～1の範囲に伸長して調整

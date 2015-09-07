@@ -34,7 +34,7 @@ Test2State::Test2State() {
 
 	// execute()
 	this->pidTurnDirection = new PID(1,0,0);
-	this->pidTurnLine = new PID(80,0,3000);
+	this->pidTurnLine = new PID(80,0,1200);
 
 	// next()
 
@@ -46,6 +46,7 @@ Test2State::Test2State() {
 	this->turnflag = false;
 	this->forward = 100;
 	this->k_theta = 7.5;
+
 }
 
 /**
@@ -60,9 +61,9 @@ Test2State::~Test2State() {
  */
 void Test2State::execute() {
 
-	int forward = 100;
+	int forward = 20;
 	int turn = 0;
-	int angle = 0;
+	int angle = 80;
 
 	/* 足の制御 */
 	/*
@@ -125,6 +126,7 @@ void Test2State::execute() {
 		turn = (int)this->pidTurnDirection->calc(this->startDirection - 175,this->postureEstimation->getDirection(),-30,30); // test
 	}*/
 
+	/*
 	if(this->balancingWalker->getRightEnc() < 1080) { // 出だしはゆっくり
 		// 走行会２で用いた安定走行ゲイン
 		K_THETADOT = 7.5;
@@ -159,10 +161,11 @@ void Test2State::execute() {
 		K_PHIDOT = 25.0F;//*2.5F;
 		K_I = -0.44721F;
 		turn = (int)this->pidTurnDirection->calc(this->startDirection - 175,this->postureEstimation->getDirection(),-30,30); // test
-	}
+	}*/
 
+	turn = (int)-this->pidTurnLine->calc(0.70,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	this->balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
@@ -178,17 +181,18 @@ void Test2State::execute() {
  */
 ControlState* Test2State::next() {
 
-	Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
+//	Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
 	// チョイ走る
 	/*
 	if(10.0 < this->time->getTime() - this->startTime ) {
 		return new FigureFindState();
 	}
 	*/
+	/*
 	if(12000 < this->balancingWalker->getRightEnc()) {
 		return new GarageStopState();
 	}
-
+*/
 
 
 	return this;
