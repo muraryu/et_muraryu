@@ -24,7 +24,7 @@ GarageSitForwardState::GarageSitForwardState() {
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
-	this->pidTurn = new PID(5,0,0);
+	this->pidTurn = new PID(3,0,0);
 
 	// execute(), next()
 
@@ -35,7 +35,9 @@ GarageSitForwardState::GarageSitForwardState() {
 	// その他
 
 	// 初期処理
+	this->balancingWalker->setStandControlMode(false);
 	this->startDirection = this->postureEstimation->getDirection();
+
 }
 
 /**
@@ -50,7 +52,7 @@ GarageSitForwardState::~GarageSitForwardState() {
  */
 void GarageSitForwardState::execute() {
 
-	int forward = 30;
+	int forward = 20;
 	int turn = 0;
 	int angle = 85;
 

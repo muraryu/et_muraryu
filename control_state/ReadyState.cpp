@@ -17,6 +17,7 @@
 #include "control_State/StartState.h"
 #include "control_state/LineTraceState.h"
 #include "control_state/FigureStandUpState.h"
+#include "control_state/GarageSitForwardState.h"
 
 /**
  * コンストラクタ
@@ -79,12 +80,13 @@ ControlState* ReadyState::next() {
 	if(this->uiManager->isReadyToStart() == true) {
 		this->balancingWalker->init();
 		this->balancingWalker->setStandControlMode(true);
-		return new LineTraceState(); //TODO 当日本番
+		//return new LineTraceState(); //TODO 当日本番
 		//return new Test1State();
 		//return new Test2State();
 		//return new QuickStartState();
-		//return new FigureStandUpState(); //TODO 当日調整用 コースR
+		return new FigureStandUpState(); //TODO 当日調整用 コースR
 		//return new LookupFindState(); //TODO 当日調整用 コースL
+		//return new GarageSitForwardState();
 	}
 
 	return this;

@@ -16,7 +16,7 @@
  */
 GarageSitDownState::GarageSitDownState() {
 
-	Bluetooth::sendMessage("State changed : GarageSitDownState\n", 36);
+	//Bluetooth::sendMessage("State changed : GarageSitDownState\n", 36);
 
 	// メンバ初期化
 	this->tail = Tail::getInstance();
@@ -80,8 +80,8 @@ ControlState* GarageSitDownState::next() {
 
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 
-	// 経過時間で遷移
-	if(2.0 < this->time->getTime() - this->startTime) {
+	// 少し時間が経過した後車輪が止まったら遷移
+	if(0.2 < this->time->getTime() - this->startTime && this->balancingWalker->getRightAngularVelocity() <= 50) {
 		//return new FigureUpState();
 		return new GarageSitForwardState();
 	}

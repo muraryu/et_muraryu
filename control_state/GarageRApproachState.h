@@ -14,6 +14,7 @@
 #include "app/PostureEstimation.h"
 #include "app/LineMonitor.h"
 #include "util/PID.h"
+#include "util/Time.h"
 
 class GarageRApproachState : public ControlState {
 	typedef ControlState base;
@@ -32,9 +33,13 @@ private:
 	PID* pidTurn;
 	PostureEstimation* postureEstimation;
 	LineMonitor* lineMonitor;
+	Time* time;
 
 	double startDirection;
 	bool figureEndFlag;
+	double figureEndTime;
+
+	bool grayFound;
 
 };
 
