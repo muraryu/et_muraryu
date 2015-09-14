@@ -36,7 +36,8 @@ private:
 	int startRightEnc;
 	double startDirection;
 	bool backFlag;
-	int forward;
+	bool forwardAgainFlag;
+	double forward;
 
 };
 

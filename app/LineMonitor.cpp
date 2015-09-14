@@ -123,14 +123,14 @@ void LineMonitor::maimai() {
 		lightStableCount++;
 		if(260 < lightStableCount) { // 光センサ値が安定であると判断する時間
 			lightStable = true;
-			Bluetooth::sendMessage("Light Value Stable.\n", 21);
+			//Bluetooth::sendMessage("Light Value Stable.\n", 21);
 		}
 	} else {
 		lightStableCount = 0;
 	}
 	//Bluetooth::sendMessage((lightBuf[lightBufIndex%16] - lightBuf[(lightBufIndex+1)%16])*10000);
 	if(1.0 < Time::getInstance()->getTime() - GrayFoundTime && lightStable == true && lightBuf[lightBufIndex%16] - lightBuf[(lightBufIndex+1)%16] < -0.04) { //TODO 当日調整0.05 前回の検知から1秒経過＆値が安定してた＆変化速度が一定以上でグレー検知
-		Bluetooth::sendMessage("Gray Line Found.\n", 18);
+		//Bluetooth::sendMessage("Gray Line Found.\n", 18);
 		GrayFoundTime = Time::getInstance()->getTime();
 		grayFound = true;
 		lightStable = false;
