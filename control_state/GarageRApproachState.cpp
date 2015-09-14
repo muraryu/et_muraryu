@@ -3,8 +3,9 @@
  *  Created on: 2015/06/23
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  フィギュアL段差のぼり
- *  とりあえず位置制御
+ *  コースR（フィギュア側）ゴール接近
+ *  グレーライン検知でゴール距離を再設定して次に遷移
+ *  グレーライン検出失敗時はフィギュア段差下りからの距離で遷移
  *  Author: muraryu
  *****************************************************************************/
 
@@ -41,7 +42,6 @@ GarageRApproachState::GarageRApproachState() {
 	this->figureEndFlag = false;
 	this->balancingWalker->notifyGarageDistance(10000); // ガレージまでの距離を適当に大きい値で初期化
 	this->figureEndTime = 999;							// フィギュア下り段差の時刻を適当に大きな値で初期化
-	this->grayFound = false;
 }
 
 /**
@@ -98,21 +98,21 @@ ControlState* GarageRApproachState::next() {
 	// フィギュアL段差下りを検出して位置を記録
 	if(this->figureEndFlag == false && 350 < this->balancingWalker->getLeftAngularVelocity() && 350 < this->balancingWalker->getRightAngularVelocity() ) {
 		this->figureEndFlag = true;
-		this->balancingWalker->notifyGarageDistance(1070); //TODO 当日調整 test1300
+		this->balancingWalker->notifyGarageDistance(1070); //TODO 当日調整 段差からガレージまでの距離 test用=1300 試走会２=1070
 		this->figureEndTime = this->time->getTime();
 	}
 
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 
-	// グレーを検知できたときはその位置からガレージまでの残りの距離を再設定
-	if(this->grayFound == false && 1.5 < this->time->getTime() - this->figureEndTime && this->lineMonitor->getGrayFound() == true) {
-		Bluetooth::sendMessage("Re-set Garage Distance\n", 24);
+	// グレーを検知できたときはその位置からガレージまでの残りの距離を再設定して遷移
+	if(1.5 < this->time->getTime() - this->figureEndTime && this->lineMonitor->getGrayFound() == true) {
+		Bluetooth::sendMessage("Found Gray. Re-set Garage Distance.\n", 37);
 		this->balancingWalker->notifyGarageDistance(450); //TODO 当日調整 グレー見つけたとき残りの距離を再設定
 		return new GarageSitDownState();
 	}
 
-	// フィギュアL段差からガレージ手前まで進んで遷移
-	if(this->balancingWalker->calcGarageDistance() < 200) {
+	// ガレージまでの距離がゼロで遷移
+	if(this->balancingWalker->calcGarageDistance() < 0) {
 		return new GarageSitDownState();
 	}
 

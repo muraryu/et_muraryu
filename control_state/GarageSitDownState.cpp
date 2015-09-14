@@ -56,7 +56,7 @@ void GarageSitDownState::execute() {
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	if(82 < this->tail->getAngle()) {
-		forward = 100;
+		forward = 80;
 	}
 	else {
 		forward = 0;

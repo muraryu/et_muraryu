@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  ルックアップしっぽ走行の往復動作
  *  Author: muraryu
  *****************************************************************************/
 
@@ -50,11 +51,11 @@ void LookupPassState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->backFlag == false && 500 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	if(this->backFlag == false && 500 < this->balancingWalker->getRightEnc() - this->startRightEnc) { // 1回目前進量
 		this->backFlag = true;
 		this->forward = -30;
 	}
-	else if(this->backFlag == true && this->balancingWalker->getRightEnc() - this->startRightEnc < 60) {
+	else if(this->backFlag == true && this->balancingWalker->getRightEnc() - this->startRightEnc < 60) { // 後退量
 		this->forward = 30;
 	}
 	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);

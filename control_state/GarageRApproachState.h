@@ -39,8 +39,6 @@ private:
 	bool figureEndFlag;
 	double figureEndTime;
 
-	bool grayFound;
-
 };
 
 #endif  // NXT_CONTROL_STATE_GARAGERAPPROACHSTATE_H_
