@@ -73,7 +73,7 @@ void LookupSitDownState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LookupSitDownState::next() {
-	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
+	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// 車輪が停止したら遷移
 	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
 		return new LookupPassState();

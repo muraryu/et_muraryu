@@ -31,6 +31,7 @@ LineMonitor::LineMonitor() {
 	this->currentLine = normalLine;
 
 	// グレー検知
+	this->balancingWalker = BalancingWalker::getInstance();
 	this->lightStable = false;
 	lightBufIndex = 0;
 	lightStableCount = 0;
@@ -118,18 +119,18 @@ void LineMonitor::maimai() {
 	// グレー検知
 	lightBuf[lightBufIndex%16] = this->getAdjustedBrightness();
 	double lightDiff = lightBuf[lightBufIndex%16] - lightBuf[(lightBufIndex+1)%16]; // 補正済み光センサ値変化速度
-	if(lightStable == false && -0.03 <= lightDiff && lightDiff <= 0.03 && this->getAdjustedBrightness() < 0.85) { // 安定してない状態で安定&&脱線してないときグレー検知開始
+	if(this->balancingWalker->getStandControlMode() == true && lightStable == false && -0.03 <= lightDiff && lightDiff <= 0.03 && this->getAdjustedBrightness() < 0.85) { // 安定してない状態で安定&&脱線してないときグレー検知開始
 		lightStableCount++;
-		if(500 < lightStableCount) {
+		if(260 < lightStableCount) { // 光センサ値が安定であると判断する時間
 			lightStable = true;
-			//Bluetooth::sendMessage("Light Value Stable.\n", 21);
+			Bluetooth::sendMessage("Light Value Stable.\n", 21);
 		}
 	} else {
 		lightStableCount = 0;
 	}
 	//Bluetooth::sendMessage((lightBuf[lightBufIndex%16] - lightBuf[(lightBufIndex+1)%16])*10000);
 	if(1.0 < Time::getInstance()->getTime() - GrayFoundTime && lightStable == true && lightBuf[lightBufIndex%16] - lightBuf[(lightBufIndex+1)%16] < -0.04) { //TODO 当日調整0.05 前回の検知から1秒経過＆値が安定してた＆変化速度が一定以上でグレー検知
-		//Bluetooth::sendMessage("Gray Line Found.\n", 18);
+		Bluetooth::sendMessage("Gray Line Found.\n", 18);
 		GrayFoundTime = Time::getInstance()->getTime();
 		grayFound = true;
 		lightStable = false;

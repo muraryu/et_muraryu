@@ -13,6 +13,7 @@
 
 #include "app/Line.h"
 #include "util/Time.h"
+#include "unit/BalancingWalker.h"
 
 // 定義
 class LineMonitor {
@@ -51,6 +52,7 @@ private:
     Line* figureLine;	// フィギュアLライン
 
 	// グレー検知
+    BalancingWalker* balancingWalker;
 	bool lightStable;
 	int lightStableCount;
 	long lightBufIndex;

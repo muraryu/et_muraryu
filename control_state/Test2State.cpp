@@ -61,7 +61,7 @@ Test2State::~Test2State() {
  */
 void Test2State::execute() {
 
-	int forward = 20;
+	int forward = 15;
 	int turn = 0;
 	int angle = 80;
 

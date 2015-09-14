@@ -74,7 +74,7 @@ void LookupPassState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LookupPassState::next() {
-	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
+	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// タイヤが一定以上回転したら
 	if(530 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 		return new LookupStandUpState();

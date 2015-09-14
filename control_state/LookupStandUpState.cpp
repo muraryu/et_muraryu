@@ -67,7 +67,7 @@ void LookupStandUpState::execute() {
  * @note	遷移しないときはthisを返す
  */
 ControlState* LookupStandUpState::next() {
-	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
+	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// 前に倒れかけたら遷移
 	if(105 < this->tail->getAngle()) {
 		this->balancingWalker->init();

@@ -170,6 +170,13 @@ void BalancingWalker::setStandControlMode(bool b) {
 }
 
 /**
+ * 倒立制御オンオフ取得
+ */
+bool BalancingWalker::getStandControlMode() {
+	return this->standControlMode;
+}
+
+/**
  * 右モーター角度を返す
  * @return モーター角度deg
  */

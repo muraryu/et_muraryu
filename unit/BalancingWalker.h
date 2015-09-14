@@ -27,6 +27,7 @@ public:
     void control();
     void setForwardTurn(int forward, int turn);
     void setStandControlMode(bool b);
+    bool getStandControlMode();
     int getRightEnc();
     int getLeftEnc();
     int getRightAngularVelocity();
