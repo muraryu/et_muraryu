@@ -130,13 +130,13 @@ void Test2State::execute() {
 	if(this->balancingWalker->getRightEnc() < 1080) { // 出だしはゆっくり
 		// 走行会２で用いた安定走行ゲイン
 		K_THETADOT = 7.5;
-		K_PHIDOT = 25.0F;//*2.5F;
+		K_PHIDOT = 25.0F;// *2.5F;
 		K_I = -0.44721F;
 		turn = (int)this->pidTurnDirection->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
 	} else if(this->balancingWalker->getRightEnc() < 5500) { // あとから速く
 		// 高速走行用ゲイン
 		K_THETADOT = 10.5;
-		K_PHIDOT = 25.0F;//*2.5F;
+		K_PHIDOT = 25.0F;// *2.5F;
 		K_I = -0.44721F;
 		this->forward = 100; //+= 0.03;
 		this->turnflag;
@@ -145,7 +145,7 @@ void Test2State::execute() {
 	} else if(this->balancingWalker->getRightEnc() < 6000) { // カーブ準備
 		// カーブ準備ゲイン
 		K_THETADOT = 9.5;
-		K_PHIDOT = 25.0F;//*2.5F;
+		K_PHIDOT = 25.0F;// *2.5F;
 		K_I = -0.44721F;
 		forward = 70;
 		turn = (int)this->pidTurnDirection->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
@@ -158,7 +158,7 @@ void Test2State::execute() {
 	} else {
 		// 再直進
 		K_THETADOT = 10.5;
-		K_PHIDOT = 25.0F;//*2.5F;
+		K_PHIDOT = 25.0F;// *2.5F;
 		K_I = -0.44721F;
 		turn = (int)this->pidTurnDirection->calc(this->startDirection - 175,this->postureEstimation->getDirection(),-30,30); // test
 	}*/

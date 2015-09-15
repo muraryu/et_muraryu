@@ -49,12 +49,12 @@ void FigureStandUpState::execute() {
 	// 角度目標値を設定
 	this->angle += 0.05;
 	// しっぽの制御実行
-	Bluetooth::sendMessage(this->tail->getAngularVelocity());
+	//Bluetooth::sendMessage(this->tail->getAngularVelocity());
 	if(this->tail->getAngularVelocity() == 0) {
-		this->tail->setCommandAngle(this->angle + 20);
+		this->tail->setCommandAngle((int)this->angle + 20);
 	}
 	else {
-		this->tail->setCommandAngle(this->angle);
+		this->tail->setCommandAngle((int)this->angle);
 	}
 
 }

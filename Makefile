@@ -54,6 +54,7 @@ TARGET_CPP_SOURCES = \
 	control_state/GarageSitDownState.cpp \
 	control_state/GarageSitForwardState.cpp \
 	control_state/GarageStopState.cpp \
+	control_state/GarageRecoveryState.cpp \
 	control_state/Test1State.cpp \
 	control_state/Test2State.cpp \
 	device/TouchSensor.cpp \

@@ -68,7 +68,7 @@ void LookupPassState::execute() {
 	}
 	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	// 足の制御実行
-	this->balancingWalker->setForwardTurn(this->forward, turn);
+	this->balancingWalker->setForwardTurn((int)this->forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定

@@ -73,11 +73,11 @@ void FigureLineTraceState::execute() {
 		turn = (int)-this->pidTurn->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 		direction = this->postureEstimation->getDirection() - this->startDirection;
 		if(direction < -25 && turn < 0) {
-			Bluetooth::sendMessage(direction);
+			//Bluetooth::sendMessage(direction);
 			turn = 0;
 		}
 		else if(25 < direction && 0 < turn) {
-			Bluetooth::sendMessage(1);
+			//Bluetooth::sendMessage(1);
 			turn = 0;
 		}
 	}

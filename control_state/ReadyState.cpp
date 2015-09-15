@@ -18,6 +18,7 @@
 #include "control_state/LineTraceState.h"
 #include "control_state/FigureStandUpState.h"
 #include "control_state/GarageSitForwardState.h"
+#include "control_state/GarageStopState.h"
 
 /**
  * コンストラクタ
@@ -85,8 +86,9 @@ ControlState* ReadyState::next() {
 		//return new Test2State();
 		//return new QuickStartState();
 		//return new FigureStandUpState(); //TODO 当日調整用 コースR
-		return new LookupFindState(); //TODO 当日調整用 コースL
+		//return new LookupFindState(); //TODO 当日調整用 コースL
 		//return new GarageSitForwardState();
+		return new GarageStopState();
 	}
 
 	return this;

@@ -11,6 +11,7 @@
 #include "GarageStopState.h"
 
 #include "util/Bluetooth.h"
+#include "control_state/GarageRecoveryState.h"
 
 /**
  * コンストラクタ
@@ -22,16 +23,10 @@ GarageStopState::GarageStopState() {
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	this->time = Time::getInstance();
 
 	// 初期処理
+	this->startTime = this->time->getTime();
 }
 
 /**
@@ -47,7 +42,7 @@ void GarageStopState::execute() {
 
 	int forward = 0;
 	int turn = 0;
-	int angle = 85;
+	int angle = 95;
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
@@ -70,7 +65,10 @@ ControlState* GarageStopState::next() {
 
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 
-	// 終わり
+	// 一定時間経過で入れ直し
+	if(5.0 < this->time->getTime() - this->startTime) {
+		return new GarageRecoveryState();
+	}
 
 	return this;
 }

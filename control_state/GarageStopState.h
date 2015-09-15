@@ -10,6 +10,7 @@
 
 #include "control_state/ControlState.h"
 #include "unit/balancingWalker.h"
+#include "util/time.h"
 #include "app/Tail.h"
 
 class GarageStopState : public ControlState {
@@ -26,14 +27,10 @@ public:
 private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
+	Time* time;
 
-	// execute(), next()
+	double startTime;
 
-	// execute()
-
-	// next()
-
-	// その他
 
 };
 
