@@ -4,7 +4,6 @@
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
  *  フィギュアL段差のぼり
- *  とりあえず位置制御
  *  Author: muraryu
  *****************************************************************************/
 
@@ -23,20 +22,13 @@ FigureUpState::FigureUpState() {
 
 	Bluetooth::sendMessage("State changed : FigureUpState\n", 31);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
-
 	// 初期処理
 	this->startRightEnc = this->balancingWalker->getRightEnc();
+
 }
 
 /**

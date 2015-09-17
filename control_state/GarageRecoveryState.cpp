@@ -19,12 +19,14 @@ GarageRecoveryState::GarageRecoveryState() {
 
 	Bluetooth::sendMessage("State changed : GarageRecoveryState\n", 37);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
-	this->pidTurn = new PID(3,0,0);
 	this->time = Time::getInstance();
+
+	// インスタンス生成
+	this->pidTurn = new PID(3,0,0);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
@@ -67,7 +69,7 @@ void GarageRecoveryState::execute() {
 		this->endFlag = true;
 		this->forward = 0;
 	}
-	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // +5によりガレージ真ん中よりになる（ライン幅の分ずれてるから）
+	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30);
 	// 足の制御実行
 	this->balancingWalker->setForwardTurn(this->forward, turn);
 

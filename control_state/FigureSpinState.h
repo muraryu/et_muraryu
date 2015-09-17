@@ -28,14 +28,7 @@ private:
 	BalancingWalker* balancingWalker;
 	PostureEstimation* postureEstimation;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
 	double startDirection;
-
-	// その他
 
 };
 

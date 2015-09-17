@@ -28,11 +28,6 @@ private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
 	int startRightEnc;
 
 };

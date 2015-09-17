@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  フィギュアL段差発見で座る
  *  Author: muraryu
  *****************************************************************************/
 
@@ -19,25 +20,20 @@ FigureSitDownState::FigureSitDownState() {
 
 	Bluetooth::sendMessage("State changed : FigureSitDownState\n", 36);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
-	// execute(), next()
-	this->startTime = this->time->getTime();
-
-	// execute()
-	this->referenceEncValue = this->balancingWalker->getRightEnc();
-
-	// next()
-
-	// その他
+	// インスタンス生成
 	this->pid = new PID(0.2,0,0);
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
+	this->startTime = this->time->getTime();
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
+
 }
 
 /**
@@ -59,7 +55,7 @@ void FigureSitDownState::execute() {
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	this->balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定

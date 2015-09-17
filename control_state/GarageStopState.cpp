@@ -3,8 +3,7 @@
  *  Created on: 2015/07/28
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  尻尾で立って終了
- *  とりあえず位置制御
+ *  ガレージ停止姿勢
  *  Author: muraryu
  *****************************************************************************/
 
@@ -20,7 +19,7 @@ GarageStopState::GarageStopState() {
 
 	Bluetooth::sendMessage("State changed : GarageStopState\n", 33);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->time = Time::getInstance();

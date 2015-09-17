@@ -31,11 +31,6 @@ private:
 	LineMonitor* lineMonitor;
 	PID* pid;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
 };
 
 #endif /* NXT_CONTROL_STATE_LINETRACESTATE_H_ */

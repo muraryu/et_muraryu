@@ -1,8 +1,8 @@
 /******************************************************************************
  *  CalibrationBlackState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/15
- *  Bluetooth発信合図を待機
  *  ステートパターンConcrete
+ *  キャリブレーション黒
  *  Author: muraryu
  *****************************************************************************/
 
@@ -18,16 +18,10 @@ CalibrationBlackState::CalibrationBlackState() {
 
 	Bluetooth::sendMessage("State changed : CalibrationBlackState\n", 39);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->uiManager = UIManager::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->tail = Tail::getInstance();
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
 
 	// 初期処理
 	this->uiManager->resetButtonPressed();

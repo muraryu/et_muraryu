@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  ガレージ前しっぽ座り動作
  *  Author: muraryu
  *****************************************************************************/
 
@@ -18,23 +19,15 @@ GarageSitDownState::GarageSitDownState() {
 
 	//Bluetooth::sendMessage("State changed : GarageSitDownState\n", 36);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->time = Time::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
-	// execute(), next()
-	this->startTime = this->time->getTime();
-
-	// execute()
-	this->referenceEncValue = this->balancingWalker->getRightEnc();
-
-	// next()
-
-	// その他
-
 	// 初期処理
+	this->startTime = this->time->getTime();
+	this->referenceEncValue = this->balancingWalker->getRightEnc();
 	this->balancingWalker->setStandControlMode(false);
 }
 

@@ -31,17 +31,10 @@ private:
 	Time* time;
 	BalancingWalker* balancingWalker;
 	LineMonitor* lineMonitor;
-
-	// execute(), next()
-	double startTime;
-
-	// execute()
-	int referenceEncValue;
-
-	// next()
-
-	// その他
 	PID* pid;
+
+	double startTime;
+	int referenceEncValue;
 
 };
 

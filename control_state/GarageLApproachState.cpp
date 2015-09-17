@@ -24,24 +24,19 @@ GarageLApproachState::GarageLApproachState() {
 	// メンバ初期化
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-	this->pidTurn = new PID(80,0,1200);
-	this->pidForward = new PID(0.2,0,0);
 	this->lineMonitor = LineMonitor::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
 	this->time = Time::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	// インスタンス生成
+	this->pidTurn = new PID(80,0,1200);
+	this->pidForward = new PID(0.2,0,0);
 
 	// 初期処理
 	this->startDirection = this->postureEstimation->getDirection();
 	this->startTime = this->time->getTime();
 	this->startRightEnc = this->balancingWalker->getRightEnc();
+
 }
 
 /**

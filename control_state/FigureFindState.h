@@ -29,11 +29,6 @@ private:
 	LineMonitor* lineMonitor;
 	PID* pid;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
 };
 
 #endif /* NXT_CONTROL_STATE_FIGUREFINDSTATE_H_ */

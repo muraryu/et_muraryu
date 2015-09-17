@@ -31,13 +31,6 @@ private:
 	PID* pidTurn;
 	PostureEstimation* postureEstimation;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
 	double startDirection;
 
 };

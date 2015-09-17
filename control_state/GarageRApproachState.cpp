@@ -21,21 +21,15 @@ GarageRApproachState::GarageRApproachState() {
 
 	Bluetooth::sendMessage("State changed : GarageRApproachState\n", 38);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-	this->pidTurn = new PID(5,0,0);
 	this->postureEstimation = PostureEstimation::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->time = Time::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	// インスタンス生成
+	this->pidTurn = new PID(5,0,0);
 
 	// 初期処理
 	this->startDirection = this->postureEstimation->getDirection();

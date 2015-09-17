@@ -24,16 +24,17 @@ LookupPassState::LookupPassState() {
 	this->time = Time::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
 
-	// メンバ初期化
+	// インスタンス生成
+	this->pidTurn = new PID(3,0,0);
+
+	// 初期処理
 	this->startTime = this->time->getTime();
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 	this->startDirection = this->postureEstimation->getDirection();
-	this->pidTurn = new PID(3,0,0);
 	this->backFlag = false;
 	this->forwardAgainFlag = false;
 	this->forward = 30;
 
-	// 初期処理
 }
 
 /**

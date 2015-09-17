@@ -3,8 +3,7 @@
  *  Created on: 2015/07/28
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  尻尾で立って終了
- *  とりあえず位置制御
+ *  ガレージ前はしっぽ走行で停止位置まで移動
  *  Author: muraryu
  *****************************************************************************/
 
@@ -20,19 +19,13 @@ GarageSitForwardState::GarageSitForwardState() {
 
 	Bluetooth::sendMessage("State changed : GarageSitForwardState\n", 39);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
+
+	// インスタンス生成
 	this->pidTurn = new PID(3,0,0);
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);

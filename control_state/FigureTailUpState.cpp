@@ -25,10 +25,8 @@ FigureTailUpState::FigureTailUpState() {
 	this->tail = Tail::getInstance();
 	this->time = Time::getInstance();
 
-	// 開始時刻取得
+	// 初期処理
 	this->startTime = this->time->getTime();
-
-	// 右車輪の目標
 	startRightEnc = this->balancingWalker->getRightEnc();
 
 }

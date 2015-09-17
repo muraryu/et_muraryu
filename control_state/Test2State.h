@@ -34,13 +34,8 @@ private:
 	PID* pidTurnDirection;
 	PID* pidTurnLine;
 	PostureEstimation* postureEstimation;
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
 	Time* time;
+
 	double startTime;
 	double startDirection;
 	bool turnflag;

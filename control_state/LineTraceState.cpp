@@ -3,6 +3,7 @@
  *  Created on: 2015/06/05
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  ベーシックコースライントレース走行
  *  Author: muraryu
  *****************************************************************************/
 
@@ -21,20 +22,15 @@ LineTraceState::LineTraceState() {
 
 	Bluetooth::sendMessage("State changed : LineTraceState\n", 32);
 
-	/* メンバ初期化 */
-	// シングルトン取得
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
-	// execute(), next()
-
-	// execute()
+	// インスタンス生成
 	this->pid = new PID(80,0,3000);
 
-	// next()
-
-	/* 初期処理 */
+	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
 
 }

@@ -29,17 +29,10 @@ private:
 	BalancingWalker* balancingWalker;
 	Tail* tail;
 	PostureEstimation* postureEstimation;
+	PID* pidTurn;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
 	int startRightEnc;
 	double startDirection;
-
-	// その他
-	PID* pidTurn;
 
 };
 

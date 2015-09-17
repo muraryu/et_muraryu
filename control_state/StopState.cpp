@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  その場で停止 テスト用
  *  Author: muraryu
  *****************************************************************************/
 
@@ -33,7 +34,7 @@ StopState::StopState() {
 	// その他
 	this->pid = new PID(0.2,0,0);
 
-	// 初期処理z
+	// 初期処理
 	this->referenceEncValue = this->balancingWalker->getRightEnc();
 }
 

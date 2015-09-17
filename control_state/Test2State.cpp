@@ -22,27 +22,21 @@ Test2State::Test2State() {
 
 	Bluetooth::sendMessage("State changed : Test2State\n", 28);
 
-	/* メンバ初期化 */
-	// シングルトン取得
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->time = Time::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
 
-	// execute(), next()
-
-	// execute()
+	// インスタンス生成
 	this->pidTurnDirection = new PID(1,0,0);
 	this->pidTurnLine = new PID(80,0,1200);
 
-	// next()
-
-	/* 初期処理 */
+	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
 	this->startTime = this->time->getTime();
 	this->startDirection = this->postureEstimation->getDirection();
-
 	this->turnflag = false;
 	this->forward = 100;
 	this->k_theta = 7.5;
@@ -54,6 +48,7 @@ Test2State::Test2State() {
  */
 Test2State::~Test2State() {
 	delete this->pidTurnDirection;
+	delete this->pidTurnLine;
 }
 
 /**

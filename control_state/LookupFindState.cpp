@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  ゴール後のルックアップ探索
  *  Author: muraryu
  *****************************************************************************/
 
@@ -20,20 +21,14 @@ LookupFindState::LookupFindState() {
 
 	Bluetooth::sendMessage("State changed : LookupFindState\n", 33);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->sonarSensor = SonarSensor::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	// インスタンス生成
 	//this->pidTurn = new PID(5,0,0); // 本番用
 	this->pidTurn = new PID(80,0,1200); // TODO テスト用
 

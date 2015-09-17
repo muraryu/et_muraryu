@@ -1,8 +1,8 @@
 /******************************************************************************
  *  CalibrationWhiteState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/15
- *  Bluetooth発信合図を待機
  *  ステートパターンConcrete
+ *  キャリブレーション白
  *  Author: muraryu
  *****************************************************************************/
 
@@ -18,17 +18,11 @@ CalibrationWhiteState::CalibrationWhiteState() {
 
 	Bluetooth::sendMessage("State changed : CalibrationWhiteState\n", 39);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->uiManager = UIManager::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);

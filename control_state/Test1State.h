@@ -33,13 +33,8 @@ private:
 	LineMonitor* lineMonitor;
 	PID* pidTurn;
 	PostureEstimation* postureEstimation;
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
 	Time* time;
+
 	double startTime;
 	double startDirection;
 	bool turnflag;

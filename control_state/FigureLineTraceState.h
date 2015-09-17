@@ -36,14 +36,8 @@ private:
 	PID* pidTurn;
 	PostureEstimation* postureEstimation;
 
-
-	// execute(), next()
 	int startRightEnc;
 	double startDirection;
-
-	// execute()
-
-	// next()
 	double startTime;
 	double stableTime;
 

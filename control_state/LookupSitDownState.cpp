@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  ルックアップ座り動作
  *  Author: muraryu
  *****************************************************************************/
 
@@ -18,20 +19,13 @@ LookupSitDownState::LookupSitDownState() {
 
 	Bluetooth::sendMessage("State changed : LookupSitDownState\n", 36);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
-
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
+
 }
 
 /**

@@ -32,15 +32,8 @@ private:
 	BalancingWalker* balancingWalker;
 	LineMonitor* lineMonitor;
 
-	// execute(), next()
 	double startTime;
-
-	// execute()
 	int referenceEncValue;
-
-	// next()
-
-	// その他
 
 };
 

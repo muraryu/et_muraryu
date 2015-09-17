@@ -31,7 +31,6 @@ private:
 
 	double startTime;
 
-
 };
 
 #endif  // NXT_CONTROL_STATE_GARAGESTOPSTATE_H_

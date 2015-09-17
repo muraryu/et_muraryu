@@ -37,7 +37,6 @@ private:
 	double startTime;
 	int startRightEnc;
 	int garageEndRightEnc;
-
 	bool turnFlag1;
 	bool turnFlag2;
 	bool endFlag;

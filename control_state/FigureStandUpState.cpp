@@ -3,6 +3,7 @@
  *  Created on: 2015/06/03
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  フィギュアLスピン後立ち上がり
  *  Author: muraryu
  *****************************************************************************/
 
@@ -22,7 +23,7 @@ FigureStandUpState::FigureStandUpState() {
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 
-	// メンバ初期化
+	// 初期処理
 	this->angle = tail->getAngle();
 }
 

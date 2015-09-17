@@ -31,12 +31,6 @@ private:
 	UIManager* uiManager;
 	LineMonitor* lineMonitor;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
 };
 
 #endif  // NXT_CONTROL_STATE_CALIBRATIONWHITESTATE_H_

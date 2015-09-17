@@ -2,7 +2,7 @@
  *  FigureLineTraceState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/07/01
  *  ステートパターンConcrete
- *  フィギュアLに上ったあと停止位置までラインに追従する
+ *  フィギュアLスピン後の段差上ライントレース
  *  Author: muraryu
  *****************************************************************************/
 
@@ -18,23 +18,18 @@ FigureLineTraceState::FigureLineTraceState() {
 
 	Bluetooth::sendMessage("State changed : FigureLineTraceState\n", 38);
 
-	/* メンバ初期化 */
-	// シングルトン取得
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->time = Time::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
 
-	// execute(), next()
-
-	// execute()
+	// インスタンス生成
 	this->pidTurn = new PID(100,0,600);
 	this->pidForward = new PID(0.2,0,0);
 
-	// next()
-
-	/* 初期処理 */
+	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
 	this->startRightEnc = this->balancingWalker->getRightEnc();
 	this->startDirection = this->postureEstimation->getDirection();

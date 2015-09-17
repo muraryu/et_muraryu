@@ -3,6 +3,7 @@
  *  Created on: 2015/06/24
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  ゴール後フィギュアL探索
  *  Author: muraryu
  *****************************************************************************/
 
@@ -21,20 +22,14 @@ FigureFindState::FigureFindState() {
 
 	Bluetooth::sendMessage("State changed : FigureFindState\n", 33);
 
-	/* メンバ初期化 */
-	// シングルトン取得
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 
-	// execute(), next()
-
-	// execute()
+	// インスタンス生成
 	this->pid = new PID(80,0,1200);
 
-	// next()
-
-	/* 初期処理 */
-
+	// 初期処理
 	// 各ゲインを走行会２の時の値に設定
 	K_THETADOT = 7.5;
 	K_PHIDOT = 25.0F*2.5F;

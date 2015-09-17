@@ -1,8 +1,9 @@
 /******************************************************************************
  *  ReadyState.cpp (for LEGO Mindstorms NXT)
  *  Created on: 2015/06/15
- *  Bluetooth発信合図を待機
+ *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
+ *  Bluetooth発信合図を待機
  *  Author: muraryu
  *****************************************************************************/
 
@@ -27,16 +28,10 @@ ReadyState::ReadyState() {
 
 	Bluetooth::sendMessage("State changed : ReadyState\n", 28);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->uiManager = UIManager::getInstance();
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
 
 	// 初期処理
 	this->uiManager->resetReadyToStart();

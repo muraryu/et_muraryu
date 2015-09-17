@@ -23,8 +23,9 @@ LookupStandUpState::LookupStandUpState() {
 	this->tail = Tail::getInstance();
 	this->balancingWalker = BalancingWalker::getInstance();
 
-	// メンバ初期化
+	// 初期処理
 	this->angle = tail->getAngle();
+
 }
 
 /**

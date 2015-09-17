@@ -29,12 +29,6 @@ private:
 	LineMonitor* lineMonitor;
 	Tail* tail;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
 };
 
 #endif  // NXT_CONTROL_STATE_CALIBRATIONFIGUREWHITESTATE_H_

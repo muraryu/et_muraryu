@@ -19,17 +19,9 @@ FigureSpinState::FigureSpinState() {
 
 	Bluetooth::sendMessage("State changed : FigureSpinState\n", 33);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->postureEstimation = PostureEstimation::getInstance();
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
 
 	// 初期処理
 	this->startDirection = this->postureEstimation->getDirection();

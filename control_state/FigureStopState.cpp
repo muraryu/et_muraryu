@@ -3,8 +3,7 @@
  *  Created on: 2015/06/23
  *  制御ステートに応じた制御を行う
  *  ステートパターンConcrete
- *  フィギュアL段差のぼり
- *  とりあえず位置制御
+ *  フィギュアLのぼり後のブレーキ
  *  Author: muraryu
  *****************************************************************************/
 
@@ -20,19 +19,13 @@ FigureStopState::FigureStopState() {
 
 	Bluetooth::sendMessage("State changed : FigureStopState\n", 33);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
-	this->pidTurn = new PID(5,0,0);
 	this->postureEstimation = PostureEstimation::getInstance();
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
-	// その他
+	// インスタンス生成
+	this->pidTurn = new PID(5,0,0);
 
 	// 初期処理
 	this->startDirection = this->postureEstimation->getDirection();

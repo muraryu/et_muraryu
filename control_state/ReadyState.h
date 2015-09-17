@@ -29,12 +29,6 @@ private:
 	BalancingWalker* balancingWalker;
 	UIManager* uiManager;
 
-	// execute(), next()
-
-	// execute()
-
-	// next()
-
 };
 
 #endif  // NXT_CONTROL_STATE_READYSTATE_H_

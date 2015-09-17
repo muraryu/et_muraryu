@@ -18,16 +18,10 @@ CalibrationFigureWhiteState::CalibrationFigureWhiteState() {
 
 	Bluetooth::sendMessage("State changed : CalibrationFigureWhiteState\n", 45);
 
-	// メンバ初期化
+	// シングルトンインスタンス取得
 	this->uiManager = UIManager::getInstance();
 	this->lineMonitor = LineMonitor::getInstance();
 	this->tail = Tail::getInstance();
-
-	// execute(), next()
-
-	// execute()
-
-	// next()
 
 	// 初期処理
 	this->uiManager->resetButtonPressed();
