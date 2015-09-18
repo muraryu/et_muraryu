@@ -53,18 +53,16 @@ void LineTraceState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
+
 	if(this->balancingWalker->getRightEnc() < 720) { // 出だしはゆっくり
 		// 走行会２で用いた安定走行ゲイン
 		K_THETADOT = 7.5;
-		K_PHIDOT = 25.0F*2.5F;
-		K_I = -0.44721F;
 	}
 	else { // あとから速く
 		// 高速走行用ゲイン
-		K_THETADOT = 11.5;
-		K_PHIDOT = 25.0F*2.5F;
-		K_I = -0.34721F;
+		K_THETADOT = 10.0;
 	}
+
 	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);

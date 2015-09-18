@@ -13,6 +13,7 @@
 #include "control_state/StopState.h"
 #include "control_state/FigureFindState.h"
 #include "control_state/GarageStopState.h"
+#include "control_state/LookupSitDownState.h"
 #include "balancer_param.c"
 
 /**
@@ -38,6 +39,9 @@ Test1State::Test1State() {
 	this->startTime = this->time->getTime();
 	this->startDirection = this->postureEstimation->getDirection();
 	this->turnflag = false;
+
+	K_THETADOT = 10.0;
+
 }
 
 /**
@@ -58,18 +62,24 @@ void Test1State::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(this->balancingWalker->getRightEnc() < 2000) {
-		K_THETADOT = 7.5;
+	if(this->balancingWalker->getRightEnc() < 1000) {
+		K_THETADOT = 10.0;//7.5;
+		forward = 70;
 	} else {
-		K_THETADOT = 11.5;
+		K_THETADOT = 10.0;
+		K_F[0] = -0.870303F;
+		K_F[1] = -41.9978F;
+		K_F[2] = -1.1566F;
+		K_F[3] = -3.58873F;
+		//forward = 100;
 	}
-	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // test
+	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-100,100); // test
 	//turn = (int)-this->pidTurn->calc(0.55,this->lineMonitor->getAdjustedBrightness(),-100,100);	// サンプルコース
-/*
-	// ショートカット
-	if(6000 < this->balancingWalker->getRightEnc()) {
+
+	// 往復
+	if(4000 < this->balancingWalker->getRightEnc()) {
 		if( -175 < this->postureEstimation->getDirection() && turnflag == false) {
-			forward = 80;
+			forward = 100;
 			turn = -20;
 		}
 		else {
@@ -80,8 +90,11 @@ void Test1State::execute() {
 	}
 	else {
 		turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-100,100); // test
-	}*/
-
+	}
+	if(6000 < this->balancingWalker->getRightEnc()) {
+		forward = 30;
+		angle = 80;
+	}
 
 	// 足の制御実行
 	this->balancingWalker->setForwardTurn(forward, turn);
@@ -107,8 +120,8 @@ ControlState* Test1State::next() {
 		return new FigureFindState();
 	}
 	*/
-	if(12000 < this->balancingWalker->getRightEnc()) {
-		return new GarageStopState();
+	if(7000 < this->balancingWalker->getRightEnc()) {
+		return new LookupSitDownState();
 	}
 
 

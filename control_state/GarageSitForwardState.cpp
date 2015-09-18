@@ -51,7 +51,7 @@ void GarageSitForwardState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	turn = (int)this->pidTurn->calc(this->startDirection+5,this->postureEstimation->getDirection(),-30,30); // +5によりガレージ真ん中よりになる（ライン幅の分ずれてるから）
+	turn = (int)this->pidTurn->calc(this->startDirection+6,this->postureEstimation->getDirection(),-30,30); //TODO 当日調整 少しずらすことによりガレージ真ん中よりになる（ライン幅の分ずれてるから）
 	// 足の制御実行
 	this->balancingWalker->setForwardTurn(forward, turn);
 

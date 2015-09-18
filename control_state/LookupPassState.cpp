@@ -52,18 +52,19 @@ void LookupPassState::execute() {
 	int turn = 0;
 
 	/* 足の制御 */
+	Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// 前進値、旋回値を設定
-	if(this->forwardAgainFlag == false && this->backFlag == false && 550 < this->balancingWalker->getRightEnc() - this->startRightEnc) { // 1回目前進量
+	if(this->forwardAgainFlag == false && this->backFlag == false && this->balancingWalker->calcGarageDistance() < 1040){ //550 < this->balancingWalker->getRightEnc() - this->startRightEnc) { // 1回目前進量
 		this->backFlag = true;
 		this->forward = 0;
 	}
-	else if(this->forwardAgainFlag == false && this->backFlag == true && 60 < this->balancingWalker->getRightEnc() - this->startRightEnc) { // 後退量
+	else if(this->forwardAgainFlag == false && this->backFlag == true &&  this->balancingWalker->calcGarageDistance() < 1540){ // 60 < this->balancingWalker->getRightEnc() - this->startRightEnc) { // 後退量
 		this->forward -= 0.06;
 		if(this->forward < -30) {
 			this->forward = -30;
 		}
 	}
-	else if(this->forwardAgainFlag == false && this->backFlag == true && this->balancingWalker->getRightEnc() - this->startRightEnc < 60) { // 後退量
+	else if(this->forwardAgainFlag == false && this->backFlag == true && 1540 < this->balancingWalker->calcGarageDistance()){ //this->balancingWalker->getRightEnc() - this->startRightEnc < 60) { // 後退量
 		this->forwardAgainFlag = true;
 		this->forward = 30;
 	}
@@ -85,7 +86,7 @@ void LookupPassState::execute() {
 ControlState* LookupPassState::next() {
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// タイヤが一定以上回転したら
-	if(600 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
+	if(this->forwardAgainFlag == true && this->backFlag == true && this->balancingWalker->calcGarageDistance() < 1000){ //600 < this->balancingWalker->getRightEnc() - this->startRightEnc) {
 		return new LookupStandUpState();
 	}
 	return this;

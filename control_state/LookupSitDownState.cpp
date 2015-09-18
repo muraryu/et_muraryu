@@ -11,6 +11,7 @@
 
 #include "util/Bluetooth.h"
 #include "control_state/LookupPassState.h"
+#include "balancer_param.c"
 
 /**
  * コンストラクタ
@@ -22,9 +23,18 @@ LookupSitDownState::LookupSitDownState() {
 	// シングルトンインスタンス取得
 	this->balancingWalker = BalancingWalker::getInstance();
 	this->tail = Tail::getInstance();
+	this->time = Time::getInstance();
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(false);
+	this->startTime = this->time->getTime();
+
+	// 試走会２のパラメータに戻す
+	K_THETADOT = 7.5;
+	K_F[0] = -1.570303F;
+	K_F[1] = -32.2978F;
+	K_F[2] = -1.1566F;
+	K_F[3] = -2.78873F;
 
 }
 
@@ -45,7 +55,7 @@ void LookupSitDownState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	if(62 < this->tail->getAngle()) {
+	if(60 < this->tail->getAngle()) {
 		forward = 100;
 	}
 	else {
@@ -69,7 +79,7 @@ void LookupSitDownState::execute() {
 ControlState* LookupSitDownState::next() {
 	//Bluetooth::sendMessage(this->balancingWalker->calcGarageDistance());
 	// 車輪が停止したら遷移
-	if(this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
+	if(1.0 < this->time->getTime() - this->startTime && this->balancingWalker->getLeftAngularVelocity() <= 0 && this->balancingWalker->getRightAngularVelocity() <= 0) {
 		return new LookupPassState();
 	}
 

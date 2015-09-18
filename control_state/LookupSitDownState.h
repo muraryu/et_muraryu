@@ -11,6 +11,7 @@
 #include "control_state/ControlState.h"
 #include "app/Tail.h"
 #include "unit/balancingWalker.h"
+#include "util/Time.h"
 
 class LookupSitDownState : public ControlState {
 	typedef ControlState base;
@@ -26,6 +27,9 @@ public:
 private:
 	Tail* tail;
 	BalancingWalker* balancingWalker;
+	Time* time;
+
+	double startTime;
 
 };
 
