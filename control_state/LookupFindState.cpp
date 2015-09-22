@@ -29,8 +29,8 @@ LookupFindState::LookupFindState() {
 	this->postureEstimation = PostureEstimation::getInstance();
 
 	// インスタンス生成
-	//this->pidTurn = new PID(5,0,0); //TODO 本番用
-	this->pidTurn = new PID(80,0,1200); // TODO テスト用
+	this->pidTurn = new PID(5,0,0); //TODO 本番用
+	//this->pidTurn = new PID(80,0,1200); // TODO テスト用
 
 	// 初期処理
 	this->balancingWalker->setStandControlMode(true);
@@ -56,8 +56,8 @@ void LookupFindState::execute() {
 
 	/* 足の制御 */
 	// 前進値、旋回値を設定
-	//turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // TODO 本番用
-	turn = (int)-this->pidTurn->calc(0.60,(double)this->lineMonitor->getAdjustedBrightness(),-100,100); // TODO テスト用
+	turn = (int)this->pidTurn->calc(this->startDirection,this->postureEstimation->getDirection(),-30,30); // TODO 本番用
+	//turn = (int)-this->pidTurn->calc(0.60,(double)this->lineMonitor->getAdjustedBrightness(),-100,100); // TODO テスト用
 	// 足の制御実行
 	balancingWalker->setForwardTurn(forward, turn);
 

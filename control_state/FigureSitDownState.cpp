@@ -12,6 +12,7 @@
 #include "util/Bluetooth.h"
 #include "control_state/FigureUpState.h"
 #include "control_state/FigureBackState.h"
+#include "balancer_param.c"
 
 /**
  * コンストラクタ
@@ -33,6 +34,13 @@ FigureSitDownState::FigureSitDownState() {
 	this->balancingWalker->setStandControlMode(false);
 	this->startTime = this->time->getTime();
 	this->referenceEncValue = this->balancingWalker->getRightEnc();
+
+	// 試走会２のパラメータに戻す
+	K_THETADOT = 7.5;
+	K_F[0] = -1.570303F;
+	K_F[1] = -32.2978F;
+	K_F[2] = -1.1566F;
+	K_F[3] = -2.78873F;
 
 }
 

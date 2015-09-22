@@ -54,18 +54,35 @@ void LineTraceState::execute() {
 	/* 足の制御 */
 	// 前進値、旋回値を設定
 
-	if(this->balancingWalker->getRightEnc() < 720) { // 出だしはゆっくり
-		// 走行会２で用いた安定走行ゲイン
-		K_THETADOT = 7.5;
+	// チャンピオンシップ調整用
+	/*
+	K_THETADOTをコンストラクタで10.0に
+	フィギュア段差スピード落とす
+	if(this->balancingWalker->getRightEnc() < 1000) { // 出だしゆっくり
+		forward = 70;
+	} else {
+		K_F[0] = -0.870303F;
+		K_F[1] = -41.9978F;
+		K_F[2] = -1.1566F;
+		K_F[3] = -3.58873F;
+		forward = 100;
+	}*/
+
+	//turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+
+	// Lコースゴール前脱線するときは手前でトレース位置調整
+	if(8000 < this->balancingWalker->getRightEnc()) {
+		forward = 90;
 	}
-	else { // あとから速く
-		// 高速走行用ゲイン
-		K_THETADOT = 10.0;
+	if(this->balancingWalker->getRightEnc() < 10000) {
+		turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
+	}
+	else {
+		turn = (int)-this->pid->calc(0.6,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	}
 
-	turn = (int)-this->pid->calc(0.5,this->lineMonitor->getAdjustedBrightness(),-100,100);
 	// 足の制御実行
-	balancingWalker->setForwardTurn(forward, turn);
+	this->balancingWalker->setForwardTurn(forward, turn);
 
 	/* しっぽの制御 */
 	// 角度目標値を設定
@@ -83,14 +100,14 @@ ControlState* LineTraceState::next() {
 
 	// 一定距離は知ったら（ゴールしたら）遷移
 	// コースR フィギュア
-/*
-	if(13000 <= this->balancingWalker->getRightEnc()) {
+/*	if(13000 <= this->balancingWalker->getRightEnc()) {
 		return new FigureFindState();
-	}
-*/
+	}*/
+
 
 	// コースL ルックアップ
-	Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
+	//Bluetooth::sendMessage(this->balancingWalker->getRightEnc());
+
 	if(12200 <= this->balancingWalker->getRightEnc()) {
 			return new LookupFindState();
 	}

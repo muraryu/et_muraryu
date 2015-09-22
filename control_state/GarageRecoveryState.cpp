@@ -65,7 +65,7 @@ void GarageRecoveryState::execute() {
 	} else if(this->turnFlag1 == true && this->turnFlag2 == false && this->balancingWalker->getRightEnc() - this->garageEndRightEnc < -397) { // 後退終了位置に来たら再び前進 25cm後退
 		this->turnFlag2 = true;
 		this->forward = 20;
-	} else if(this->turnFlag1 == true && this->turnFlag2 == true && -15 < this->balancingWalker->getRightEnc() - this->garageEndRightEnc) { // 終了位置で停止 24cm前進
+	} else if(this->turnFlag1 == true && this->turnFlag2 == true && -30 < this->balancingWalker->getRightEnc() - this->garageEndRightEnc) { // 終了位置で停止 24cm前進
 		this->endFlag = true;
 		this->forward = 0;
 	}
